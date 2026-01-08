@@ -95,13 +95,7 @@ function ExternalBadge() {
 }
 
 /** ✅ Independent: PREV card */
-function PrevCard({
-  story,
-  onPrev,
-}: {
-  story: Story;
-  onPrev: () => void;
-}) {
+function PrevCard({ story, onPrev }: { story: Story; onPrev: () => void }) {
   return (
     <motion.div
       key={`prev-${story.id}`}
@@ -126,13 +120,7 @@ function PrevCard({
 }
 
 /** ✅ Independent: NEXT card */
-function NextCard({
-  story,
-  onNext,
-}: {
-  story: Story;
-  onNext: () => void;
-}) {
+function NextCard({ story, onNext }: { story: Story; onNext: () => void }) {
   return (
     <motion.div
       key={`next-${story.id}`}
@@ -208,14 +196,10 @@ function ActiveCard({
           dragConstraints={{ left: 0, right: 0 }}
           dragElastic={0.2}
           onDragEnd={(e, { offset, velocity }) => {
-            // same logic as you had, but isolated to this card only
             const swipe = Math.abs(offset.x) * velocity.x;
 
-            if (swipe < -10000) {
-              onSwipeNext();
-            } else if (swipe > 10000) {
-              onSwipePrev();
-            }
+            if (swipe < -10000) onSwipeNext();
+            else if (swipe > 10000) onSwipePrev();
           }}
           className="absolute inset-0 cursor-grab rounded-[54px] shadow-[0_40px_110px_rgba(0,0,0,0.14)] active:cursor-grabbing"
         >
@@ -256,9 +240,14 @@ export default function WhatWeHaveBuilt() {
     setDirection(0);
   }, [activeCategory]);
 
-  const active = stories[idx];
-  const prev = idx > 0 ? stories[idx - 1] : null;
-  const next = idx < stories.length - 1 ? stories[idx + 1] : null;
+  // ✅ If category has fewer items than current idx, clamp back to 0
+  useEffect(() => {
+    if (idx > stories.length - 1) setIdx(0);
+  }, [stories.length, idx]);
+
+  const active = stories[idx] ?? null;
+  const prev = active && idx > 0 ? stories[idx - 1] : null;
+  const next = active && idx < stories.length - 1 ? stories[idx + 1] : null;
 
   const goNext = () => {
     if (!next) return;
@@ -303,45 +292,53 @@ export default function WhatWeHaveBuilt() {
         {/* Carousel */}
         <div className="relative mt-14 overflow-visible">
           <div className="relative mx-auto h-[500px] w-full max-w-[860px]">
-            {/* Independent PREV */}
-            <AnimatePresence>
-              {prev && <PrevCard story={prev} onPrev={goPrev} />}
-            </AnimatePresence>
+            {/* ✅ EMPTY STATE (prevents crash) */}
+            {!active ? (
+              <div className="flex h-[430px] w-full items-center justify-center rounded-[54px] bg-[#f3f5f7] shadow-[0_40px_110px_rgba(0,0,0,0.08)]">
+                <div className="text-center">
+                  <p className="text-[22px] font-semibold text-[#6b6b6b]">No stories yet</p>
+                  <p className="mt-2 text-[13px] text-[#9a9a9a]">Add items to this category to display them here.</p>
+                </div>
+              </div>
+            ) : (
+              <>
+                {/* Independent PREV */}
+                <AnimatePresence>{prev && <PrevCard story={prev} onPrev={goPrev} />}</AnimatePresence>
 
-            {/* Independent NEXT */}
-            <AnimatePresence>
-              {next && <NextCard story={next} onNext={goNext} />}
-            </AnimatePresence>
+                {/* Independent NEXT */}
+                <AnimatePresence>{next && <NextCard story={next} onNext={goNext} />}</AnimatePresence>
 
-            {/* Independent ACTIVE */}
-            <ActiveCard
-              story={active}
-              direction={direction}
-              hasNext={!!next}
-              onNext={goNext}
-              onSwipePrev={() => {
-                if (prev) goPrev();
-              }}
-              onSwipeNext={() => {
-                if (next) goNext();
-              }}
-            />
-
-            {/* Dots */}
-            <div className="mt-7 flex justify-center gap-[10px]">
-              {stories.map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => jumpTo(i)}
-                  className={
-                    i === idx
-                      ? "h-[7px] w-[34px] rounded-full bg-[#FF7A00] transition-all"
-                      : "h-[7px] w-[7px] rounded-full bg-[#DDDDDD] transition-all hover:bg-[#BBBBBB]"
-                  }
-                  aria-label={`Slide ${i + 1}`}
+                {/* Independent ACTIVE */}
+                <ActiveCard
+                  story={active}
+                  direction={direction}
+                  hasNext={!!next}
+                  onNext={goNext}
+                  onSwipePrev={() => {
+                    if (prev) goPrev();
+                  }}
+                  onSwipeNext={() => {
+                    if (next) goNext();
+                  }}
                 />
-              ))}
-            </div>
+
+                {/* Dots */}
+                <div className="mt-7 flex justify-center gap-[10px]">
+                  {stories.map((_, i) => (
+                    <button
+                      key={i}
+                      onClick={() => jumpTo(i)}
+                      className={
+                        i === idx
+                          ? "h-[7px] w-[34px] rounded-full bg-[#FF7A00] transition-all"
+                          : "h-[7px] w-[7px] rounded-full bg-[#DDDDDD] transition-all hover:bg-[#BBBBBB]"
+                      }
+                      aria-label={`Slide ${i + 1}`}
+                    />
+                  ))}
+                </div>
+              </>
+            )}
           </div>
         </div>
 
@@ -364,11 +361,25 @@ export default function WhatWeHaveBuilt() {
 
         {/* Bottom Info */}
         <div className="mt-9 text-center">
-          <div className="inline-flex items-center gap-3">
-            <h3 className="text-[42px] font-light tracking-[-0.01em] text-[#6b6b6b]">{active.title}</h3>
-            <ExternalBadge />
-          </div>
-          <p className="mx-auto mt-4 max-w-[760px] text-[13px] leading-[2.0] text-[#9a9a9a]">{active.description}</p>
+          {active ? (
+            <>
+              <div className="inline-flex items-center gap-3">
+                <h3 className="text-[42px] font-light tracking-[-0.01em] text-[#6b6b6b]">{active.title}</h3>
+                <ExternalBadge />
+              </div>
+              <p className="mx-auto mt-4 max-w-[760px] text-[13px] leading-[2.0] text-[#9a9a9a]">{active.description}</p>
+            </>
+          ) : (
+            <>
+              <div className="inline-flex items-center gap-3">
+                <h3 className="text-[42px] font-light tracking-[-0.01em] text-[#6b6b6b]">—</h3>
+                <ExternalBadge />
+              </div>
+              <p className="mx-auto mt-4 max-w-[760px] text-[13px] leading-[2.0] text-[#9a9a9a]">
+                Select a category that has stories, or add stories for this category.
+              </p>
+            </>
+          )}
         </div>
       </div>
     </section>
