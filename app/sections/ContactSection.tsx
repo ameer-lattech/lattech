@@ -52,12 +52,12 @@ export default function ContactUsSection() {
 
   return (
     <section className="w-full bg-white">
-      {/* outer padding like screenshot */}
-      <div className="mx-auto max-w-[1280px] px-6 py-[58px]">
-        <div className="grid grid-cols-12 items-start gap-x-[70px]">
+      {/* ✅ EXACT 1280 layout system */}
+      <div className="mx-auto max-w-[1280px] px-8 py-[58px]">
+        <div className="grid grid-cols-12 items-start lg:items-center gap-y-10 gap-x-0 lg:gap-x-[70px]">
           {/* LEFT IMAGE */}
           <div className="col-span-12 lg:col-span-6">
-            <div className="relative h-[640px] w-full overflow-hidden rounded-[92px] bg-[#f3f3f3]">
+            <div className="relative w-full overflow-hidden rounded-[92px] bg-[#f3f3f3] h-[420px] md:h-[520px] lg:h-[640px]">
               <Image
                 src="https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&w=1800&q=80"
                 alt="Contact"
@@ -69,15 +69,14 @@ export default function ContactUsSection() {
                   filter: "grayscale(1) contrast(1.05) brightness(1.03)",
                 }}
               />
-              {/* subtle soft overlay like screenshot */}
               <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/10 via-white/0 to-white/20" />
             </div>
           </div>
 
           {/* RIGHT FORM */}
           <div className="col-span-12 lg:col-span-6">
-            {/* push content slightly down like screenshot */}
-            <div className="pt-3">
+            {/* ✅ keep your original “slightly down” feel but controlled */}
+            <div className="lg:pt-3">
               <h2 className="text-[#5D5D5D] font-semibold tracking-[-0.02em] text-[36px] leading-[1.18]">
                 Get in touch with us. We&apos;re
                 <br />
@@ -148,7 +147,6 @@ export default function ContactUsSection() {
                         ))}
                       </select>
 
-                      {/* dropdown caret */}
                       <span className="pointer-events-none absolute right-[14px] top-1/2 -translate-y-1/2 text-[#9E9E9E]">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
                           <path

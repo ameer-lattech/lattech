@@ -2,12 +2,26 @@
 
 import React from "react";
 
-export default function FooterExactPixel() {
+export default function FooterExactPixelTailwind() {
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
 
   return (
-    <footer className="footer">
-      <button className="backTop" type="button" aria-label="Back to top" onClick={scrollToTop}>
+    <footer className="relative w-full bg-[#121212] z-10 overflow-visible">
+      {/* Back to top */}
+      <button
+        type="button"
+        aria-label="Back to top"
+        onClick={scrollToTop}
+        className="
+          absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2
+          grid place-items-center
+          h-[66px] w-[66px] rounded-full
+          border-[5px] border-[#2b2b2b] bg-white
+          shadow-[0_18px_40px_rgba(0,0,0,0.45)]
+          z-[9999]
+          sm:h-[60px] sm:w-[60px]
+        "
+      >
         <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
           <path
             d="M6.5 14.5L12 9l5.5 5.5"
@@ -20,303 +34,155 @@ export default function FooterExactPixel() {
         </svg>
       </button>
 
-      <div className="main">
-        <div className="grid">
-          <div className="col brandCol">
-            <div className="logoRow">
-              <span className="logoText">LATTECH</span>
+      {/* Main */}
+      <div
+        className="
+          pt-[72px] pb-[34px]
+          px-6
+        "
+      >
+        {/* ✅ This is what fixes the “fullwidth feel” */}
+        <div className="mx-auto w-full max-w-[1120px]">
+          <div
+            className="
+              grid gap-y-[22px]
+              grid-cols-1
+              md:grid-cols-2 md:gap-x-[34px]
+              xl:grid-cols-[1.55fr_1fr_1fr_1fr_0.8fr] xl:gap-x-[72px]
+            "
+          >
+            {/* Brand */}
+            <div className="pt-[6px]">
+              <div className="flex items-center mb-[22px]">
+                <span className="text-[30px] font-black tracking-[0.04em] text-white/90">
+                  LATTECH
+                </span>
+              </div>
+
+              <div className="space-y-[14px]">
+                <p className="text-[12px] leading-[1.7] text-white/55 max-w-[360px]">
+                  A108 Adam Street New York, NY 535022&nbsp; United States
+                </p>
+                <p className="text-[12px] leading-[1.7] text-white/55 max-w-[360px]">
+                  Phone: <span className="text-white/70">+1 5589 55488 55</span>
+                </p>
+                <p className="text-[12px] leading-[1.7] text-white/55 max-w-[360px]">
+                  Email: <span className="text-white/70">info@example.com</span>
+                </p>
+              </div>
+
+              <div className="flex gap-[18px] mt-[28px]">
+                <a
+                  href="#"
+                  aria-label="Facebook"
+                  className="grid place-items-center h-[28px] w-[28px] no-underline opacity-90 transition hover:opacity-100 hover:-translate-y-[1px]"
+                >
+                  <FacebookIcon />
+                </a>
+                <a
+                  href="#"
+                  aria-label="Twitter"
+                  className="grid place-items-center h-[28px] w-[28px] no-underline opacity-90 transition hover:opacity-100 hover:-translate-y-[1px]"
+                >
+                  <TwitterIcon />
+                </a>
+                <a
+                  href="#"
+                  aria-label="Instagram"
+                  className="grid place-items-center h-[28px] w-[28px] no-underline opacity-90 transition hover:opacity-100 hover:-translate-y-[1px]"
+                >
+                  <InstagramIcon />
+                </a>
+                <a
+                  href="#"
+                  aria-label="LinkedIn"
+                  className="grid place-items-center h-[28px] w-[28px] no-underline opacity-90 transition hover:opacity-100 hover:-translate-y-[1px]"
+                >
+                  <LinkedInIcon />
+                </a>
+              </div>
             </div>
 
-            <div className="info">
-              <p>A108 Adam Street New York, NY 535022&nbsp; United States</p>
-              <p>
-                Phone: <span>+1 5589 55488 55</span>
-              </p>
-              <p>
-                Email: <span>info@example.com</span>
-              </p>
-            </div>
+            {/* Column */}
+            <FooterCol
+              title="Education"
+              links={[
+                "Email Marketing",
+                "Social Media Marketing",
+                "Search Engine Optimization",
+                "Product Development",
+                "Web Development",
+              ]}
+            />
 
-            <div className="social">
-              <a href="#" aria-label="Facebook" className="sIcon">
-                <FacebookIcon />
-              </a>
-              <a href="#" aria-label="Twitter" className="sIcon">
-                <TwitterIcon />
-              </a>
-              <a href="#" aria-label="Instagram" className="sIcon">
-                <InstagramIcon />
-              </a>
-              <a href="#" aria-label="LinkedIn" className="sIcon">
-                <LinkedInIcon />
-              </a>
-            </div>
-          </div>
+            <FooterCol
+              title="Business"
+              links={[
+                "Digital Marketing Agency",
+                "SEO Agency",
+                "PPC Agency",
+                "Content Marketing Agency",
+                "Internet Marketing Agency",
+                "Locations",
+                "Industries We Serve",
+              ]}
+            />
 
-          <div className="col">
-            <div className="head">Education</div>
-            <ul className="links">
-              <li>
-                <a href="#">Email Marketing</a>
-              </li>
-              <li>
-                <a href="#">Social Media Marketing</a>
-              </li>
-              <li>
-                <a href="#">Search Engine Optimization</a>
-              </li>
-              <li>
-                <a href="#">Product Development</a>
-              </li>
-              <li>
-                <a href="#">Web Development</a>
-              </li>
-            </ul>
-          </div>
+            <FooterCol
+              title="Developer & IT"
+              links={[
+                "Internet Marketing",
+                "Content Marketing",
+                "Social Media",
+                "Web Design",
+                "Seo",
+                "PPC",
+                "Amazon",
+              ]}
+            />
 
-          <div className="col">
-            <div className="head">Business</div>
-            <ul className="links">
-              <li>
-                <a href="#">Digital Marketing Agency</a>
-              </li>
-              <li>
-                <a href="#">SEO Agency</a>
-              </li>
-              <li>
-                <a href="#">PPC Agency</a>
-              </li>
-              <li>
-                <a href="#">Content Marketing Agency</a>
-              </li>
-              <li>
-                <a href="#">Internet Marketing Agency</a>
-              </li>
-              <li>
-                <a href="#">Locations</a>
-              </li>
-              <li>
-                <a href="#">Industries We Serve</a>
-              </li>
-            </ul>
-          </div>
-
-          <div className="col">
-            <div className="head">Developer &amp; IT</div>
-            <ul className="links">
-              <li>
-                <a href="#">Internet Marketing</a>
-              </li>
-              <li>
-                <a href="#">Content Marketing</a>
-              </li>
-              <li>
-                <a href="#">Social Media</a>
-              </li>
-              <li>
-                <a href="#">Web Design</a>
-              </li>
-              <li>
-                <a href="#">Seo</a>
-              </li>
-              <li>
-                <a href="#">PPC</a>
-              </li>
-              <li>
-                <a href="#">Amazon</a>
-              </li>
-            </ul>
-          </div>
-
-          <div className="col">
-            <div className="head">Company</div>
-            <ul className="links">
-              <li>
-                <a href="#">About us</a>
-              </li>
-              <li>
-                <a href="#">Contact us</a>
-              </li>
-              <li>
-                <a href="#">SEO Checker</a>
-              </li>
-              <li>
-                <a href="#">Tools</a>
-              </li>
-              <li>
-                <a href="#">Marketing Guides</a>
-              </li>
-              <li>
-                <a href="#">Careers</a>
-              </li>
-            </ul>
+            <FooterCol
+              title="Company"
+              links={[
+                "About us",
+                "Contact us",
+                "SEO Checker",
+                "Tools",
+                "Marketing Guides",
+                "Careers",
+              ]}
+            />
           </div>
         </div>
       </div>
 
-      <div className="bottomBar">
-        <div className="copy">
+      {/* Bottom bar */}
+      <div className="bg-[#2a2a2a] border-t border-white/5 py-[26px] px-4 flex justify-center">
+        <div className="text-[13px] text-white/80">
           © Copyright <b>Lattech</b>. All Rights Reserved
         </div>
       </div>
-
-      <style jsx>{`
-        .footer {
-          position: relative;
-          width: 100%;
-          background: #121212;
-
-          /* ✅ IMPORTANT: allow button to stick out above footer */
-          overflow: visible;
-          z-index: 10;
-        }
-
-        .backTop {
-          position: absolute;
-          left: 50%;
-
-          /* ✅ push it above the footer so it doesn't sit "inside" */
-          top: 0;
-          transform: translate(-50%, -50%);
-
-          width: 66px;
-          height: 66px;
-          border-radius: 999px;
-          border: 5px solid #2b2b2b;
-          background: #ffffff;
-          display: grid;
-          place-items: center;
-          cursor: pointer;
-          box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
-
-          /* ✅ always above everything */
-          z-index: 9999;
-        }
-
-        .main {
-          padding: 72px 78px 34px;
-        }
-
-        .grid {
-          display: grid;
-          grid-template-columns: 1.55fr 1fr 1fr 1fr 0.8fr;
-          column-gap: 72px;
-          row-gap: 22px;
-          align-items: start;
-        }
-
-        .brandCol {
-          padding-top: 6px;
-        }
-
-        .logoRow {
-          display: flex;
-          align-items: center;
-          margin-bottom: 22px;
-        }
-
-        .logoText {
-          font-size: 30px;
-          font-weight: 900;
-          letter-spacing: 0.04em;
-          color: rgba(255, 255, 255, 0.92);
-        }
-
-        .info p {
-          margin: 0 0 14px 0;
-          font-size: 12px;
-          line-height: 1.7;
-          color: rgba(255, 255, 255, 0.55);
-          max-width: 360px;
-        }
-
-        .info span {
-          color: rgba(255, 255, 255, 0.72);
-        }
-
-        .social {
-          display: flex;
-          gap: 18px;
-          margin-top: 28px;
-        }
-
-        .sIcon {
-          width: 28px;
-          height: 28px;
-          display: grid;
-          place-items: center;
-          text-decoration: none;
-          opacity: 0.88;
-          transition: opacity 0.15s ease, transform 0.15s ease;
-        }
-
-        .sIcon:hover {
-          opacity: 1;
-          transform: translateY(-1px);
-        }
-
-        .head {
-          color: rgba(255, 255, 255, 0.92);
-          font-size: 14px;
-          font-weight: 700;
-          margin-bottom: 26px;
-        }
-
-        .links {
-          list-style: none;
-          padding: 0;
-          margin: 0;
-        }
-
-        .links li {
-          margin: 0 0 16px 0;
-        }
-
-        .links a {
-          color: rgba(255, 255, 255, 0.5);
-          text-decoration: none;
-          font-size: 12px;
-          transition: color 0.15s ease;
-        }
-
-        .links a:hover {
-          color: rgba(255, 255, 255, 0.82);
-        }
-
-        .bottomBar {
-          background: #2a2a2a;
-          border-top: 1px solid rgba(255, 255, 255, 0.06);
-          padding: 26px 16px;
-          display: flex;
-          justify-content: center;
-        }
-
-        .copy {
-          color: rgba(255, 255, 255, 0.78);
-          font-size: 13px;
-        }
-
-        @media (max-width: 1150px) {
-          .main {
-            padding: 70px 22px 34px;
-          }
-          .grid {
-            grid-template-columns: 1fr 1fr;
-            column-gap: 34px;
-          }
-        }
-
-        @media (max-width: 640px) {
-          .grid {
-            grid-template-columns: 1fr;
-          }
-          .backTop {
-            width: 60px;
-            height: 60px;
-          }
-        }
-      `}</style>
     </footer>
+  );
+}
+
+function FooterCol({ title, links }: { title: string; links: string[] }) {
+  return (
+    <div>
+      <div className="text-white/90 text-[14px] font-bold mb-[26px]">{title}</div>
+      <ul className="list-none p-0 m-0">
+        {links.map((t) => (
+          <li key={t} className="mb-[16px]">
+            <a
+              href="#"
+              className="text-white/50 text-[12px] no-underline transition-colors hover:text-white/80"
+            >
+              {t}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }
 

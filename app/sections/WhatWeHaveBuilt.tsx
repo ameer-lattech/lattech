@@ -269,7 +269,7 @@ export default function WhatWeHaveBuilt() {
 
   return (
     <section className="w-full bg-white py-16 md:py-20">
-      <div className="mx-auto max-w-[1100px] px-6">
+      <div className="mx-auto max-w-[1280px] px-6">
         {/* Header */}
         <div className="text-center">
           <h2 className="text-[44px] font-light tracking-tight text-[#6b6b6b] md:text-[54px]">

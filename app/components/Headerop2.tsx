@@ -6,7 +6,7 @@ type Props = {
   logoSrc?: string; // e.g. "/assets/images/lattech-logo.png"
 };
 
-export default function LattechHeaderTailwind({ logoSrc = "/assets/images/logo.png" }: Props) {
+export default function LattechHeaderTailwind({ logoSrc = "/assets/images/Logo.png" }: Props) {
   const [hide, setHide] = useState(false);
   const lastY = useRef(0);
 
@@ -42,7 +42,7 @@ export default function LattechHeaderTailwind({ logoSrc = "/assets/images/logo.p
       >
         {/* TOP BAR */}
         <div className="h-[44px] bg-[#f6f6f6] border-b border-black/5">
-          <div className="mx-auto flex h-[44px] max-w-[1380px] items-center justify-between px-[22px]">
+          <div className="mx-auto flex h-[44px] max-w-[1280px] items-center justify-between px-[22px]">
             <div className="flex items-center gap-[18px]">
               <a
                 className="grid h-[18px] w-[18px] place-items-center opacity-75 hover:opacity-100 transition-opacity"
@@ -89,7 +89,7 @@ export default function LattechHeaderTailwind({ logoSrc = "/assets/images/logo.p
 
         {/* MAIN PILL HEADER */}
         <div className="bg-white overflow-hidden rounded-bl-[40px] rounded-br-[40px] shadow-none">
-          <div className="mx-auto flex h-[104px] max-w-[1380px] items-center justify-between gap-[26px] px-[26px]">
+          <div className="mx-auto flex h-[104px] max-w-[1280px] items-center justify-between gap-[26px] px-[26px]">
             {/* LOGO */}
             <a href="/" aria-label="Lattech Home" className="inline-flex min-w-[300px] items-center">
               {/* eslint-disable-next-line @next/next/no-img-element */}

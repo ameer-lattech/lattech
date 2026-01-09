@@ -30,7 +30,7 @@ const STEPS: Step[] = [
   {
     title: "Design & Prototype",
     desc: "We design clean interfaces and prototype flows to validate usability before development begins.",
-    img: "https://images.unsplash.com/photo-1553877522-43269d4ea984?auto=format&fit=crop&w=2000&q=8080",
+    img: "https://images.unsplash.com/photo-1553877522-43269d4ea984?auto=format&fit=crop&w=2000&q=80",
   },
   {
     title: "Development",
@@ -167,7 +167,6 @@ export default function OurProcessPinnedScroll() {
             scrub: 1,
             invalidateOnRefresh: true,
             onUpdate: (self) => {
-              // keep index stable at the end
               const next = Math.min(total - 1, Math.floor(self.progress * total));
               showIndex(next, self.direction);
             },
@@ -176,7 +175,7 @@ export default function OurProcessPinnedScroll() {
           return () => st.kill();
         });
 
-        // ✅ Mobile: no pin, stacked (also clears any props from desktop mode after resize)
+        // ✅ Mobile: no pin, stacked
         mm.add("(max-width: 767px)", () => {
           imagesRef.current.forEach((el) => {
             if (!el) return;
@@ -206,135 +205,148 @@ export default function OurProcessPinnedScroll() {
 
   return (
     <section ref={rootRef} className="w-full bg-white">
-      <div ref={pinWrapRef} className="relative mx-auto w-full max-w-[1200px] px-8 md:h-screen">
-        {/* Top Header Row */}
-        <div className="pt-12">
-          <div className="flex items-start justify-between">
-            <h2 className="text-[40px] font-medium leading-none text-[#3E3E3E]">
-              Our <span className="font-semibold text-[#39B54A]">Process</span>
-            </h2>
+      {/* ✅ Entire block vertically centered on desktop */}
+      <div
+        ref={pinWrapRef}
+        className="relative mx-auto w-full max-w-[1280px] px-8 md:h-screen md:flex md:items-center"
+      >
+        {/* ✅ This wrapper makes header + content center as one unit */}
+        <div className="w-full md:flex md:flex-col md:justify-center">
+          {/* Header */}
+          <div>
+            <div className="flex items-start justify-between">
+              <h2 className="text-[40px] font-medium leading-none text-[#3E3E3E]">
+                Our <span className="font-semibold text-[#39B54A]">Process</span>
+              </h2>
 
-            <Link
-              href="/process"
-              className="inline-flex items-center gap-2 rounded-full border border-[#ECECEC] bg-white px-5 py-[9px] text-[11px] font-medium text-[#FF7A00] shadow-[0_10px_22px_rgba(0,0,0,0.06)] transition hover:opacity-90"
-            >
-              Learn More{" "}
-              <span className="ml-1 inline-block text-[14px]" aria-hidden>
-                ↗
-              </span>
-            </Link>
-          </div>
-
-          <div className="mt-7 h-px w-full bg-[#E9EEF5]" />
-        </div>
-
-        {/* Desktop pinned area */}
-        <div className="hidden h-[calc(100%-120px)] items-center md:flex">
-          <div className="grid w-full grid-cols-12 items-center">
-            {/* LEFT IMAGE (FIXED: no cutting) */}
-            <div className="col-span-6">
-              {/* responsive + full image visible (no crop) */}
-              <div className="relative w-full max-w-[560px] bg-[transparent] aspect-[14/9]">
-                {STEPS.map((s, i) => (
-                  <div
-                    key={s.title}
-                    ref={(el) => {
-                      if (el) imagesRef.current[i] = el;
-                    }}
-                    className="absolute inset-0 overflow-hidden rounded-[0px] will-change-transform"
-                    style={{ visibility: i === 0 ? "visible" : "hidden" }}
-                  >
-                    <Image
-                      src={s.img}
-                      alt={s.title}
-                      fill
-                      priority={i === 0}
-                      className="object-contain"
-                      sizes="(min-width: 768px) 560px, 100vw"
-                    />
-                  </div>
-                ))}
-              </div>
+              <Link
+                href="/process"
+                className="inline-flex items-center gap-2 rounded-full border border-[#ECECEC] bg-white px-5 py-[9px] text-[11px] font-medium text-[#FF7A00] shadow-[0_10px_22px_rgba(0,0,0,0.06)] transition hover:opacity-90"
+              >
+                Learn More{" "}
+                <span className="ml-1 inline-block text-[14px]" aria-hidden>
+                  ↗
+                </span>
+              </Link>
             </div>
 
-            {/* RIGHT CONTENT */}
-            <div className="col-span-6 pl-14">
-              <p className="max-w-[420px] text-[12.5px] leading-[1.95] text-[#7A7A7A]">
-                Lattech is a global IT technology solutions and services company based in Pakistan. We collaborate with
-                our clients of all sizes, from individual to mid-market to large companies across multiple domains.
-              </p>
+            <div className="mt-7 h-px w-full bg-[#E9EEF5]" />
+          </div>
 
-              <div className="relative mt-14 h-[270px]">
-                {STEPS.map((s, i) => {
-                  const num = String(i + 1).padStart(2, "0");
-                  const total = String(STEPS.length).padStart(2, "0");
+          {/* ✅ CONTROL THIS GAP ONLY (this is the space you marked) */}
+          <div className="hidden md:block h-[64px]" />
 
-                  return (
+          {/* Desktop pinned area (no extra height calculations) */}
+          <div className="hidden md:block">
+            <div className="grid w-full grid-cols-12 items-center">
+              {/* LEFT IMAGE */}
+              <div className="col-span-6">
+                <div className="relative w-full max-w-[560px] bg-[transparent] aspect-[14/9]">
+                  {STEPS.map((s, i) => (
                     <div
                       key={s.title}
                       ref={(el) => {
-                        if (el) contentRef.current[i] = el;
+                        if (el) imagesRef.current[i] = el;
                       }}
-                      className="absolute inset-0 will-change-transform"
+                      className="absolute inset-0 overflow-hidden rounded-[0px] will-change-transform"
                       style={{ visibility: i === 0 ? "visible" : "hidden" }}
                     >
+                      <Image
+                        src={s.img}
+                        alt={s.title}
+                        fill
+                        priority={i === 0}
+                        className="object-contain"
+                        sizes="(min-width: 768px) 560px, 100vw"
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* RIGHT CONTENT */}
+              <div className="col-span-6 pl-14">
+                <p className="max-w-[420px] text-[12.5px] leading-[1.95] text-[#7A7A7A]">
+                  Lattech is a global IT technology solutions and services company based in Pakistan. We collaborate with
+                  our clients of all sizes, from individual to mid-market to large companies across multiple domains.
+                </p>
+
+                <div className="relative mt-14 h-[270px]">
+                  {STEPS.map((s, i) => {
+                    const num = String(i + 1).padStart(2, "0");
+                    const total = String(STEPS.length).padStart(2, "0");
+
+                    return (
+                      <div
+                        key={s.title}
+                        ref={(el) => {
+                          if (el) contentRef.current[i] = el;
+                        }}
+                        className="absolute inset-0 will-change-transform"
+                        style={{ visibility: i === 0 ? "visible" : "hidden" }}
+                      >
+                        <div className="flex items-center gap-2 text-[12px]">
+                          <span className="font-semibold text-[#FF7A00]">{num}</span>
+                          <span className="text-[#C7CDD8]">/</span>
+                          <span className="text-[#9AA3B2]">{total}</span>
+                        </div>
+
+                        <div className="mt-7 h-px w-full bg-[#E9EEF5]" />
+
+                        <h3 className="mt-[88px] text-[22px] font-semibold tracking-wide text-[#4A4A4A]">
+                          {s.title}
+                        </h3>
+
+                        <p className="mt-4 max-w-[460px] text-[11.5px] leading-[1.95] text-[#9AA3B2]">
+                          {s.desc}
+                        </p>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Mobile stacked (unchanged) */}
+          <div className="pb-16 pt-10 md:hidden">
+            <p className="max-w-[520px] text-[12.5px] leading-[1.95] text-[#7A7A7A]">
+              Lattech is a global IT technology solutions and services company based in Pakistan. We collaborate with our
+              clients of all sizes, from individual to mid-market to large companies across multiple domains.
+            </p>
+
+            <div className="mt-10 grid gap-12">
+              {STEPS.map((s, i) => {
+                const num = String(i + 1).padStart(2, "0");
+                const total = String(STEPS.length).padStart(2, "0");
+
+                return (
+                  <div key={s.title} className="grid gap-6">
+                    <div className="relative w-full overflow-hidden bg-[#F2F2F2] aspect-[16/10]">
+                      <Image src={s.img} alt={s.title} fill className="object-contain" sizes="100vw" />
+                    </div>
+
+                    <div>
                       <div className="flex items-center gap-2 text-[12px]">
                         <span className="font-semibold text-[#FF7A00]">{num}</span>
                         <span className="text-[#C7CDD8]">/</span>
                         <span className="text-[#9AA3B2]">{total}</span>
                       </div>
 
-                      <div className="mt-7 h-px w-full bg-[#E9EEF5]" />
+                      <div className="mt-5 h-px w-full bg-[#E9EEF5]" />
 
-                      <h3 className="mt-[88px] text-[22px] font-semibold tracking-wide text-[#4A4A4A]">{s.title}</h3>
-
-                      <p className="mt-4 max-w-[460px] text-[11.5px] leading-[1.95] text-[#9AA3B2]">{s.desc}</p>
+                      <h3 className="mt-7 text-[18px] font-semibold tracking-wide text-[#4A4A4A]">
+                        {s.title}
+                      </h3>
+                      <p className="mt-3 text-[12px] leading-[1.95] text-[#9AA3B2]">{s.desc}</p>
                     </div>
-                  );
-                })}
-              </div>
+                  </div>
+                );
+              })}
             </div>
-          </div>
-        </div>
-
-        {/* Mobile stacked */}
-        <div className="pb-16 pt-10 md:hidden">
-          <p className="max-w-[520px] text-[12.5px] leading-[1.95] text-[#7A7A7A]">
-            Lattech is a global IT technology solutions and services company based in Pakistan. We collaborate with our
-            clients of all sizes, from individual to mid-market to large companies across multiple domains.
-          </p>
-
-          <div className="mt-10 grid gap-12">
-            {STEPS.map((s, i) => {
-              const num = String(i + 1).padStart(2, "0");
-              const total = String(STEPS.length).padStart(2, "0");
-
-              return (
-                <div key={s.title} className="grid gap-6">
-                  {/* FIXED: no cutting on mobile too */}
-                  <div className="relative w-full overflow-hidden bg-[#F2F2F2] aspect-[16/10]">
-                    <Image src={s.img} alt={s.title} fill className="object-contain" sizes="100vw" />
-                  </div>
-
-                  <div>
-                    <div className="flex items-center gap-2 text-[12px]">
-                      <span className="font-semibold text-[#FF7A00]">{num}</span>
-                      <span className="text-[#C7CDD8]">/</span>
-                      <span className="text-[#9AA3B2]">{total}</span>
-                    </div>
-
-                    <div className="mt-5 h-px w-full bg-[#E9EEF5]" />
-
-                    <h3 className="mt-7 text-[18px] font-semibold tracking-wide text-[#4A4A4A]">{s.title}</h3>
-                    <p className="mt-3 text-[12px] leading-[1.95] text-[#9AA3B2]">{s.desc}</p>
-                  </div>
-                </div>
-              );
-            })}
           </div>
         </div>
       </div>
     </section>
   );
 }
-

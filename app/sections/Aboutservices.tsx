@@ -88,7 +88,6 @@ export default function ServicesPinnedScroll() {
             el.style.pointerEvents = isActive ? "auto" : "none";
           };
 
-          // init states
           imagesRef.current.forEach((el, i) => {
             setLayer(el, i === 0);
             gsap.set(el, { autoAlpha: i === 0 ? 1 : 0, y: 0, scale: 1 });
@@ -118,7 +117,6 @@ export default function ServicesPinnedScroll() {
             const outY = direction >= 0 ? -18 : 18;
             const inY = direction >= 0 ? 18 : -18;
 
-            // image swap
             gsap.to(prevImg, {
               autoAlpha: 0,
               y: outY,
@@ -145,7 +143,6 @@ export default function ServicesPinnedScroll() {
               }
             );
 
-            // content swap
             gsap.to(prevContent, {
               autoAlpha: 0,
               y: outY,
@@ -189,15 +186,15 @@ export default function ServicesPinnedScroll() {
 
         // ✅ Mobile: no pin (simple list)
         mm.add("(max-width: 767px)", () => {
-          ScrollTrigger.getAll().forEach((t) => t.kill());
-
           imagesRef.current.forEach((el) => {
+            if (!el) return;
             el.style.visibility = "visible";
             el.style.pointerEvents = "auto";
             gsap.set(el, { clearProps: "all" });
           });
 
           contentRef.current.forEach((el) => {
+            if (!el) return;
             el.style.visibility = "visible";
             el.style.pointerEvents = "auto";
             gsap.set(el, { clearProps: "all" });
@@ -215,97 +212,105 @@ export default function ServicesPinnedScroll() {
   }, []);
 
   return (
-    <section ref={rootRef} className="w-full bg-[#EEF8E9]">
-      <div ref={pinWrapRef} className="relative mx-auto w-full max-w-[1200px] px-6 md:h-screen">
-        {/* header */}
-        <div className="pt-10 text-center">
-          <h2 className="text-[34px] md:text-[40px] font-semibold leading-tight text-[#2E2E2E]">
-            About our <span className="text-[#39B54A]">Services</span>
-          </h2>
-          <p className="mx-auto mt-3 max-w-[780px] text-[13px] leading-[1.7] text-[#7A7A7A]">
-            We help your business grow from inception to success. Our digital solutions enhance your online presence,
-            drive sales, and optimize operations for efficiency and profitability.
-          </p>
-        </div>
+    <section ref={rootRef} className="w-full bg-[#FAFAFA]">
+      {/* ✅ Whole block centered (header + content) */}
+      <div
+        ref={pinWrapRef}
+        className="relative mx-auto w-full max-w-[1280px] px-6 md:h-screen md:flex md:items-center"
+      >
+        {/* ✅ header + content centered as ONE unit */}
+        <div className="w-full md:flex md:flex-col md:justify-center">
+          {/* header */}
+          <div className="pt-10 md:pt-0 text-center">
+            <h2 className="text-[34px] md:text-[40px] font-semibold leading-tight text-[#2E2E2E]">
+              About our <span className="text-[#39B54A]">Services</span>
+            </h2>
+            <p className="mx-auto mt-3 max-w-[780px] text-[13px] leading-[1.7] text-[#7A7A7A]">
+              We help your business grow from inception to success. Our digital solutions enhance your online presence,
+              drive sales, and optimize operations for efficiency and profitability.
+            </p>
+          </div>
 
-        {/* desktop */}
-        <div className="hidden md:flex h-[calc(100%-140px)] items-center">
-          <div className="grid w-full grid-cols-12 items-center gap-10">
-            {/* image */}
-            <div className="col-span-7">
-              <div className="relative h-[420px] w-full overflow-hidden rounded-[54px] bg-black/10 shadow-[0_25px_60px_rgba(0,0,0,0.18)]">
-                {SERVICES.map((s, i) => (
-                  <div
-                    key={s.title}
-                    ref={(el) => {
-                      if (el) imagesRef.current[i] = el; // ✅ no return
-                    }}
-                    className="absolute inset-0 will-change-transform"
-                    style={{ visibility: i === 0 ? "visible" : "hidden" }}
-                  >
-                    <Image src={s.img} alt={s.title} fill priority={i === 0} className="object-cover" sizes="55vw" />
-                    <div className="absolute inset-0 bg-gradient-to-tr from-black/25 via-black/0 to-black/10" />
-                  </div>
-                ))}
-              </div>
-            </div>
+          {/* ✅ CONTROL GAP BETWEEN HEADER AND CONTENT */}
+          <div className="hidden md:block h-[64px]" />
 
-            {/* content (NO line, NO dot) */}
-            <div className="relative col-span-5">
-              <div className="relative h-[260px] lg:h-[280px]">
-                {SERVICES.map((s, i) => (
-                  <div
-                    key={s.title}
-                    ref={(el) => {
-                      if (el) contentRef.current[i] = el; // ✅ no return
-                    }}
-                    className="absolute inset-0 will-change-transform"
-                    style={{ visibility: i === 0 ? "visible" : "hidden" }}
-                  >
-                    <h3 className="text-[18px] font-semibold tracking-wide text-[#2B2B2B]">
-                      {s.title.toUpperCase()}
-                    </h3>
-
-                    <p className="mt-2 max-w-[320px] text-[12px] leading-[1.8] text-[#A0A0A0]">
-                      {s.desc}
-                    </p>
-
-                    <Link
-                      href={s.link}
-                      className="mt-4 inline-flex items-center gap-2 text-[12px] font-medium text-[#1A8F3E] hover:opacity-80 transition"
+          {/* desktop content */}
+          <div className="hidden md:block">
+            <div className="grid w-full grid-cols-12 items-center gap-10">
+              {/* image */}
+              <div className="col-span-7">
+                <div className="relative h-[420px] w-full overflow-hidden rounded-[54px] bg-black/10 shadow-[0_25px_60px_rgba(0,0,0,0.18)]">
+                  {SERVICES.map((s, i) => (
+                    <div
+                      key={s.title}
+                      ref={(el) => {
+                        if (el) imagesRef.current[i] = el;
+                      }}
+                      className="absolute inset-0 will-change-transform"
+                      style={{ visibility: i === 0 ? "visible" : "hidden" }}
                     >
-                      {s.cta} <span aria-hidden className="text-[14px]">→</span>
-                    </Link>
-                  </div>
-                ))}
+                      <Image src={s.img} alt={s.title} fill priority={i === 0} className="object-cover" sizes="55vw" />
+                      <div className="absolute inset-0 bg-gradient-to-tr from-black/25 via-black/0 to-black/10" />
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* content */}
+              <div className="relative col-span-5">
+                <div className="relative h-[260px] lg:h-[280px]">
+                  {SERVICES.map((s, i) => (
+                    <div
+                      key={s.title}
+                      ref={(el) => {
+                        if (el) contentRef.current[i] = el;
+                      }}
+                      className="absolute inset-0 will-change-transform"
+                      style={{ visibility: i === 0 ? "visible" : "hidden" }}
+                    >
+                      <h3 className="text-[18px] font-semibold tracking-wide text-[#2B2B2B]">
+                        {s.title.toUpperCase()}
+                      </h3>
+
+                      <p className="mt-2 max-w-[320px] text-[12px] leading-[1.8] text-[#A0A0A0]">{s.desc}</p>
+
+                      <Link
+                        href={s.link}
+                        className="mt-4 inline-flex items-center gap-2 text-[12px] font-medium text-[#1A8F3E] hover:opacity-80 transition"
+                      >
+                        {s.cta} <span aria-hidden className="text-[14px]">→</span>
+                      </Link>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-        {/* mobile */}
-        <div className="md:hidden mt-10 space-y-10 pb-16">
-          {SERVICES.map((s) => (
-            <div key={s.title} className="grid gap-5">
-              <div className="relative h-[240px] w-full overflow-hidden rounded-[40px] bg-black/10">
-                <Image src={s.img} alt={s.title} fill className="object-cover" sizes="100vw" />
+          {/* mobile */}
+          <div className="md:hidden mt-10 space-y-10 pb-16">
+            {SERVICES.map((s) => (
+              <div key={s.title} className="grid gap-5">
+                <div className="relative h-[240px] w-full overflow-hidden rounded-[40px] bg-black/10">
+                  <Image src={s.img} alt={s.title} fill className="object-cover" sizes="100vw" />
+                </div>
+
+                <div>
+                  <h3 className="text-[18px] font-semibold tracking-wide text-[#2B2B2B]">
+                    {s.title.toUpperCase()}
+                  </h3>
+                  <p className="mt-2 text-[12px] leading-[1.8] text-[#A0A0A0]">{s.desc}</p>
+
+                  <Link
+                    href={s.link}
+                    className="mt-4 inline-flex items-center gap-2 text-[12px] font-medium text-[#1A8F3E] hover:opacity-80 transition"
+                  >
+                    {s.cta} <span aria-hidden className="text-[14px]">→</span>
+                  </Link>
+                </div>
               </div>
-
-              <div>
-                <h3 className="text-[18px] font-semibold tracking-wide text-[#2B2B2B]">
-                  {s.title.toUpperCase()}
-                </h3>
-                <p className="mt-2 text-[12px] leading-[1.8] text-[#A0A0A0]">{s.desc}</p>
-
-                <Link
-                  href={s.link}
-                  className="mt-4 inline-flex items-center gap-2 text-[12px] font-medium text-[#1A8F3E] hover:opacity-80 transition"
-                >
-                  {s.cta} <span aria-hidden className="text-[14px]">→</span>
-                </Link>
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
     </section>
