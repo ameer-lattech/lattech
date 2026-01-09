@@ -88,7 +88,13 @@ export default function LattechHeaderTailwind({ logoSrc = "/assets/images/Logo.p
         </div>
 
         {/* MAIN PILL HEADER */}
-        <div className="bg-white overflow-hidden rounded-bl-[40px] rounded-br-[40px] shadow-none">
+        <div
+          className={[
+            "bg-white overflow-hidden rounded-bl-[40px] rounded-br-[40px]",
+            // ✅ slight shadow (premium + subtle)
+            "shadow-[0_10px_30px_rgba(0,0,0,0.08)]",
+          ].join(" ")}
+        >
           <div className="mx-auto flex h-[104px] max-w-[1280px] items-center justify-between gap-[26px] px-[26px]">
             {/* LOGO */}
             <a href="/" aria-label="Lattech Home" className="inline-flex min-w-[300px] items-center">
@@ -170,8 +176,9 @@ export default function LattechHeaderTailwind({ logoSrc = "/assets/images/Logo.p
         </div>
       </header>
 
-      {/* ✅ SPACER: prevents hero overlap (44 + 104 = 148) */}
-      <div className="h-[148px]" />
+      {/* ✅ SPACER: reduce height + pull hero up so it goes behind header slightly */}
+      {/* Old: h-[148px] */}
+      <div className="h-[148px] -mb-[28px]" />
     </>
   );
 }
