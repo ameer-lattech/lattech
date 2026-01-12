@@ -10,11 +10,11 @@ declare global {
 }
 
 type Props = {
-  videoId?: string; // put your real id later
+  videoId?: string;
 };
 
 export default function TrustTransparencySection({
-  videoId = "dQw4w9WgXcQ", // dummy
+  videoId = "dQw4w9WgXcQ",
 }: Props) {
   const uid = useId().replace(/:/g, "");
   const mountId = `yt-player-${uid}`;
@@ -25,15 +25,12 @@ export default function TrustTransparencySection({
   const [isPlaying, setIsPlaying] = useState(false);
   const [isReady, setIsReady] = useState(false);
 
-  // Load YT iframe api once + create player
   useEffect(() => {
     let cancelled = false;
 
     const createPlayer = () => {
       if (cancelled) return;
       if (!window.YT || !window.YT.Player) return;
-
-      // Prevent double init
       if (playerRef.current) return;
 
       playerRef.current = new window.YT.Player(mountId, {
@@ -49,8 +46,7 @@ export default function TrustTransparencySection({
           iv_load_policy: 3,
           disablekb: 1,
           playsinline: 1,
-          origin:
-            typeof window !== "undefined" ? window.location.origin : undefined,
+          origin: typeof window !== "undefined" ? window.location.origin : undefined,
         },
         events: {
           onReady: () => {
@@ -58,7 +54,6 @@ export default function TrustTransparencySection({
             setIsReady(true);
           },
           onStateChange: (e: any) => {
-            // 1 = playing, 2 = paused, 0 = ended
             if (e.data === 1) setIsPlaying(true);
             if (e.data === 2 || e.data === 0) setIsPlaying(false);
           },
@@ -67,13 +62,11 @@ export default function TrustTransparencySection({
     };
 
     const loadScript = () => {
-      // If already loaded
       if (window.YT && window.YT.Player) {
         createPlayer();
         return;
       }
 
-      // If script tag already exists
       const existing = document.querySelector(
         'script[src="https://www.youtube.com/iframe_api"]'
       ) as HTMLScriptElement | null;
@@ -84,14 +77,12 @@ export default function TrustTransparencySection({
         document.body.appendChild(tag);
       }
 
-      // Hook ready
       const prev = window.onYouTubeIframeAPIReady;
       window.onYouTubeIframeAPIReady = () => {
         prev?.();
         createPlayer();
       };
 
-      // Fallback: poll (sometimes ready callback doesn't fire in fast navs)
       const t = window.setInterval(() => {
         if (window.YT && window.YT.Player) {
           window.clearInterval(t);
@@ -118,27 +109,25 @@ export default function TrustTransparencySection({
     if (!readyRef.current || !playerRef.current) return;
 
     const state = playerRef.current.getPlayerState?.();
-    // 1 playing -> pause, else play
-    if (state === 1) {
-      playerRef.current.pauseVideo();
-    } else {
-      playerRef.current.playVideo();
-    }
+    if (state === 1) playerRef.current.pauseVideo();
+    else playerRef.current.playVideo();
   };
 
   return (
     <section className="w-full bg-white">
-      <div className="mx-auto max-w-[1280px] px-[72px] py-[88px]">
-        <div className="grid grid-cols-12 items-center gap-x-[90px]">
+      {/* ✅ responsive padding */}
+      <div className="mx-auto max-w-[1280px] px-6 py-14 md:px-[72px] md:py-[88px]">
+        {/* ✅ stack on mobile, grid on desktop */}
+        <div className="grid grid-cols-12 items-center gap-y-10 md:gap-x-[90px] md:gap-y-0">
           {/* LEFT TEXT */}
           <div className="col-span-12 md:col-span-5">
-            <h2 className="text-[54px] font-normal leading-[1.05] text-[#1F1F1F]">
+            <h2 className="text-[38px] font-normal leading-[1.08] text-[#1F1F1F] md:text-[54px] md:leading-[1.05]">
               Building{" "}
               <span className="font-semibold text-[#43B02A]">Trust</span> with
               <span className="block">Transparency</span>
             </h2>
 
-            <p className="mt-[22px] max-w-[520px] text-[16px] leading-[1.95] text-[#6F6F6F]">
+            <p className="mt-5 max-w-[520px] text-[14px] leading-[1.9] text-[#6F6F6F] md:mt-[22px] md:text-[16px] md:leading-[1.95]">
               Outsourcing to another company, however reputable it is, always
               comes with a risk. The best we can do as a vendor to lower that
               risk is to be completely transparent about who we are, what we do,
@@ -147,35 +136,31 @@ export default function TrustTransparencySection({
             </p>
           </div>
 
-          {/* RIGHT SQUARE VIDEO */}
-          <div className="col-span-12 md:col-span-7 flex justify-end">
-            <div className="relative h-[440px] w-[440px] overflow-hidden rounded-[88px] bg-[#0B0B0B]">
+          {/* RIGHT VIDEO */}
+          <div className="col-span-12 md:col-span-7 flex justify-center md:justify-end">
+            {/* ✅ mobile: fluid square, desktop: fixed 440x440 */}
+            <div className="relative w-full max-w-[440px] aspect-square md:h-[440px] md:w-[440px] overflow-hidden rounded-[44px] md:rounded-[88px] bg-[#0B0B0B]">
               {/* Player mount */}
               <div className="absolute inset-0">
                 <div id={mountId} className="h-full w-full" />
               </div>
 
-              {/* Click overlay (always clickable) */}
+              {/* Click overlay */}
               <button
                 type="button"
                 aria-label={isPlaying ? "Pause video" : "Play video"}
                 onClick={togglePlay}
                 className="absolute inset-0 flex items-center justify-center"
               >
-                {/* Single centered YouTube icon */}
                 <div
                   className={[
                     "grid place-items-center rounded-[16px] transition-all duration-200",
-                    "h-[78px] w-[110px]",
-                    // show icon only when not playing OR while not ready
+                    "h-[68px] w-[100px] md:h-[78px] md:w-[110px]",
                     isPlaying ? "opacity-0 scale-95" : "opacity-100 scale-100",
                     !isReady ? "opacity-100" : "",
                   ].join(" ")}
-                  style={{
-                    background: "#E11D48", // pinkish-red like ref
-                  }}
+                  style={{ background: "#E11D48" }}
                 >
-                  {/* triangle */}
                   <div
                     className="ml-[6px]"
                     style={{
@@ -188,14 +173,10 @@ export default function TrustTransparencySection({
                   />
                 </div>
 
-                {/* Invisible layer to allow pause by clicking while playing */}
                 <span className="absolute inset-0" />
               </button>
 
-              {/* Optional: subtle dark wash like your ref (doesn't add shapes) */}
-              {!isPlaying && (
-                <div className="pointer-events-none absolute inset-0 bg-black/10" />
-              )}
+              {!isPlaying && <div className="pointer-events-none absolute inset-0 bg-black/10" />}
             </div>
           </div>
         </div>

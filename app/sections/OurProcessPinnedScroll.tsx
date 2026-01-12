@@ -322,7 +322,7 @@ export default function OurProcessPinnedScroll() {
 
                 return (
                   <div key={s.title} className="grid gap-6">
-                    <div className="relative w-full overflow-hidden bg-[#F2F2F2] aspect-[16/10]">
+                    <div className="relative w-full overflow-hidden aspect-[16/10]">
                       <Image src={s.img} alt={s.title} fill className="object-contain" sizes="100vw" />
                     </div>
 

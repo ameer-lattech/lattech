@@ -1,21 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, FreeMode } from "swiper/modules";
+import Techslider from "../components/Techslider";
 
-import "swiper/css";
-import "swiper/css/free-mode";
 
-const LOGOS = [
-  { label: "unity", url: "https://cdn.simpleicons.org/unity/b6b6b6" },
-  { label: "node", url: "https://cdn.simpleicons.org/nodedotjs/2f2f2f" },
-  { label: "Java", url: "https://cdn.simpleicons.org/java/f89820" },
-  { label: "React Native", url: "https://cdn.simpleicons.org/react/222222" },
-  { label: "python", url: "https://cdn.simpleicons.org/python/3776ab" },
-  { label: "React", url: "https://cdn.simpleicons.org/react/222222" },
-  { label: "Angular", url: "https://cdn.simpleicons.org/angular/dd0031" },
-];
 
 export default function Hero() {
   const onSchedule = () => {
@@ -29,8 +17,10 @@ export default function Hero() {
   };
 
   return (
-   
-    <section className="relative min-h-[88vh] w-full overflow-hidden bg-white font-sans">
+    <section
+      style={{ ["--header-h" as any]: "84px" }}
+      className="relative w-full overflow-hidden bg-white font-sans heroFixed"
+    >
       {/* BACKGROUND */}
       <div className="absolute inset-0">
         <div className="absolute inset-0 bg-[#fafafa]" />
@@ -53,7 +43,6 @@ export default function Hero() {
       </div>
 
       {/* CONTENT */}
-      {/* 🔽 ONLY min-h-screen → h-full */}
       <div className="relative z-10 mx-auto flex h-full max-w-[1320px] flex-col px-[18px] sm:px-[28px] md:px-[72px]">
         {/* top block */}
         <div className="pt-[54px] sm:pt-[62px] md:pt-[78px]">
@@ -96,62 +85,32 @@ export default function Hero() {
           </div>
         </div>
 
-        <div className="h-[30px] sm:h-[46px] md:h-[100px]" />
+        {/* spacer */}
+        <div className="h-[60px] sm:h-[22px] md:h-[60px]" />
 
+        {/* ✅ Slider called here */}
         <div className="pb-[34px] sm:pb-[44px] md:pb-[76px] flex w-full justify-center">
-          <div className="w-full max-w-[1220px]">
-            <Swiper
-              modules={[Autoplay, FreeMode]}
-              loop
-              freeMode={{ enabled: true, momentum: false }}
-              speed={3500}
-              slidesPerView="auto"
-              grabCursor
-              autoplay={{
-                delay: 0,
-                disableOnInteraction: false,
-                pauseOnMouseEnter: true,
-              }}
-              className="heroLogoSwiper"
-              breakpoints={{
-                0: { spaceBetween: 34 },
-                480: { spaceBetween: 40 },
-                768: { spaceBetween: 56 },
-                1024: { spaceBetween: 64 },
-              }}
-            >
-              {LOGOS.concat(LOGOS).concat(LOGOS).map((logo, i) => (
-                <SwiperSlide
-                  key={`${logo.label}-${i}`}
-                  style={{ width: "auto" }}
-                  className="flex items-center"
-                >
-                  <div className="flex items-center gap-[10px] md:gap-[12px] opacity-[0.62] transition hover:opacity-100">
-                    <img
-                      src={logo.url}
-                      alt={logo.label}
-                      className="h-[28px] sm:h-[30px] md:h-[34px] w-auto select-none"
-                      draggable={false}
-                      loading="lazy"
-                    />
-                    <span className="hidden md:inline text-[20px] font-medium text-[#6F6F6F]">
-                      {logo.label}
-                    </span>
-                  </div>
-                </SwiperSlide>
-              ))}
-            </Swiper>
-          </div>
+          <Techslider/>
         </div>
       </div>
 
       <style jsx global>{`
-        .heroLogoSwiper .swiper-wrapper {
-          align-items: center;
-          transition-timing-function: linear !important;
+        /* ✅ HERO HEIGHT FIX (ONLY) */
+        .heroFixed {
+          min-height: calc(620px - var(--header-h));
+          height: min(calc(88vh - var(--header-h)), 740px);
         }
-        .heroLogoSwiper .swiper-slide {
-          will-change: transform;
+
+        @supports (height: 100svh) {
+          .heroFixed {
+            height: min(calc(88svh - var(--header-h)), 740px);
+          }
+        }
+
+        @supports (height: 100dvh) {
+          .heroFixed {
+            height: min(calc(88dvh - var(--header-h)), 740px);
+          }
         }
       `}</style>
     </section>

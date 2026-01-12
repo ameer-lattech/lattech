@@ -88,19 +88,22 @@ export default function FaqSplitSection() {
   const leftItems = activeTab.items.slice(0, 3);
   const rightItems = activeTab.items.slice(3, 6);
 
+  // ✅ mobile: show all 6 in one column
+  const mobileItems = activeTab.items;
+
   return (
     <section className="w-full bg-white">
-      <div className="mx-auto w-full max-w-[1240px] px-10 pb-[86px] pt-[64px]">
+      <div className="mx-auto w-full max-w-[1240px] px-6 pb-[70px] pt-[54px] md:px-10 md:pb-[86px] md:pt-[64px]">
         {/* top row */}
-        <div className="flex items-start justify-between gap-8">
+        <div className="flex flex-col gap-6 md:flex-row md:items-start md:justify-between md:gap-8">
           {/* left title */}
-          <div className="min-w-[420px]">
+          <div className="min-w-0 md:min-w-[420px]">
             <div className="flex items-center gap-3">
               <span className="text-[12px] font-semibold uppercase tracking-[0.12em] text-[#35B24A]">FAQ</span>
               <span className="h-px w-[46px] bg-[#D9D9D9]" />
             </div>
 
-            <h2 className="mt-4 text-[44px] font-medium leading-[1.12] tracking-[-0.02em] text-[#5E5E5E]">
+            <h2 className="mt-4 text-[34px] md:text-[44px] font-medium leading-[1.12] tracking-[-0.02em] text-[#5E5E5E]">
               You will find our <span className="text-[#35B24A]">Client&apos;s</span>
               <br />
               frequent questions
@@ -108,50 +111,54 @@ export default function FaqSplitSection() {
           </div>
 
           {/* tabs */}
-          <div className="pt-[54px]">
-            <div className="flex items-center gap-[18px]">
-              {TABS.map((t) => {
-                const isActive = t.key === activeKey;
-                return (
-                  <button
-                    key={t.key}
-                    type="button"
-                    onClick={() => {
-                      setActiveKey(t.key);
-                      setOpenIndex(null);
-                    }}
-                    className={[
-                      "relative text-[12px] font-semibold",
-                      isActive ? "text-[#FF7A00]" : "text-[#A7A7A7] hover:text-[#7F7F7F]",
-                    ].join(" ")}
-                  >
-                    {t.label}
-                    <span
+          <div className="md:pt-[54px]">
+            {/* ✅ mobile horizontal scroll tabs */}
+            <div className="no-scrollbar -mx-2 overflow-x-auto px-2">
+              <div className="flex w-max items-center gap-[18px]">
+                {TABS.map((t) => {
+                  const isActive = t.key === activeKey;
+                  return (
+                    <button
+                      key={t.key}
+                      type="button"
+                      onClick={() => {
+                        setActiveKey(t.key);
+                        setOpenIndex(null);
+                      }}
                       className={[
-                        "absolute left-0 -bottom-[8px] h-[2px] w-full rounded-full transition",
-                        isActive ? "bg-[#FF7A00]" : "bg-transparent",
+                        "relative whitespace-nowrap text-[12px] font-semibold",
+                        isActive ? "text-[#FF7A00]" : "text-[#A7A7A7] hover:text-[#7F7F7F]",
                       ].join(" ")}
-                    />
-                  </button>
-                );
-              })}
+                    >
+                      {t.label}
+                      <span
+                        className={[
+                          "absolute left-0 -bottom-[8px] h-[2px] w-full rounded-full transition",
+                          isActive ? "bg-[#FF7A00]" : "bg-transparent",
+                        ].join(" ")}
+                      />
+                    </button>
+                  );
+                })}
+              </div>
             </div>
+
+            <div className="mx-auto mt-4 h-px w-full max-w-[760px] bg-[#e7e7e7] md:hidden" />
           </div>
         </div>
 
         {/* questions block */}
-        <div className="mt-[58px] grid grid-cols-1 gap-0 md:grid-cols-12">
-          {/* left column */}
-          <div className="md:col-span-6">
+        <div className="mt-10 md:mt-[58px]">
+          {/* ✅ MOBILE: single column (all 6) */}
+          <div className="md:hidden">
             <div className="divide-y divide-[#EFEFEF]">
-              {leftItems.map((item, idx) => {
-                const globalIndex = idx;
-                const open = openIndex === globalIndex;
+              {mobileItems.map((item, idx) => {
+                const open = openIndex === idx;
                 return (
-                  <div key={item.q} className="py-[18px] pr-10">
+                  <div key={item.q} className="py-[16px]">
                     <button
                       type="button"
-                      onClick={() => setOpenIndex(open ? null : globalIndex)}
+                      onClick={() => setOpenIndex(open ? null : idx)}
                       className="flex w-full items-center justify-between gap-6 text-left"
                     >
                       <span className="text-[13px] font-semibold text-[#6E6E6E]">{item.q}</span>
@@ -165,7 +172,7 @@ export default function FaqSplitSection() {
                       ].join(" ")}
                     >
                       <div className="overflow-hidden">
-                        <p className="max-w-[520px] text-[12px] leading-[1.8] text-[#8B8B8B]">{item.a}</p>
+                        <p className="text-[12px] leading-[1.8] text-[#8B8B8B]">{item.a}</p>
                       </div>
                     </div>
                   </div>
@@ -174,47 +181,83 @@ export default function FaqSplitSection() {
             </div>
           </div>
 
-          {/* divider */}
-          <div className="hidden md:col-span-1 md:flex md:items-stretch md:justify-center">
-            <div className="w-px bg-[#EAEAEA]" />
-          </div>
+          {/* ✅ DESKTOP: split columns (your original layout) */}
+          <div className="hidden md:grid md:grid-cols-12">
+            {/* left column */}
+            <div className="md:col-span-6">
+              <div className="divide-y divide-[#EFEFEF]">
+                {leftItems.map((item, idx) => {
+                  const globalIndex = idx;
+                  const open = openIndex === globalIndex;
+                  return (
+                    <div key={item.q} className="py-[18px] pr-10">
+                      <button
+                        type="button"
+                        onClick={() => setOpenIndex(open ? null : globalIndex)}
+                        className="flex w-full items-center justify-between gap-6 text-left"
+                      >
+                        <span className="text-[13px] font-semibold text-[#6E6E6E]">{item.q}</span>
+                        <PlusIcon open={open} />
+                      </button>
 
-          {/* right column */}
-          <div className="md:col-span-5 md:pl-10">
-            <div className="divide-y divide-[#EFEFEF]">
-              {rightItems.map((item, idx) => {
-                const globalIndex = idx + 3;
-                const open = openIndex === globalIndex;
-                return (
-                  <div key={item.q} className="py-[18px]">
-                    <button
-                      type="button"
-                      onClick={() => setOpenIndex(open ? null : globalIndex)}
-                      className="flex w-full items-center justify-between gap-6 text-left"
-                    >
-                      <span className="text-[13px] font-semibold text-[#6E6E6E]">{item.q}</span>
-                      <PlusIcon open={open} />
-                    </button>
-
-                    <div
-                      className={[
-                        "grid transition-all duration-300 ease-out",
-                        open ? "grid-rows-[1fr] opacity-100 mt-2" : "grid-rows-[0fr] opacity-0 mt-0",
-                      ].join(" ")}
-                    >
-                      <div className="overflow-hidden">
-                        <p className="max-w-[520px] text-[12px] leading-[1.8] text-[#8B8B8B]">{item.a}</p>
+                      <div
+                        className={[
+                          "grid transition-all duration-300 ease-out",
+                          open ? "grid-rows-[1fr] opacity-100 mt-2" : "grid-rows-[0fr] opacity-0 mt-0",
+                        ].join(" ")}
+                      >
+                        <div className="overflow-hidden">
+                          <p className="max-w-[520px] text-[12px] leading-[1.8] text-[#8B8B8B]">{item.a}</p>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* divider */}
+            <div className="md:col-span-1 md:flex md:items-stretch md:justify-center">
+              <div className="w-px bg-[#EAEAEA]" />
+            </div>
+
+            {/* right column */}
+            <div className="md:col-span-5 md:pl-10">
+              <div className="divide-y divide-[#EFEFEF]">
+                {rightItems.map((item, idx) => {
+                  const globalIndex = idx + 3;
+                  const open = openIndex === globalIndex;
+                  return (
+                    <div key={item.q} className="py-[18px]">
+                      <button
+                        type="button"
+                        onClick={() => setOpenIndex(open ? null : globalIndex)}
+                        className="flex w-full items-center justify-between gap-6 text-left"
+                      >
+                        <span className="text-[13px] font-semibold text-[#6E6E6E]">{item.q}</span>
+                        <PlusIcon open={open} />
+                      </button>
+
+                      <div
+                        className={[
+                          "grid transition-all duration-300 ease-out",
+                          open ? "grid-rows-[1fr] opacity-100 mt-2" : "grid-rows-[0fr] opacity-0 mt-0",
+                        ].join(" ")}
+                      >
+                        <div className="overflow-hidden">
+                          <p className="max-w-[520px] text-[12px] leading-[1.8] text-[#8B8B8B]">{item.a}</p>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           </div>
         </div>
 
         {/* bottom button */}
-        <div className="mt-[44px] flex justify-center">
+        <div className="mt-9 md:mt-[44px] flex justify-center">
           <button
             type="button"
             className="h-[44px] rounded-full border-2 border-[#FF7A00] px-[22px] text-[12px] font-semibold text-[#FF7A00] hover:bg-[#FF7A00] hover:text-white transition"
@@ -222,6 +265,17 @@ export default function FaqSplitSection() {
             Show all questions
           </button>
         </div>
+
+        {/* tiny helper style for hiding scrollbars on tabs */}
+        <style jsx global>{`
+          .no-scrollbar::-webkit-scrollbar {
+            display: none;
+          }
+          .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+          }
+        `}</style>
       </div>
     </section>
   );

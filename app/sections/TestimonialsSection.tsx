@@ -1,14 +1,19 @@
 "use client";
 
 import React, { useMemo, useState } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Pagination } from "swiper/modules";
+
+import "swiper/css";
+import "swiper/css/pagination";
 
 type Testimonial = {
   stars: 5 | 4;
   quote: string;
   name: string;
   company: string;
-  initials?: string; // for circle avatar
-  logoText?: string; // if you want simple logo placeholder
+  initials?: string;
+  logoText?: string;
 };
 
 function Stars({ count }: { count: number }) {
@@ -41,13 +46,44 @@ function Avatar({ initials }: { initials: string }) {
   );
 }
 
+function TestimonialCard({ t }: { t: Testimonial }) {
+  return (
+    <article className="flex h-full flex-col rounded-[36px] bg-[#FBFBFB] px-8 pb-7 pt-7">
+      <div className="text-[#F6B21A]">
+        <Stars count={t.stars} />
+      </div>
+
+      {/* ✅ clamp to keep card heights consistent without min-height */}
+      <p className="mt-4 text-[12.5px] leading-[1.9] text-[#7A7A7A] [display:-webkit-box] [-webkit-line-clamp:6] [-webkit-box-orient:vertical] overflow-hidden">
+        “{t.quote}”
+      </p>
+
+      {/* footer pinned down but no forced empty space */}
+      <div className="mt-7 flex items-center gap-3">
+        {t.initials ? (
+          <Avatar initials={t.initials} />
+        ) : (
+          <div className="grid h-[42px] w-[42px] place-items-center rounded-full bg-white">
+            <span className="text-[16px] font-semibold text-[#1E1E1E]">{t.logoText ?? "L"}</span>
+          </div>
+        )}
+
+        <div>
+          <div className="text-[12.5px] font-semibold text-[#2E2E2E]">{t.name}</div>
+          <div className="text-[11.5px] text-[#9A9A9A]">{t.company}</div>
+        </div>
+      </div>
+    </article>
+  );
+}
+
 export default function JourneyTestimonials() {
   const ALL: Testimonial[] = useMemo(
     () => [
       {
         stars: 5,
         quote:
-          "Working with the talented team at Lattech Solution was an absolute pleasure. Their commitment to excellence and innovative approach transformed our vision into a stunning reality. Our new website has garnered rave reviews, and we couldn't be happier with the results!",
+          "Working with the talented team at Lattech Solution was an absolute pleasure. Their commitment to excellence and innovative approach transformed our vision into a stunning reality.",
         name: "Jen Rae",
         company: "Grand Opera House",
         logoText: "G",
@@ -55,15 +91,15 @@ export default function JourneyTestimonials() {
       {
         stars: 5,
         quote:
-          "Lattech's expertise in design, technology, and SEO is unmatched. They delivered a cutting-edge website that exceeded our expectations. A dedicated and highly skilled team that we wholeheartedly endorse for any web development project.",
+          "Lattech's expertise in design, technology, and SEO is unmatched. They delivered a cutting-edge website that exceeded our expectations.",
         name: "Liane Goldring",
         company: "Mahlatini",
-        initials: "m",
+        initials: "M",
       },
       {
         stars: 5,
         quote:
-          "The team at Lattech Solution is exceptional to collaborate with. Their profound knowledge in the field is evident, and we are thrilled with our new website, which is tailored to our customers' needs. I eagerly anticipate continuing our partnership with VoltraTech as our digital innovation ally.",
+          "The team at Lattech Solution is exceptional to collaborate with. Their profound knowledge in the field is evident.",
         name: "Ann Graham",
         company: "W5",
         initials: "W5",
@@ -71,7 +107,7 @@ export default function JourneyTestimonials() {
       {
         stars: 5,
         quote:
-          "Lattech Solution has been a joy to partner with, both for our website and advertising campaigns. Their team demonstrated incredible responsiveness and genuine care throughout the project.",
+          "Lattech Solution has been a joy to partner with, both for our website and advertising campaigns.",
         name: "Sarah Malik",
         company: "Studio North",
         initials: "SN",
@@ -79,7 +115,7 @@ export default function JourneyTestimonials() {
       {
         stars: 5,
         quote:
-          "Our experience with Lattech Solution during the creation of our new website was outstanding. We felt secure knowing that their seasoned team was handling everything with precision.",
+          "Our experience with Lattech Solution during the creation of our new website was outstanding.",
         name: "Omar Khan",
         company: "Crescent Labs",
         initials: "CL",
@@ -87,32 +123,28 @@ export default function JourneyTestimonials() {
       {
         stars: 5,
         quote:
-          "We engaged Lattech Solution to develop two new websites: one to highlight our visitor experiences and facilities, and another for internal operations. Both delivered beautifully and on time.",
+          "We engaged Lattech Solution to develop two new websites and both delivered beautifully.",
         name: "Ayesha Noor",
         company: "City Experiences",
         initials: "CE",
       },
-      // extra items for "Show more"
       {
         stars: 5,
-        quote:
-          "Clean process, great communication, and strong UI/UX decisions. The end result feels premium and performs fast.",
+        quote: "Clean process, great communication, and strong UI/UX decisions.",
         name: "David Lee",
         company: "Nimble Co.",
         initials: "NC",
       },
       {
         stars: 5,
-        quote:
-          "They understood our goals quickly and shipped iteratively. The final website feels modern and scalable.",
+        quote: "They understood our goals quickly and shipped iteratively.",
         name: "Hina Farooq",
         company: "BrightWorks",
         initials: "BW",
       },
       {
         stars: 5,
-        quote:
-          "Top-tier execution. The team handled everything from design to deployment with confidence.",
+        quote: "Top-tier execution. The team handled everything with confidence.",
         name: "Usman Ali",
         company: "Vertex Studio",
         initials: "VS",
@@ -122,60 +154,65 @@ export default function JourneyTestimonials() {
   );
 
   const [showAll, setShowAll] = useState(false);
-  const visible = showAll ? ALL : ALL.slice(0, 6);
+  const desktopVisible = showAll ? ALL : ALL.slice(0, 6);
 
   return (
     <section className="w-full bg-white">
+      <style jsx global>{`
+        .journey-swiper .swiper-pagination-bullet {
+          width: 7px;
+          height: 7px;
+          background: #d8d8d8;
+          opacity: 1;
+        }
+        .journey-swiper .swiper-pagination-bullet-active {
+          width: 28px;
+          border-radius: 999px;
+          background: #43b02a;
+        }
+        .journey-swiper .swiper-slide {
+          width: 100% !important;
+        }
+      `}</style>
+
       <div className="mx-auto w-full max-w-[1200px] px-6 pb-16 pt-12 md:pb-20 md:pt-16">
-        {/* heading */}
         <div className="text-center">
           <h2 className="text-[44px] font-medium leading-tight tracking-[-0.02em] text-[#666666]">
             Our <span className="font-semibold text-[#43B02A]">Journey</span> of Building Success
           </h2>
           <p className="mx-auto mt-4 max-w-[900px] text-[14px] leading-[1.95] text-[#7A7A7A]">
-            We are a dynamic software development firm, blending innovative strategies with technical precision to deliver
-            intuitive, user-focused solutions that address complex challenges and boost business performance.
+            We are a dynamic software development firm, blending innovative strategies with technical precision.
           </p>
         </div>
 
-        {/* cards */}
-        <div className="mt-10 grid grid-cols-1 gap-x-10 gap-y-10 md:grid-cols-3">
-          {visible.map((t, idx) => (
-            <article
-              key={`${t.name}-${idx}`}
-              className="rounded-[36px] bg-[#FBFBFB] px-8 pb-7 pt-7 shadow-[0_10px_40px_rgba(0,0,0,0.04)]"
-            >
-              <div className="text-[#F6B21A]">
-                <Stars count={t.stars} />
-              </div>
-
-              <p className="mt-4 text-[12.5px] leading-[1.9] text-[#7A7A7A]">
-                “{t.quote}”
-              </p>
-
-              <div className="mt-7 flex items-center gap-3">
-                {/* left badge/logo */}
-                {t.initials ? (
-                  <Avatar initials={t.initials} />
-                ) : (
-                  <div className="grid h-[42px] w-[42px] place-items-center rounded-full bg-white shadow-[0_10px_25px_rgba(0,0,0,0.08)]">
-                    <span className="text-[16px] font-semibold text-[#1E1E1E]">
-                      {t.logoText ?? "L"}
-                    </span>
-                  </div>
-                )}
-
-                <div>
-                  <div className="text-[12.5px] font-semibold text-[#2E2E2E]">{t.name}</div>
-                  <div className="text-[11.5px] text-[#9A9A9A]">{t.company}</div>
+        {/* MOBILE */}
+        <div className="mt-10 md:hidden">
+          <Swiper
+            className="journey-swiper !pb-12"
+            modules={[Pagination]}
+            pagination={{ clickable: true }}
+            slidesPerView={1}
+            spaceBetween={0}
+          >
+            {ALL.map((t, idx) => (
+              <SwiperSlide key={`${t.name}-${idx}`}>
+                <div className="px-1">
+                  <TestimonialCard t={t} />
                 </div>
-              </div>
-            </article>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </div>
+
+        {/* DESKTOP */}
+        <div className="mt-10 hidden grid-cols-1 gap-x-10 gap-y-10 md:grid md:grid-cols-3">
+          {desktopVisible.map((t, idx) => (
+            <TestimonialCard key={`${t.name}-${idx}`} t={t} />
           ))}
         </div>
 
-        {/* button */}
-        <div className="mt-10 flex justify-center">
+        {/* DESKTOP button */}
+        <div className="mt-10 hidden justify-center md:flex">
           <button
             type="button"
             onClick={() => setShowAll((s) => !s)}

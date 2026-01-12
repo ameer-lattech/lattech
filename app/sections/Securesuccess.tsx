@@ -59,7 +59,7 @@ function LearnMore({ href = "#" }: { href?: string }) {
   return (
     <Link
       href={href}
-      className="mt-5 inline-flex items-center gap-2 text-[13px] font-semibold text-[#FF7A00] transition hover:opacity-80"
+      className="mt-4 sm:mt-5 inline-flex items-center gap-2 text-[13px] font-semibold text-[#FF7A00] transition hover:opacity-80"
     >
       Learn more
       <span className="inline-flex translate-y-[1px]">
@@ -86,10 +86,14 @@ function LearnMore({ href = "#" }: { href?: string }) {
 function Card({ item }: { item: Item }) {
   return (
     <div>
-      <h4 className="text-[16px] font-semibold text-[#545454]">{item.title}</h4>
-      <p className="mt-2 max-w-[360px] text-[13px] leading-[1.8] text-[#8C8C8C]">
+      <h4 className="text-[15px] sm:text-[16px] font-semibold text-[#545454]">
+        {item.title}
+      </h4>
+
+      <p className="mt-2 max-w-none sm:max-w-[360px] text-[13px] leading-[1.8] text-[#8C8C8C]">
         {item.desc}
       </p>
+
       <LearnMore href={item.href} />
     </div>
   );
@@ -98,15 +102,16 @@ function Card({ item }: { item: Item }) {
 export default function SecureSuccessSection() {
   return (
     <section className="w-full bg-white">
-      {/* original wrapper kept EXACT */}
-      <div className="mx-auto max-w-[1280px] px-8 py-[70px]">
-        {/* ✅ ONLY THIS LINE fixes the “fullwidth feel” without changing layout */}
+      {/* original wrapper kept EXACT (only responsive padding/spacing added) */}
+      <div className="mx-auto max-w-[1280px] px-5 sm:px-8 py-[54px] sm:py-[70px]">
+        {/* ✅ keep your "fullwidth feel" but responsive padding */}
         <div className="mx-auto w-full max-w-[1120px]">
-          <div className="grid grid-cols-12 gap-x-[90px]">
+          {/* ✅ responsive gaps: tight on mobile, original on lg */}
+          <div className="grid grid-cols-12 gap-y-10 lg:gap-y-0 gap-x-0 lg:gap-x-[90px]">
             {/* LEFT BLOCK */}
             <div className="col-span-12 lg:col-span-4">
               <div className="flex items-center gap-3">
-                <div className="grid h-[54px] w-[54px] place-items-center rounded-full bg-[#EAF6E7]">
+                <div className="grid h-[50px] w-[50px] sm:h-[54px] sm:w-[54px] place-items-center rounded-full bg-[#EAF6E7]">
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
                     <path
                       d="M13 2L3 14h7l-1 8 12-14h-7l-1-6z"
@@ -118,13 +123,16 @@ export default function SecureSuccessSection() {
                 </div>
               </div>
 
-              <h2 className="mt-5 text-[44px] font-semibold leading-[1.08] tracking-[-0.03em] text-[#4B4B4B]">
+              {/* ✅ scale heading for mobile, keep desktop exact */}
+              <h2 className="mt-5 text-[32px] sm:text-[38px] lg:text-[44px] font-semibold leading-[1.08] tracking-[-0.03em] text-[#4B4B4B]">
                 Secure the <span className="text-[#52C227]">Success</span> of
-                <br />
+                <br className="hidden sm:block" />
+                <span className="sm:hidden"> </span>
                 your IT initiative
               </h2>
 
-              <p className="mt-5 max-w-[340px] text-[14px] leading-[1.95] text-[#7F7F7F]">
+              {/* ✅ allow full width on mobile; keep max width on larger */}
+              <p className="mt-4 sm:mt-5 max-w-none lg:max-w-[340px] text-[14px] leading-[1.95] text-[#7F7F7F]">
                 Check the tried-and-true project management practices we rely on
                 to drive the project to its goals despite budget constraints and
                 changing requirements. Beyond practices, our strength lies in
@@ -135,15 +143,16 @@ export default function SecureSuccessSection() {
             </div>
 
             {/* RIGHT GRID */}
-            <div className="col-span-12 mt-10 lg:col-span-8 lg:mt-0">
-              <div className="grid grid-cols-1 gap-y-[52px] md:grid-cols-2 md:gap-x-[90px]">
-                <div className="space-y-[52px]">
+            <div className="col-span-12 lg:col-span-8 mt-0 lg:mt-0">
+              {/* ✅ responsive spacing + column switch */}
+              <div className="grid grid-cols-1 gap-y-[40px] sm:gap-y-[52px] md:grid-cols-2 md:gap-x-[48px] lg:gap-x-[90px]">
+                <div className="space-y-[40px] sm:space-y-[52px]">
                   {LEFT.map((item) => (
                     <Card key={item.title} item={item} />
                   ))}
                 </div>
 
-                <div className="space-y-[52px]">
+                <div className="space-y-[40px] sm:space-y-[52px]">
                   {RIGHT.map((item) => (
                     <Card key={item.title} item={item} />
                   ))}

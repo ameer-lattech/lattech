@@ -4,15 +4,15 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 
 type Fact = {
   value: number;
-  suffix?: string; // + etc
+  suffix?: string;
   label: string;
 };
 
+// ✅ Only 3 stats for BOTH desktop + mobile
 const FACTS: Fact[] = [
   { value: 36, label: "years of expertise" },
   { value: 750, suffix: "+", label: "IT professionals" },
   { value: 4200, suffix: "+", label: "success stories" },
-  { value: 30, suffix: "+", label: "industries covered" },
 ];
 
 function formatNumber(n: number) {
@@ -24,7 +24,6 @@ export default function KeyFactsCounter() {
   const [started, setStarted] = useState(false);
 
   const targets = useMemo(() => FACTS.map((f) => f.value), []);
-
   const [counts, setCounts] = useState<number[]>(() => targets.map(() => 0));
 
   // start when visible
@@ -50,12 +49,11 @@ export default function KeyFactsCounter() {
   useEffect(() => {
     if (!started) return;
 
-    const duration = 1100; // ms (close to ref feel)
+    const duration = 1100;
     const startTime = performance.now();
 
     const tick = (now: number) => {
       const t = Math.min(1, (now - startTime) / duration);
-      // easeOutCubic
       const eased = 1 - Math.pow(1 - t, 3);
 
       setCounts(targets.map((target) => Math.round(target * eased)));
@@ -70,9 +68,30 @@ export default function KeyFactsCounter() {
 
   return (
     <section className="w-full bg-white">
+      <style jsx global>{`
+        @media (max-width: 640px) {
+          .facts-pill {
+            border-radius: 44px !important;
+            padding-left: 22px !important;
+            padding-right: 22px !important;
+          }
+          .facts-title {
+            font-size: 36px !important;
+            line-height: 1.06 !important;
+          }
+          .facts-desc {
+            font-size: 14px !important;
+            line-height: 1.9 !important;
+          }
+          .fact-value {
+            font-size: 54px !important;
+          }
+        }
+      `}</style>
+
       <div className="mx-auto w-full max-w-[1200px] px-6 py-14 md:py-16">
-        {/* heading */}
-        <div className="text-center">
+        {/* ✅ Desktop heading (kept) */}
+        <div className="hidden md:block text-center">
           <h2 className="text-[44px] font-medium leading-tight tracking-[-0.02em] text-[#5C5C5C]">
             Key <span className="text-[#43B02A] font-semibold">Facts</span> about Lattech
           </h2>
@@ -83,13 +102,26 @@ export default function KeyFactsCounter() {
           </p>
         </div>
 
-        {/* pill */}
-        <div ref={wrapRef} className="mt-12 flex justify-center">
-          <div className="w-full max-w-[1060px] rounded-[70px] bg-[#FFF3EE] px-8 py-12 md:px-14 md:py-14">
-            <div className="grid grid-cols-2 gap-y-12 md:grid-cols-4 md:gap-y-0">
+        {/* Pill */}
+        <div ref={wrapRef} className="mt-0 md:mt-12 flex justify-center">
+          <div className="facts-pill w-full max-w-[1280px] rounded-[70px] bg-[#FFF3EE] px-7 py-10 md:px-14 md:py-14">
+            {/* ✅ Mobile heading inside pill (like screenshot) */}
+            <div className="md:hidden text-center">
+              <h2 className="facts-title text-[38px] font-medium leading-tight tracking-[-0.02em] text-[#5C5C5C]">
+                Our Industry <br /> Expertise
+              </h2>
+
+              <p className="facts-desc mx-auto mt-4 max-w-[320px] text-[14px] leading-[1.95] text-[#777777]">
+                We are a dynamic software development firm, blending innovative strategies with technical precision to deliver
+                intuitive, user-focused solutions that address complex challenges and boost business performance.
+              </p>
+            </div>
+
+            {/* ✅ Same 3 stats on BOTH desktop & mobile */}
+            <div className="mt-10 grid grid-cols-1 gap-y-12 text-center md:mt-0 md:grid-cols-3 md:gap-y-0">
               {FACTS.map((f, i) => (
-                <div key={f.label} className="text-center">
-                  <div className="text-[56px] font-semibold leading-none text-[#FF6A00]">
+                <div key={f.label}>
+                  <div className="fact-value text-[56px] font-semibold leading-none text-[#FF6A00]">
                     {formatNumber(counts[i] ?? 0)}
                     {f.suffix ?? ""}
                   </div>

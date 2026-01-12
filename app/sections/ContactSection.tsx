@@ -52,12 +52,18 @@ export default function ContactUsSection() {
 
   return (
     <section className="w-full bg-white">
-      {/* ✅ EXACT 1280 layout system */}
-      <div className="mx-auto max-w-[1280px] px-8 py-[58px]">
-        <div className="grid grid-cols-12 items-start lg:items-center gap-y-10 gap-x-0 lg:gap-x-[70px]">
+      {/* ✅ Desktop same. Mobile padding improved */}
+      <div className="mx-auto max-w-[1280px] px-6 py-[52px] sm:px-8 sm:py-[58px]">
+        <div className="grid grid-cols-12 items-start lg:items-center gap-y-10 lg:gap-x-[70px]">
           {/* LEFT IMAGE */}
           <div className="col-span-12 lg:col-span-6">
-            <div className="relative w-full overflow-hidden rounded-[92px] bg-[#f3f3f3] h-[420px] md:h-[520px] lg:h-[640px]">
+            <div
+              className="
+                relative w-full overflow-hidden bg-[#f3f3f3]
+                h-[340px] sm:h-[420px] md:h-[520px] lg:h-[640px]
+                rounded-[34px] sm:rounded-[60px] lg:rounded-[92px]
+              "
+            >
               <Image
                 src="https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&w=1800&q=80"
                 alt="Contact"
@@ -75,20 +81,19 @@ export default function ContactUsSection() {
 
           {/* RIGHT FORM */}
           <div className="col-span-12 lg:col-span-6">
-            {/* ✅ keep your original “slightly down” feel but controlled */}
             <div className="lg:pt-3">
-              <h2 className="text-[#5D5D5D] font-semibold tracking-[-0.02em] text-[36px] leading-[1.18]">
+              <h2 className="text-[#5D5D5D] font-semibold tracking-[-0.02em] text-[30px] leading-[1.18] sm:text-[34px] md:text-[36px]">
                 Get in touch with us. We&apos;re
                 <br />
                 here to assist you.
               </h2>
 
-              <p className="mt-4 text-[16px] text-[#8A8A8A]">
+              <p className="mt-3 sm:mt-4 text-[14px] sm:text-[16px] text-[#8A8A8A]">
                 Our friendly team would love to hear from you.
               </p>
 
-              <form onSubmit={onSubmit} className="mt-[34px]">
-                <div className="grid grid-cols-12 gap-x-[26px] gap-y-[18px]">
+              <form onSubmit={onSubmit} className="mt-7 sm:mt-[34px]">
+                <div className="grid grid-cols-12 gap-x-[18px] sm:gap-x-[26px] gap-y-[16px] sm:gap-y-[18px]">
                   {/* Your name */}
                   <div className="col-span-12 md:col-span-6">
                     <label className="mb-[8px] block text-[12px] font-semibold text-[#5F5F5F]">
@@ -201,21 +206,21 @@ export default function ContactUsSection() {
                       value={form.message}
                       onChange={onChange("message")}
                       placeholder="Leave us a message..."
-                      className="h-[150px] w-full resize-none rounded-[10px] border border-[#E6E6E6] bg-white px-[14px] py-[12px] text-[14px] text-[#666] outline-none transition focus:border-[#DCDCDC] focus:shadow-[0_0_0_3px_rgba(83,194,39,0.12)]"
+                      className="h-[140px] sm:h-[150px] w-full resize-none rounded-[10px] border border-[#E6E6E6] bg-white px-[14px] py-[12px] text-[14px] text-[#666] outline-none transition focus:border-[#DCDCDC] focus:shadow-[0_0_0_3px_rgba(83,194,39,0.12)]"
                     />
                   </div>
                 </div>
 
                 {/* privacy */}
-                <div className="mt-[18px] flex items-center gap-3">
+                <div className="mt-[18px] flex items-start gap-3">
                   <input
                     id="agree"
                     type="checkbox"
                     checked={form.agree}
                     onChange={onChange("agree")}
-                    className="h-[16px] w-[16px] rounded border border-[#D9D9D9] accent-[#56C227]"
+                    className="mt-[2px] h-[16px] w-[16px] rounded border border-[#D9D9D9] accent-[#56C227]"
                   />
-                  <label htmlFor="agree" className="text-[13px] text-[#8B8B8B]">
+                  <label htmlFor="agree" className="text-[13px] leading-[1.5] text-[#8B8B8B]">
                     You agree to our friendly{" "}
                     <Link
                       href="/privacy"

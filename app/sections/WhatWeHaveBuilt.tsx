@@ -1,7 +1,14 @@
 "use client";
 
-import React, { useEffect, useMemo, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import React, { useEffect, useMemo, useState, useRef } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Pagination, EffectCoverflow, Autoplay } from "swiper/modules";
+import type { Swiper as SwiperType } from "swiper";
+
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import "swiper/css/effect-coverflow";
 
 type Category = "Healthcare" | "Finance" | "Real Estate" | "Engineering" | "E-commerce";
 type Story = {
@@ -94,181 +101,163 @@ function ExternalBadge() {
   );
 }
 
-/** ✅ Independent: PREV card */
-function PrevCard({ story, onPrev }: { story: Story; onPrev: () => void }) {
-  return (
-    <motion.div
-      key={`prev-${story.id}`}
-      initial={{ opacity: 0, x: -100 }}
-      animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 0, x: -100 }}
-      transition={{ duration: 0.4, ease: [0.32, 0.72, 0, 1] }}
-      className="absolute left-[-170px] top-[85px] z-0 h-[330px] w-[320px] overflow-hidden rounded-[44px] bg-gray-100 shadow-[0_26px_70px_rgba(0,0,0,0.12)]"
-    >
-      <img src={story.image} className="h-full w-full object-cover" draggable={false} alt="" />
-      <div className="absolute inset-0 bg-white/75" />
-
-      <button
-        onClick={onPrev}
-        aria-label="Previous"
-        className="absolute left-[18px] top-1/2 z-10 flex h-[54px] w-[54px] -translate-y-1/2 items-center justify-center rounded-full bg-[#FF7A00] shadow-[0_18px_40px_rgba(255,122,0,0.35)] transition hover:scale-105"
-      >
-        <ArrowLeft white />
-      </button>
-    </motion.div>
-  );
-}
-
-/** ✅ Independent: NEXT card */
-function NextCard({ story, onNext }: { story: Story; onNext: () => void }) {
-  return (
-    <motion.div
-      key={`next-${story.id}`}
-      initial={{ opacity: 0, x: 100 }}
-      animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 0, x: 100 }}
-      transition={{ duration: 0.4, ease: [0.32, 0.72, 0, 1] }}
-      className="absolute right-[-170px] top-[110px] z-[5] h-[280px] w-[290px] overflow-hidden rounded-[44px] bg-gray-100 shadow-[0_26px_70px_rgba(0,0,0,0.12)]"
-    >
-      <img src={story.image} className="h-full w-full object-cover" draggable={false} alt="" />
-      <div className="absolute inset-0 bg-white/55" />
-
-      <button
-        onClick={onNext}
-        aria-label="Next"
-        className="absolute right-[18px] top-1/2 z-10 flex h-[54px] w-[54px] -translate-y-1/2 items-center justify-center rounded-full bg-[#FF7A00] shadow-[0_18px_40px_rgba(255,122,0,0.35)] transition hover:scale-105"
-      >
-        <ArrowRight white />
-      </button>
-
-      <div className="absolute bottom-[22px] left-[22px] right-[78px]">
-        <p className="truncate text-[34px] font-light text-white drop-shadow-[0_14px_30px_rgba(0,0,0,0.40)]">
-          {story.title}
-        </p>
-      </div>
-    </motion.div>
-  );
-}
-
-/** ✅ Independent: ACTIVE card (only this one drags) */
-function ActiveCard({
-  story,
-  direction,
-  hasNext,
-  onNext,
-  onSwipePrev,
-  onSwipeNext,
-}: {
-  story: Story;
-  direction: number;
-  hasNext: boolean;
-  onNext: () => void;
-  onSwipePrev: () => void;
-  onSwipeNext: () => void;
-}) {
-  const slideVariants = {
-    enter: (d: number) => ({
-      x: d > 0 ? 1000 : -1000,
-      opacity: 0,
-    }),
-    center: { x: 0, opacity: 1 },
-    exit: (d: number) => ({
-      x: d > 0 ? -1000 : 1000,
-      opacity: 0,
-    }),
-  };
-
-  return (
-    <div className="relative z-10 h-[430px] w-full overflow-hidden">
-      <AnimatePresence initial={false} custom={direction} mode="wait">
-        <motion.div
-          key={story.id}
-          custom={direction}
-          variants={slideVariants}
-          initial="enter"
-          animate="center"
-          exit="exit"
-          transition={{
-            x: { type: "spring", stiffness: 300, damping: 30 },
-            opacity: { duration: 0.2 },
-          }}
-          drag="x"
-          dragConstraints={{ left: 0, right: 0 }}
-          dragElastic={0.2}
-          onDragEnd={(e, { offset, velocity }) => {
-            const swipe = Math.abs(offset.x) * velocity.x;
-
-            if (swipe < -10000) onSwipeNext();
-            else if (swipe > 10000) onSwipePrev();
-          }}
-          className="absolute inset-0 cursor-grab rounded-[54px] shadow-[0_40px_110px_rgba(0,0,0,0.14)] active:cursor-grabbing"
-        >
-          <div className="relative h-full w-full overflow-hidden rounded-[54px] bg-[#f3f5f7]">
-            <img src={story.image} alt={story.title} className="h-full w-full object-cover" draggable={false} />
-
-            <div className="absolute bottom-[26px] left-[28px] z-10">
-              <p className="text-[64px] font-light leading-none tracking-[-0.02em] text-white drop-shadow-[0_16px_36px_rgba(0,0,0,0.48)]">
-                {story.title}
-              </p>
-            </div>
-
-            {hasNext && (
-              <button
-                onClick={onNext}
-                aria-label="Next"
-                className="absolute right-[22px] top-[22px] z-20 flex h-[54px] w-[54px] items-center justify-center rounded-full border border-[#FF7A00]/55 bg-white/65 text-[#FF7A00] shadow-[0_18px_40px_rgba(0,0,0,0.10)] backdrop-blur transition hover:bg-white"
-              >
-                <ArrowRight />
-              </button>
-            )}
-          </div>
-        </motion.div>
-      </AnimatePresence>
-    </div>
-  );
-}
-
 export default function WhatWeHaveBuilt() {
   const [activeCategory, setActiveCategory] = useState<Category>("Healthcare");
-  const [idx, setIdx] = useState(0);
-  const [direction, setDirection] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const swiperRef = useRef<SwiperType | null>(null);
 
   const stories = useMemo(() => ALL_STORIES.filter((s) => s.category === activeCategory), [activeCategory]);
 
   useEffect(() => {
-    setIdx(0);
-    setDirection(0);
+    if (swiperRef.current) swiperRef.current.slideTo(0);
+    setActiveIndex(0);
   }, [activeCategory]);
 
-  // ✅ If category has fewer items than current idx, clamp back to 0
-  useEffect(() => {
-    if (idx > stories.length - 1) setIdx(0);
-  }, [stories.length, idx]);
-
-  const active = stories[idx] ?? null;
-  const prev = active && idx > 0 ? stories[idx - 1] : null;
-  const next = active && idx < stories.length - 1 ? stories[idx + 1] : null;
-
-  const goNext = () => {
-    if (!next) return;
-    setDirection(1);
-    setIdx((v) => v + 1);
-  };
-
-  const goPrev = () => {
-    if (!prev) return;
-    setDirection(-1);
-    setIdx((v) => v - 1);
-  };
-
-  const jumpTo = (i: number) => {
-    if (i === idx) return;
-    setDirection(i > idx ? 1 : -1);
-    setIdx(i);
-  };
+  const active = stories[activeIndex] ?? null;
 
   return (
     <section className="w-full bg-white py-16 md:py-20">
+      <style jsx global>{`
+        .custom-swiper-button-prev,
+        .custom-swiper-button-next {
+          position: absolute;
+          top: 50%;
+          transform: translateY(-50%);
+          z-index: 10;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 54px;
+          height: 54px;
+          border-radius: 50%;
+          background: #ff7a00;
+          box-shadow: 0 18px 40px rgba(255, 122, 0, 0.35);
+          transition: transform 0.2s;
+          user-select: none;
+        }
+
+        /* ACTIVE SLIDE BIG + MORE SQUARE (DESKTOP) */
+        .swiper-slide-active > div {
+          transform: scale(1.2);
+          border-radius: 32px !important;
+          transition: transform 0.35s ease, border-radius 0.35s ease;
+          z-index: 20;
+        }
+
+        .swiper-slide-prev > div,
+        .swiper-slide-next > div {
+          transform: scale(0.95);
+        }
+
+        .custom-swiper-button-prev:hover,
+        .custom-swiper-button-next:hover {
+          transform: translateY(-50%) scale(1.05);
+        }
+
+        .custom-swiper-button-prev.swiper-button-disabled,
+        .custom-swiper-button-next.swiper-button-disabled {
+          opacity: 0.35;
+          cursor: not-allowed;
+        }
+
+        .swiper-slide img {
+          opacity: 0.35;
+          transition: opacity 0.35s ease;
+        }
+
+        .swiper-slide-prev img,
+        .swiper-slide-next img {
+          opacity: 0.6;
+        }
+
+        .swiper-slide-active img {
+          opacity: 1;
+        }
+
+        .custom-swiper-button-prev {
+          left: -80px;
+        }
+
+        .custom-swiper-button-next {
+          right: -80px;
+        }
+
+        .swiper-pagination-bullet {
+          width: 7px;
+          height: 7px;
+          background: #dddddd;
+          opacity: 1;
+          transition: all 0.3s;
+        }
+
+        .swiper-pagination-bullet-active {
+          width: 34px;
+          border-radius: 4px;
+          background: #ff7a00;
+        }
+
+        @media (max-width: 1024px) {
+          .custom-swiper-button-prev {
+            left: 10px;
+          }
+          .custom-swiper-button-next {
+            right: 10px;
+          }
+        }
+
+        /* ✅ MOBILE POLISH */
+        @media (max-width: 640px) {
+          /* arrows smaller + inside */
+          .custom-swiper-button-prev,
+          .custom-swiper-button-next {
+            width: 42px;
+            height: 42px;
+            box-shadow: 0 12px 28px rgba(255, 122, 0, 0.28);
+          }
+
+          .custom-swiper-button-prev {
+            left: 10px;
+          }
+          .custom-swiper-button-next {
+            right: 10px;
+          }
+
+          /* reduce scaling so it doesn't crop on phone */
+          .swiper-slide-active > div {
+            transform: scale(1.03) !important;
+            border-radius: 26px !important;
+          }
+          .swiper-slide-prev > div,
+          .swiper-slide-next > div {
+            transform: scale(0.97) !important;
+          }
+
+          /* make slide width responsive even if inline style exists */
+          .swiper-slide {
+            width: 86vw !important;
+          }
+
+          /* slightly shorter card on phone */
+          .mobile-card {
+            height: 320px !important;
+            border-radius: 26px !important;
+          }
+
+          /* title sizing inside card */
+          .mobile-title {
+            font-size: 34px !important;
+            line-height: 1.05 !important;
+          }
+
+          /* pagination spacing */
+          .swiper {
+            padding: 8px 0 !important;
+          }
+        }
+      `}</style>
+
       <div className="mx-auto max-w-[1280px] px-6">
         {/* Header */}
         <div className="text-center">
@@ -290,10 +279,9 @@ export default function WhatWeHaveBuilt() {
         </div>
 
         {/* Carousel */}
-        <div className="relative mt-14 overflow-visible">
-          <div className="relative mx-auto h-[500px] w-full max-w-[860px]">
-            {/* ✅ EMPTY STATE (prevents crash) */}
-            {!active ? (
+        <div className="relative mt-14">
+          <div className="relative mx-auto w-full max-w-[1100px]">
+            {stories.length === 0 ? (
               <div className="flex h-[430px] w-full items-center justify-center rounded-[54px] bg-[#f3f5f7] shadow-[0_40px_110px_rgba(0,0,0,0.08)]">
                 <div className="text-center">
                   <p className="text-[22px] font-semibold text-[#6b6b6b]">No stories yet</p>
@@ -301,43 +289,66 @@ export default function WhatWeHaveBuilt() {
                 </div>
               </div>
             ) : (
-              <>
-                {/* Independent PREV */}
-                <AnimatePresence>{prev && <PrevCard story={prev} onPrev={goPrev} />}</AnimatePresence>
-
-                {/* Independent NEXT */}
-                <AnimatePresence>{next && <NextCard story={next} onNext={goNext} />}</AnimatePresence>
-
-                {/* Independent ACTIVE */}
-                <ActiveCard
-                  story={active}
-                  direction={direction}
-                  hasNext={!!next}
-                  onNext={goNext}
-                  onSwipePrev={() => {
-                    if (prev) goPrev();
+              <div className="relative">
+                <Swiper
+                  onSwiper={(swiper) => {
+                    swiperRef.current = swiper;
                   }}
-                  onSwipeNext={() => {
-                    if (next) goNext();
+                  modules={[Navigation, Pagination, EffectCoverflow, Autoplay]}
+                  autoplay={{
+                    delay: 3500,
+                    disableOnInteraction: false,
+                    pauseOnMouseEnter: true,
                   }}
-                />
+                  effect="coverflow"
+                  grabCursor={true}
+                  centeredSlides={true}
+                  slidesPerView="auto"
+                  coverflowEffect={{
+                    rotate: 0,
+                    stretch: 0,
+                    depth: 150,
+                    modifier: 1.5,
+                    slideShadows: false,
+                  }}
+                  navigation={{
+                    prevEl: ".custom-swiper-button-prev",
+                    nextEl: ".custom-swiper-button-next",
+                  }}
+                  pagination={{
+                    clickable: true,
+                    el: ".custom-pagination",
+                  }}
+                  onSlideChange={(swiper) => setActiveIndex(swiper.activeIndex)}
+                  className="!pb-16"
+                  style={{ overflow: "visible", padding: "20px 0" }}
+                >
+                  {stories.map((story) => (
+                    <SwiperSlide key={story.id} style={{ width: "700px", maxWidth: "90vw" }}>
+                      <div className="mobile-card relative h-[430px] w-full overflow-hidden rounded-[54px] bg-[#f3f5f7] shadow-[0_40px_110px_rgba(0,0,0,0.14)]">
+                        <img src={story.image} alt={story.title} className="h-full w-full object-cover" draggable={false} />
 
-                {/* Dots */}
-                <div className="mt-7 flex justify-center gap-[10px]">
-                  {stories.map((_, i) => (
-                    <button
-                      key={i}
-                      onClick={() => jumpTo(i)}
-                      className={
-                        i === idx
-                          ? "h-[7px] w-[34px] rounded-full bg-[#FF7A00] transition-all"
-                          : "h-[7px] w-[7px] rounded-full bg-[#DDDDDD] transition-all hover:bg-[#BBBBBB]"
-                      }
-                      aria-label={`Slide ${i + 1}`}
-                    />
+                        <div className="absolute bottom-[26px] left-[28px] right-[18px] z-10">
+                          <p className="mobile-title text-[48px] md:text-[64px] font-light leading-none tracking-[-0.02em] text-white drop-shadow-[0_16px_36px_rgba(0,0,0,0.48)]">
+                            {story.title}
+                          </p>
+                        </div>
+                      </div>
+                    </SwiperSlide>
                   ))}
+                </Swiper>
+
+                {/* Custom Navigation Buttons */}
+                <div className="custom-swiper-button-prev">
+                  <ArrowLeft white />
                 </div>
-              </>
+                <div className="custom-swiper-button-next">
+                  <ArrowRight white />
+                </div>
+
+                {/* Custom Pagination */}
+                <div className="custom-pagination mt-7 flex justify-center gap-[10px]" />
+              </div>
             )}
           </div>
         </div>
@@ -351,7 +362,7 @@ export default function WhatWeHaveBuilt() {
               className={
                 c === activeCategory
                   ? "h-[34px] rounded-full bg-[#FF7A00] px-6 text-[11px] font-semibold text-white shadow-[0_14px_26px_rgba(255,122,0,0.22)] transition"
-                  : "h-[34px] rounded-full bg-[#F3F4F6] px-6 text-[11px] font-semibold text-[#8a8a8a] transition hover:bg-[#ECEEF1]"
+                  : "h-[34px] rounded-full bg-[#F3F4F6] px-6 text-[11px] font-semibold text-[#8a8a8a] transition hover:bg-[#ECEEF1)]"
               }
             >
               {c}
@@ -364,7 +375,7 @@ export default function WhatWeHaveBuilt() {
           {active ? (
             <>
               <div className="inline-flex items-center gap-3">
-                <h3 className="text-[42px] font-light tracking-[-0.01em] text-[#6b6b6b]">{active.title}</h3>
+                <h3 className="text-[32px] sm:text-[42px] font-light tracking-[-0.01em] text-[#6b6b6b]">{active.title}</h3>
                 <ExternalBadge />
               </div>
               <p className="mx-auto mt-4 max-w-[760px] text-[13px] leading-[2.0] text-[#9a9a9a]">{active.description}</p>
@@ -372,7 +383,7 @@ export default function WhatWeHaveBuilt() {
           ) : (
             <>
               <div className="inline-flex items-center gap-3">
-                <h3 className="text-[42px] font-light tracking-[-0.01em] text-[#6b6b6b]">—</h3>
+                <h3 className="text-[32px] sm:text-[42px] font-light tracking-[-0.01em] text-[#6b6b6b]">—</h3>
                 <ExternalBadge />
               </div>
               <p className="mx-auto mt-4 max-w-[760px] text-[13px] leading-[2.0] text-[#9a9a9a]">

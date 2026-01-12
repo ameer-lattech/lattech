@@ -15,13 +15,16 @@ export default function ContactInfoStrip() {
         }}
       />
 
-      <div className="relative mx-auto w-full max-w-[1240px] px-10">
-        <div className="grid min-h-[290px] grid-cols-12 items-start pt-[44px]">
+      <div className="relative mx-auto w-full max-w-[1240px] px-6 md:px-10">
+        {/* ✅ mobile: stacked, desktop: original grid */}
+        <div className="grid grid-cols-12 items-start pt-10 pb-12 md:min-h-[290px] md:pt-[44px] md:pb-0">
           {/* left big copy */}
-          <div className="col-span-6">
-            <div className="text-[16px] font-medium text-[#707070]">Contact Info</div>
+          <div className="col-span-12 md:col-span-6">
+            <div className="text-[14px] md:text-[16px] font-medium text-[#707070]">
+              Contact Info
+            </div>
 
-            <h2 className="mt-6 max-w-[520px] text-[54px] font-medium leading-[1.08] tracking-[-0.02em] text-[#6A6A6A]">
+            <h2 className="mt-4 md:mt-6 max-w-[520px] text-[34px] sm:text-[40px] md:text-[54px] font-medium leading-[1.08] tracking-[-0.02em] text-[#6A6A6A]">
               We are always happy
               <br />
               to assist you
@@ -29,15 +32,21 @@ export default function ContactInfoStrip() {
           </div>
 
           {/* right columns */}
-          <div className="col-span-6 grid grid-cols-2 gap-x-16 pl-6 pt-[22px]">
+          <div className="col-span-12 mt-10 grid grid-cols-1 gap-y-10 md:col-span-6 md:mt-0 md:grid-cols-2 md:gap-x-16 md:pl-6 md:pt-[22px]">
             {/* Email */}
             <div>
-              <div className="text-[20px] font-semibold text-[#6E6E6E]">Email Address</div>
+              <div className="text-[18px] md:text-[20px] font-semibold text-[#6E6E6E]">
+                Email Address
+              </div>
               <div className="mt-2 h-[2px] w-[22px] bg-[#CFCFCF]" />
 
-              <div className="mt-8 text-[16px] font-semibold text-[#6E6E6E]">help@info.com</div>
+              <div className="mt-6 md:mt-8 text-[15px] md:text-[16px] font-semibold text-[#6E6E6E]">
+                help@info.com
+              </div>
 
-              <div className="mt-6 text-[12px] text-[#8E8E8E]">Assistance hours:</div>
+              <div className="mt-5 md:mt-6 text-[12px] text-[#8E8E8E]">
+                Assistance hours:
+              </div>
               <div className="mt-1 text-[12px] text-[#8E8E8E]">
                 Monday - Friday 6 am to 8 pm EST
               </div>
@@ -45,12 +54,18 @@ export default function ContactInfoStrip() {
 
             {/* Number */}
             <div>
-              <div className="text-[20px] font-semibold text-[#6E6E6E]">Number</div>
+              <div className="text-[18px] md:text-[20px] font-semibold text-[#6E6E6E]">
+                Number
+              </div>
               <div className="mt-2 h-[2px] w-[22px] bg-[#CFCFCF]" />
 
-              <div className="mt-8 text-[16px] font-semibold text-[#6E6E6E]">(808) 998-34256</div>
+              <div className="mt-6 md:mt-8 text-[15px] md:text-[16px] font-semibold text-[#6E6E6E]">
+                (808) 998-34256
+              </div>
 
-              <div className="mt-6 text-[12px] text-[#8E8E8E]">Assistance hours:</div>
+              <div className="mt-5 md:mt-6 text-[12px] text-[#8E8E8E]">
+                Assistance hours:
+              </div>
               <div className="mt-1 text-[12px] text-[#8E8E8E]">
                 Monday - Friday 6 am to 8 pm EST
               </div>
@@ -58,16 +73,6 @@ export default function ContactInfoStrip() {
           </div>
         </div>
       </div>
-
-      {/* responsive tightening */}
-      <style jsx>{`
-        @media (max-width: 900px) {
-          .grid.min-h-[260px] {
-            min-height: auto;
-            padding-bottom: 40px;
-          }
-        }
-      `}</style>
     </section>
   );
 }
