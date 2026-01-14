@@ -26,15 +26,16 @@ export default function Hero() {
         <div className="absolute inset-0 bg-[#fafafa]" />
 
         <Image
-          src="/assets/hero.png"
+          src="/assets/base.png"
+          // src="/assets/hero.png"
           alt=""
           fill
           priority
           className="object-cover"
-          style={{ objectPosition: "top right" }}
+          style={{ objectPosition: "center right" }}
         />
 
-        <div className="absolute inset-0 bg-white/70 md:bg-white/65" />
+        {/* <div className="absolute inset-0 bg-white/70 md:bg-white/65" /> */}
 
         <div className="absolute inset-0">
           <div className="absolute -left-[18%] top-[-25%] h-[170%] w-[95%] rotate-[-18deg] bg-[linear-gradient(90deg,rgba(255,255,255,0.98)_0%,rgba(255,255,255,0.96)_45%,rgba(255,255,255,0.65)_62%,rgba(255,255,255,0.0)_78%)]" />
@@ -45,7 +46,7 @@ export default function Hero() {
       {/* CONTENT */}
       <div className="relative z-10 mx-auto flex h-full max-w-[1320px] flex-col px-[18px] sm:px-[28px] md:px-[72px]">
         {/* top block */}
-        <div className="pt-[54px] sm:pt-[62px] md:pt-[78px]">
+        <div className="pt-[54px] sm:pt-[62px] md:pt-[100px]">
           <div className="mx-auto max-w-[820px] md:mx-0">
             <div className="flex justify-center md:block">
               <span className="inline-flex items-center rounded-full border border-[#E7E7E7] bg-white px-[16px] py-[7px] text-[13px] font-medium text-[#7A7A7A] shadow-[0_1px_0_rgba(0,0,0,0.05)]">
@@ -85,19 +86,21 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* spacer */}
-        <div className="h-[60px] sm:h-[22px] md:h-[60px]" />
+{/* spacer */}
+<div className="shrink-0 h-[60px] sm:h-[22px] md:h-[92px] lg:h-[60px]" />
+
 
         {/* ✅ Slider called here */}
-        <div className="pb-[34px] sm:pb-[44px] md:pb-[76px] flex w-full justify-center">
-          <Techslider/>
-        </div>
+     <div className="shrink-0 pb-[34px] sm:pb-[44px] md:pb-[76px] flex w-full justify-center">
+  <Techslider />
+</div>
+
       </div>
 
       <style jsx global>{`
         /* ✅ HERO HEIGHT FIX (ONLY) */
         .heroFixed {
-          min-height: calc(620px - var(--header-h));
+          min-height: calc(700px - var(--header-h));
           height: min(calc(88vh - var(--header-h)), 740px);
         }
 
@@ -109,7 +112,7 @@ export default function Hero() {
 
         @supports (height: 100dvh) {
           .heroFixed {
-            height: min(calc(88dvh - var(--header-h)), 740px);
+            height: min(calc(88dvh - var(--header-h)), 700px);
           }
         }
       `}</style>

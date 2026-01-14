@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
 type TabKey =
@@ -161,12 +161,109 @@ export default function WhatsNewAtLattech() {
   const [activeTab, setActiveTab] = useState<TabKey>("Artificial intelligence");
   const [page, setPage] = useState(0);
 
+  // NEW: direction for swipe animation (+1 next, -1 prev)
+  const [dir, setDir] = useState<1 | -1>(1);
+
+  // NEW: autoplay controls
+  const AUTOPLAY_MS = 5000;
+  const RESUME_AFTER_INTERACTION_MS = 3500;
+
   const pages = useMemo(() => SLIDES.filter((s) => s.tab === activeTab), [activeTab]);
   const current = pages[page] ?? pages[0];
+
+  // NEW: pause on hover + short pause after any interaction
+  const [hovered, setHovered] = useState(false);
+  const [userPaused, setUserPaused] = useState(false);
+  const resumeTimer = useRef<number | null>(null);
+
+  const pauseBriefly = () => {
+    setUserPaused(true);
+    if (resumeTimer.current) window.clearTimeout(resumeTimer.current);
+    resumeTimer.current = window.setTimeout(() => setUserPaused(false), RESUME_AFTER_INTERACTION_MS);
+  };
+
+  useEffect(() => {
+    return () => {
+      if (resumeTimer.current) window.clearTimeout(resumeTimer.current);
+    };
+  }, []);
+
+  const goTo = (nextIndex: number) => {
+    const len = pages.length || 1;
+    const normalized = ((nextIndex % len) + len) % len;
+    setPage(normalized);
+  };
+
+  const next = () => {
+    setDir(1);
+    goTo(page + 1);
+  };
+
+  const prev = () => {
+    setDir(-1);
+    goTo(page - 1);
+  };
 
   const onTab = (t: TabKey) => {
     setActiveTab(t);
     setPage(0);
+    setDir(1);
+    pauseBriefly();
+  };
+
+  // NEW: autoplay effect
+  useEffect(() => {
+    if (pages.length <= 1) return;
+    if (hovered) return;
+    if (userPaused) return;
+
+    const id = window.setInterval(() => {
+      // set direction and advance
+      setDir(1);
+      setPage((p) => (p + 1) % pages.length);
+    }, AUTOPLAY_MS);
+
+    return () => window.clearInterval(id);
+  }, [pages.length, hovered, userPaused, AUTOPLAY_MS]);
+
+  // NEW: swipe handlers
+  const touchStartX = useRef<number | null>(null);
+  const touchDeltaX = useRef(0);
+
+  const onTouchStart = (e: React.TouchEvent) => {
+    if (!e.touches?.[0]) return;
+    touchStartX.current = e.touches[0].clientX;
+    touchDeltaX.current = 0;
+    pauseBriefly();
+  };
+
+  const onTouchMove = (e: React.TouchEvent) => {
+    if (touchStartX.current == null) return;
+    touchDeltaX.current = e.touches[0].clientX - touchStartX.current;
+  };
+
+  const onTouchEnd = () => {
+    const dx = touchDeltaX.current;
+    touchStartX.current = null;
+    touchDeltaX.current = 0;
+
+    // threshold tuned for "phone card"
+    const THRESH = 45;
+    if (dx <= -THRESH) next(); // swipe left -> next
+    else if (dx >= THRESH) prev(); // swipe right -> prev
+  };
+
+  // NEW: animation variants (slide in/out with direction)
+  const bgVariants = {
+    enter: (d: number) => ({ opacity: 0, x: d > 0 ? 18 : -18, scale: 1.06 }),
+    center: { opacity: 1, x: 0, scale: 1.02 },
+    exit: (d: number) => ({ opacity: 0, x: d > 0 ? -18 : 18, scale: 1.02 }),
+  };
+
+  const contentVariants = {
+    enter: (d: number) => ({ opacity: 0, x: d > 0 ? 14 : -14, y: 10, filter: "blur(8px)" }),
+    center: { opacity: 1, x: 0, y: 0, filter: "blur(0px)" },
+    exit: (d: number) => ({ opacity: 0, x: d > 0 ? -14 : 14, y: -10, filter: "blur(8px)" }),
   };
 
   return (
@@ -224,27 +321,35 @@ export default function WhatsNewAtLattech() {
         <div className="mt-10">
           {/* mobile phone frame sizing */}
           <div className="mx-auto w-full max-w-[420px] md:max-w-none">
-            <div className="relative overflow-hidden rounded-[52px] bg-[#f6f8fb] shadow-[0_16px_55px_rgba(0,0,0,0.07)] md:rounded-[52px]">
+            <div
+              className="relative overflow-hidden rounded-[52px] bg-[#f6f8fb] shadow-[0_16px_55px_rgba(0,0,0,0.07)] md:rounded-[52px]"
+              // NEW: pause autoplay when hovering desktop
+              onMouseEnter={() => setHovered(true)}
+              onMouseLeave={() => setHovered(false)}
+              // NEW: swipe on phone area
+              onTouchStart={onTouchStart}
+              onTouchMove={onTouchMove}
+              onTouchEnd={onTouchEnd}
+            >
               {/* Taller on mobile like screenshot */}
               <div className="relative min-h-[560px] md:min-h-[440px]">
                 {/* FULL BACKGROUND IMAGE */}
-                <AnimatePresence mode="wait">
+                <AnimatePresence mode="wait" custom={dir}>
                   <motion.div
                     key={`${activeTab}-${page}-bg`}
                     className="absolute inset-0"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                    custom={dir}
+                    variants={bgVariants}
+                    initial="enter"
+                    animate="center"
+                    exit="exit"
+                    transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
                   >
                     <motion.img
                       src={current.image}
                       alt={current.imageAlt}
                       className="h-full w-full object-cover"
                       draggable={false}
-                      initial={{ scale: 1.06, x: 10 }}
-                      animate={{ scale: 1.02, x: 0 }}
-                      transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1] }}
                     />
                   </motion.div>
                 </AnimatePresence>
@@ -265,12 +370,14 @@ export default function WhatsNewAtLattech() {
                 {/* CONTENT */}
                 <div className="relative z-10 flex min-h-[560px] items-start md:min-h-[440px] md:items-center">
                   <div className="w-full px-8 pt-12 md:w-[58%] md:px-14 md:pt-0">
-                    <AnimatePresence mode="wait">
+                    <AnimatePresence mode="wait" custom={dir}>
                       <motion.div
                         key={`${activeTab}-${page}-content`}
-                        initial={{ opacity: 0, y: 10, filter: "blur(8px)" as any }}
-                        animate={{ opacity: 1, y: 0, filter: "blur(0px)" as any }}
-                        exit={{ opacity: 0, y: -10, filter: "blur(8px)" as any }}
+                        custom={dir}
+                        variants={contentVariants}
+                        initial="enter"
+                        animate="center"
+                        exit="exit"
                         transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1] }}
                       >
                         <h3 className="max-w-[520px] text-[34px] font-light leading-[1.12] text-[#6b6b6b] md:text-[34px]">
@@ -285,11 +392,17 @@ export default function WhatsNewAtLattech() {
 
                         {/* Buttons (mobile stacked full-width like screenshot) */}
                         <div className="mt-10 flex flex-col items-center gap-4 md:mt-8 md:flex-row md:items-center md:gap-4">
-                          <button className="w-full max-w-[320px] rounded-full bg-[#ff7a1a] px-6 py-[12px] text-[14px] font-semibold text-white shadow-[0_8px_20px_rgba(255,122,26,0.18)] transition hover:bg-[#f26f10] active:brightness-95 md:w-auto md:max-w-none md:text-[13px]">
+                          <button
+                            onClick={() => pauseBriefly()}
+                            className="w-full max-w-[320px] rounded-full bg-[#ff7a1a] px-6 py-[12px] text-[14px] font-semibold text-white shadow-[0_8px_20px_rgba(255,122,26,0.18)] transition hover:bg-[#f26f10] active:brightness-95 md:w-auto md:max-w-none md:text-[13px]"
+                          >
                             {current.cta1}
                           </button>
 
-                          <button className="w-full max-w-[320px] rounded-full bg-[#55B948] px-6 py-[12px] text-[14px] font-semibold text-white shadow-[0_8px_20px_rgba(85,185,72,0.18)] transition hover:brightness-95 active:brightness-90 md:w-auto md:max-w-none md:border md:border-[#55B948] md:bg-transparent md:text-[#55B948] md:shadow-none md:hover:bg-[#55B948]/10 md:text-[13px]">
+                          <button
+                            onClick={() => pauseBriefly()}
+                            className="w-full max-w-[320px] rounded-full bg-[#55B948] px-6 py-[12px] text-[14px] font-semibold text-white shadow-[0_8px_20px_rgba(85,185,72,0.18)] transition hover:brightness-95 active:brightness-90 md:w-auto md:max-w-none md:border md:border-[#55B948] md:bg-transparent md:text-[#55B948] md:shadow-none md:hover:bg-[#55B948]/10 md:text-[13px]"
+                          >
                             {current.cta2}
                           </button>
                         </div>
@@ -306,7 +419,11 @@ export default function WhatsNewAtLattech() {
                       <button
                         key={i}
                         aria-label={`Go to page ${i + 1}`}
-                        onClick={() => setPage(i)}
+                        onClick={() => {
+                          setDir(i > page ? 1 : -1);
+                          setPage(i);
+                          pauseBriefly();
+                        }}
                         className={`h-[8px] w-[8px] rounded-full transition ${
                           active ? "bg-[#ff7a1a]" : "bg-[#cfcfcf]"
                         }`}

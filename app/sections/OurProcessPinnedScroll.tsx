@@ -5,11 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import gsap from "gsap";
 
-type Step = {
-  title: string;
-  desc: string;
-  img: string;
-};
+type Step = { title: string; desc: string; img: string };
 
 const STEPS: Step[] = [
   {
@@ -44,10 +40,22 @@ const STEPS: Step[] = [
   },
 ];
 
+// border radius map
+const R = 500;
+const STEP_RADII: string[] = [
+  `${R}px ${R}px 0px 0px`, // 1: TL TR
+  `0px ${R}px 0px 0px`, // 2: TR
+  `0px ${R}px ${R}px 0px`, // 3: TR BR
+  `0px 0px ${R}px 0px`, // 4: BR
+  `0px 0px ${R}px ${R}px`, // 5: BR BL
+  `${R}px 0px 0px 0px`, // 6: TL
+];
+
 export default function OurProcessPinnedScroll() {
   const rootRef = useRef<HTMLDivElement | null>(null);
   const pinWrapRef = useRef<HTMLDivElement | null>(null);
 
+  const maskRef = useRef<HTMLDivElement | null>(null); // ✅ ONE MASK
   const imagesRef = useRef<HTMLDivElement[]>([]);
   const contentRef = useRef<HTMLDivElement[]>([]);
 
@@ -61,13 +69,11 @@ export default function OurProcessPinnedScroll() {
     const init = async () => {
       const ScrollTrigger = (await import("gsap/ScrollTrigger")).default;
       gsap.registerPlugin(ScrollTrigger);
-
       if (!isMounted) return;
 
       ctx = gsap.context(() => {
         mm = gsap.matchMedia();
 
-        // ✅ Desktop: pin + swap
         mm.add("(min-width: 768px)", () => {
           const total = STEPS.length;
           let activeIndex = 0;
@@ -77,6 +83,11 @@ export default function OurProcessPinnedScroll() {
             el.style.pointerEvents = isActive ? "auto" : "none";
           };
 
+          // ✅ init mask radius ONCE
+          if (maskRef.current) {
+            gsap.set(maskRef.current, { borderRadius: STEP_RADII[0] || "0px" });
+          }
+
           imagesRef.current.forEach((el, i) => {
             setLayer(el, i === 0);
             gsap.set(el, { autoAlpha: i === 0 ? 1 : 0, y: 0, scale: 1 });
@@ -84,7 +95,7 @@ export default function OurProcessPinnedScroll() {
 
           contentRef.current.forEach((el, i) => {
             setLayer(el, i === 0);
-            gsap.set(el, { autoAlpha: i === 0 ? 1 : 0, y: 0 });
+            gsap.set(el, { autoAlpha: i === 0 ? 1 : 0, y: 0, filter: "blur(0px)" });
           });
 
           const showIndex = (nextIndex: number, direction: number) => {
@@ -97,10 +108,11 @@ export default function OurProcessPinnedScroll() {
             const nextImg = imagesRef.current[nextIndex];
             const prevContent = contentRef.current[prev];
             const nextContent = contentRef.current[nextIndex];
+            const mask = maskRef.current;
 
-            if (!prevImg || !nextImg || !prevContent || !nextContent) return;
+            if (!prevImg || !nextImg || !prevContent || !nextContent || !mask) return;
 
-            gsap.killTweensOf([prevImg, nextImg, prevContent, nextContent]);
+            gsap.killTweensOf([prevImg, nextImg, prevContent, nextContent, mask]);
 
             setLayer(nextImg, true);
             setLayer(nextContent, true);
@@ -108,6 +120,15 @@ export default function OurProcessPinnedScroll() {
             const outY = direction >= 0 ? -18 : 18;
             const inY = direction >= 0 ? 18 : -18;
 
+            // ✅ REAL morph: animate the SAME mask element
+            gsap.to(mask, {
+              borderRadius: STEP_RADII[nextIndex] || "0px",
+              duration: 0.35,
+              ease: "power3.out",
+              overwrite: "auto",
+            });
+
+            // images swap (keep)
             gsap.to(prevImg, {
               autoAlpha: 0,
               y: outY,
@@ -134,25 +155,28 @@ export default function OurProcessPinnedScroll() {
               }
             );
 
+            // ✅ content blur
             gsap.to(prevContent, {
               autoAlpha: 0,
               y: outY,
+              filter: "blur(6px)",
               duration: 0.2,
               ease: "power2.out",
               overwrite: "auto",
               onComplete: () => {
                 setLayer(prevContent, false);
-                gsap.set(prevContent, { y: 0 });
+                gsap.set(prevContent, { y: 0, filter: "blur(0px)" });
               },
             });
 
             gsap.fromTo(
               nextContent,
-              { autoAlpha: 0, y: inY },
+              { autoAlpha: 0, y: inY, filter: "blur(8px)" },
               {
                 autoAlpha: 1,
                 y: 0,
-                duration: 0.26,
+                filter: "blur(0px)",
+                duration: 0.28,
                 ease: "power2.out",
                 overwrite: "auto",
               }
@@ -175,15 +199,14 @@ export default function OurProcessPinnedScroll() {
           return () => st.kill();
         });
 
-        // ✅ Mobile: no pin, stacked
         mm.add("(max-width: 767px)", () => {
+          // mobile: leave stacked as is
           imagesRef.current.forEach((el) => {
             if (!el) return;
             el.style.visibility = "visible";
             el.style.pointerEvents = "auto";
             gsap.set(el, { clearProps: "all" });
           });
-
           contentRef.current.forEach((el) => {
             if (!el) return;
             el.style.visibility = "visible";
@@ -205,12 +228,10 @@ export default function OurProcessPinnedScroll() {
 
   return (
     <section ref={rootRef} className="w-full bg-white">
-      {/* ✅ Entire block vertically centered on desktop */}
       <div
         ref={pinWrapRef}
         className="relative mx-auto w-full max-w-[1280px] px-8 md:h-screen md:flex md:items-center"
       >
-        {/* ✅ This wrapper makes header + content center as one unit */}
         <div className="w-full md:flex md:flex-col md:justify-center">
           {/* Header */}
           <div>
@@ -219,7 +240,7 @@ export default function OurProcessPinnedScroll() {
                 Our <span className="font-semibold text-[#39B54A]">Process</span>
               </h2>
 
-              <Link
+              {/* <Link
                 href="/process"
                 className="inline-flex items-center gap-2 rounded-full border border-[#ECECEC] bg-white px-5 py-[9px] text-[11px] font-medium text-[#FF7A00] shadow-[0_10px_22px_rgba(0,0,0,0.06)] transition hover:opacity-90"
               >
@@ -227,37 +248,44 @@ export default function OurProcessPinnedScroll() {
                 <span className="ml-1 inline-block text-[14px]" aria-hidden>
                   ↗
                 </span>
-              </Link>
+              </Link> */}
             </div>
 
             <div className="mt-7 h-px w-full bg-[#E9EEF5]" />
           </div>
 
-          {/* ✅ CONTROL THIS GAP ONLY (this is the space you marked) */}
           <div className="hidden md:block h-[64px]" />
 
-          {/* Desktop pinned area (no extra height calculations) */}
+          {/* Desktop pinned area */}
           <div className="hidden md:block">
             <div className="grid w-full grid-cols-12 items-center">
               {/* LEFT IMAGE */}
               <div className="col-span-6">
-                <div className="relative w-full max-w-[560px] bg-[transparent] aspect-[14/9]">
+                {/* ✅ ONE MASK (this morphs radius) */}
+                <div
+                  ref={maskRef}
+                  className="relative w-[528px] h-[482px] overflow-hidden will-change-[border-radius,transform]"
+                  style={{ borderRadius: STEP_RADII[0] }}
+                >
                   {STEPS.map((s, i) => (
                     <div
                       key={s.title}
                       ref={(el) => {
                         if (el) imagesRef.current[i] = el;
                       }}
-                      className="absolute inset-0 overflow-hidden rounded-[0px] will-change-transform"
+                      className="absolute inset-0 will-change-transform"
                       style={{ visibility: i === 0 ? "visible" : "hidden" }}
                     >
+                      {/* ✅ Fix cutting:
+                          Option A (recommended): object-cover (fills nicely)
+                          If you MUST keep contain, switch to object-contain and add padding like p-6 */}
                       <Image
                         src={s.img}
                         alt={s.title}
                         fill
                         priority={i === 0}
-                        className="object-contain"
-                        sizes="(min-width: 768px) 560px, 100vw"
+                        className="object-cover"
+                        sizes="528px"
                       />
                     </div>
                   ))}
@@ -322,8 +350,8 @@ export default function OurProcessPinnedScroll() {
 
                 return (
                   <div key={s.title} className="grid gap-6">
-                    <div className="relative w-full overflow-hidden aspect-[16/10]">
-                      <Image src={s.img} alt={s.title} fill className="object-contain" sizes="100vw" />
+                    <div className="relative w-full overflow-hidden aspect-[16/10]" style={{ borderRadius: STEP_RADII[i] }}>
+                      <Image src={s.img} alt={s.title} fill className="object-cover" sizes="100vw" />
                     </div>
 
                     <div>
@@ -335,9 +363,7 @@ export default function OurProcessPinnedScroll() {
 
                       <div className="mt-5 h-px w-full bg-[#E9EEF5]" />
 
-                      <h3 className="mt-7 text-[18px] font-semibold tracking-wide text-[#4A4A4A]">
-                        {s.title}
-                      </h3>
+                      <h3 className="mt-7 text-[18px] font-semibold tracking-wide text-[#4A4A4A]">{s.title}</h3>
                       <p className="mt-3 text-[12px] leading-[1.95] text-[#9AA3B2]">{s.desc}</p>
                     </div>
                   </div>

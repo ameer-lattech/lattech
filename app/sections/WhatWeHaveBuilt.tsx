@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useMemo, useState, useRef } from "react";
+import React, { useEffect, useMemo, useState, useRef, useCallback } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, EffectCoverflow, Autoplay } from "swiper/modules";
 import type { Swiper as SwiperType } from "swiper";
@@ -107,167 +107,73 @@ export default function WhatWeHaveBuilt() {
 
   const swiperRef = useRef<SwiperType | null>(null);
 
+  // section visibility
+  const sectionRef = useRef<HTMLElement | null>(null);
+  const [isInView, setIsInView] = useState(false);
+
   const stories = useMemo(() => ALL_STORIES.filter((s) => s.category === activeCategory), [activeCategory]);
+  const active = stories[activeIndex] ?? null;
 
   useEffect(() => {
     if (swiperRef.current) swiperRef.current.slideTo(0);
     setActiveIndex(0);
   }, [activeCategory]);
 
-  const active = stories[activeIndex] ?? null;
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+
+    const obs = new IntersectionObserver(
+      ([entry]) => setIsInView(entry.isIntersecting),
+      { threshold: 0.35 }
+    );
+
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+
+  const startAutoplay = useCallback(() => {
+    const s = swiperRef.current;
+    if (!s) return;
+    // @ts-ignore
+    s.autoplay?.start?.();
+  }, []);
+
+  const stopAutoplay = useCallback(() => {
+    const s = swiperRef.current;
+    if (!s) return;
+    // @ts-ignore
+    s.autoplay?.stop?.();
+  }, []);
+
+  useEffect(() => {
+    const s = swiperRef.current;
+    if (!s) return;
+
+    if (isInView) {
+      // always start from first slide when you reach section
+      s.slideTo(0);
+      setActiveIndex(0);
+      startAutoplay();
+    } else {
+      stopAutoplay();
+    }
+  }, [isInView, startAutoplay, stopAutoplay]);
 
   return (
-    <section className="w-full bg-white py-16 md:py-20">
-      <style jsx global>{`
-        .custom-swiper-button-prev,
-        .custom-swiper-button-next {
-          position: absolute;
-          top: 50%;
-          transform: translateY(-50%);
-          z-index: 10;
-          cursor: pointer;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          width: 54px;
-          height: 54px;
-          border-radius: 50%;
-          background: #ff7a00;
-          box-shadow: 0 18px 40px rgba(255, 122, 0, 0.35);
-          transition: transform 0.2s;
-          user-select: none;
-        }
-
-        /* ACTIVE SLIDE BIG + MORE SQUARE (DESKTOP) */
-        .swiper-slide-active > div {
-          transform: scale(1.2);
-          border-radius: 32px !important;
-          transition: transform 0.35s ease, border-radius 0.35s ease;
-          z-index: 20;
-        }
-
-        .swiper-slide-prev > div,
-        .swiper-slide-next > div {
-          transform: scale(0.95);
-        }
-
-        .custom-swiper-button-prev:hover,
-        .custom-swiper-button-next:hover {
-          transform: translateY(-50%) scale(1.05);
-        }
-
-        .custom-swiper-button-prev.swiper-button-disabled,
-        .custom-swiper-button-next.swiper-button-disabled {
-          opacity: 0.35;
-          cursor: not-allowed;
-        }
-
-        .swiper-slide img {
-          opacity: 0.35;
-          transition: opacity 0.35s ease;
-        }
-
-        .swiper-slide-prev img,
-        .swiper-slide-next img {
-          opacity: 0.6;
-        }
-
-        .swiper-slide-active img {
-          opacity: 1;
-        }
-
-        .custom-swiper-button-prev {
-          left: -80px;
-        }
-
-        .custom-swiper-button-next {
-          right: -80px;
-        }
-
-        .swiper-pagination-bullet {
-          width: 7px;
-          height: 7px;
-          background: #dddddd;
-          opacity: 1;
-          transition: all 0.3s;
-        }
-
-        .swiper-pagination-bullet-active {
-          width: 34px;
-          border-radius: 4px;
-          background: #ff7a00;
-        }
-
-        @media (max-width: 1024px) {
-          .custom-swiper-button-prev {
-            left: 10px;
-          }
-          .custom-swiper-button-next {
-            right: 10px;
-          }
-        }
-
-        /* ✅ MOBILE POLISH */
-        @media (max-width: 640px) {
-          /* arrows smaller + inside */
-          .custom-swiper-button-prev,
-          .custom-swiper-button-next {
-            width: 42px;
-            height: 42px;
-            box-shadow: 0 12px 28px rgba(255, 122, 0, 0.28);
-          }
-
-          .custom-swiper-button-prev {
-            left: 10px;
-          }
-          .custom-swiper-button-next {
-            right: 10px;
-          }
-
-          /* reduce scaling so it doesn't crop on phone */
-          .swiper-slide-active > div {
-            transform: scale(1.03) !important;
-            border-radius: 26px !important;
-          }
-          .swiper-slide-prev > div,
-          .swiper-slide-next > div {
-            transform: scale(0.97) !important;
-          }
-
-          /* make slide width responsive even if inline style exists */
-          .swiper-slide {
-            width: 86vw !important;
-          }
-
-          /* slightly shorter card on phone */
-          .mobile-card {
-            height: 320px !important;
-            border-radius: 26px !important;
-          }
-
-          /* title sizing inside card */
-          .mobile-title {
-            font-size: 34px !important;
-            line-height: 1.05 !important;
-          }
-
-          /* pagination spacing */
-          .swiper {
-            padding: 8px 0 !important;
-          }
-        }
-      `}</style>
-
+    <section ref={sectionRef} className="w-full bg-white py-16 md:py-20">
       <div className="mx-auto max-w-[1280px] px-6">
         {/* Header */}
         <div className="text-center">
           <h2 className="text-[44px] font-light tracking-tight text-[#6b6b6b] md:text-[54px]">
             What we have <span className="font-semibold text-[#55B948]">Built</span>
           </h2>
+
           <p className="mx-auto mt-3 max-w-[760px] text-[13px] leading-relaxed text-[#8a8a8a]">
             With a wealth of experience across diverse sectors, we deliver tailored insights and solutions that drive tangible
             results for our valued partners.
           </p>
+
           <div className="mt-6 flex justify-center">
             <button className="group inline-flex h-[36px] items-center gap-2 rounded-full border border-[#55B948] bg-white px-5 text-[11px] font-semibold text-[#55B948] transition hover:bg-[#55B948]/5">
               View all success stories
@@ -282,7 +188,7 @@ export default function WhatWeHaveBuilt() {
         <div className="relative mt-14">
           <div className="relative mx-auto w-full max-w-[1100px]">
             {stories.length === 0 ? (
-              <div className="flex h-[430px] w-full items-center justify-center rounded-[54px] bg-[#f3f5f7] shadow-[0_40px_110px_rgba(0,0,0,0.08)]">
+              <div className="flex h-[430px] w-full items-center justify-center rounded-[54px] bg-[#f3f5f7]">
                 <div className="text-center">
                   <p className="text-[22px] font-semibold text-[#6b6b6b]">No stories yet</p>
                   <p className="mt-2 text-[13px] text-[#9a9a9a]">Add items to this category to display them here.</p>
@@ -293,6 +199,9 @@ export default function WhatWeHaveBuilt() {
                 <Swiper
                   onSwiper={(swiper) => {
                     swiperRef.current = swiper;
+                    // stop until section visible
+                    // @ts-ignore
+                    swiper.autoplay?.stop?.();
                   }}
                   modules={[Navigation, Pagination, EffectCoverflow, Autoplay]}
                   autoplay={{
@@ -301,8 +210,8 @@ export default function WhatWeHaveBuilt() {
                     pauseOnMouseEnter: true,
                   }}
                   effect="coverflow"
-                  grabCursor={true}
-                  centeredSlides={true}
+                  grabCursor
+                  centeredSlides
                   slidesPerView="auto"
                   coverflowEffect={{
                     rotate: 0,
@@ -323,37 +232,59 @@ export default function WhatWeHaveBuilt() {
                   className="!pb-16"
                   style={{ overflow: "visible", padding: "20px 0" }}
                 >
-                  {stories.map((story) => (
+                  {stories.map((story, idx) => (
                     <SwiperSlide key={story.id} style={{ width: "700px", maxWidth: "90vw" }}>
-                      <div className="mobile-card relative h-[430px] w-full overflow-hidden rounded-[54px] bg-[#f3f5f7] shadow-[0_40px_110px_rgba(0,0,0,0.14)]">
-                        <img src={story.image} alt={story.title} className="h-full w-full object-cover" draggable={false} />
+                      {({ isActive, isPrev, isNext }) => {
+                        const scale =
+                          isActive ? "md:scale-[1.2] scale-[1.03]" : isPrev || isNext ? "md:scale-[0.95] scale-[0.97]" : "scale-[0.95]";
+                        const radius = isActive ? "md:rounded-[32px] rounded-[26px]" : "rounded-[54px]";
+                        const imgOpacity = isActive ? "opacity-100" : isPrev || isNext ? "opacity-60" : "opacity-35";
 
-                        <div className="absolute bottom-[26px] left-[28px] right-[18px] z-10">
-                          <p className="mobile-title text-[48px] md:text-[64px] font-light leading-none tracking-[-0.02em] text-white drop-shadow-[0_16px_36px_rgba(0,0,0,0.48)]">
-                            {story.title}
-                          </p>
-                        </div>
-                      </div>
+                        return (
+                          <div
+                            className={[
+                              "relative w-full overflow-hidden bg-[#f3f5f7] transition-transform duration-300",
+                              "h-[430px] md:h-[430px] max-sm:h-[320px]",
+                              radius,
+                              scale,
+                            ].join(" ")}
+                          >
+                            <img
+                              src={story.image}
+                              alt={story.title}
+                              className={`h-full w-full object-cover transition-opacity duration-300 ${imgOpacity}`}
+                              draggable={false}
+                            />
+
+                            <div className="absolute bottom-[26px] left-[28px] right-[18px] z-10">
+                              <p className="text-[48px] md:text-[64px] max-sm:text-[34px] font-light leading-none tracking-[-0.02em] text-white">
+                                {story.title}
+                              </p>
+                            </div>
+                          </div>
+                        );
+                      }}
                     </SwiperSlide>
                   ))}
                 </Swiper>
 
-                {/* Custom Navigation Buttons */}
-                <div className="custom-swiper-button-prev">
+                {/* Custom Nav Buttons (Tailwind, no shadow) */}
+                <div className="custom-swiper-button-prev absolute left-[10px] top-1/2 z-10 -translate-y-1/2 cursor-pointer select-none rounded-full bg-[#FF7A00] p-3 md:left-[-80px] md:p-4">
                   <ArrowLeft white />
                 </div>
-                <div className="custom-swiper-button-next">
+
+                <div className="custom-swiper-button-next absolute right-[10px] top-1/2 z-10 -translate-y-1/2 cursor-pointer select-none rounded-full bg-[#FF7A00] p-3 md:right-[-80px] md:p-4">
                   <ArrowRight white />
                 </div>
 
-                {/* Custom Pagination */}
-                <div className="custom-pagination mt-7 flex justify-center gap-[10px]" />
+                {/* Pagination */}
+                <div className="custom-pagination mt-7 flex justify-center gap-2" />
               </div>
             )}
           </div>
         </div>
 
-        {/* Category Pills */}
+        {/* Category Pills (no shadow) */}
         <div className="mt-10 flex flex-wrap justify-center gap-3">
           {CATEGORIES.map((c) => (
             <button
@@ -361,8 +292,8 @@ export default function WhatWeHaveBuilt() {
               onClick={() => setActiveCategory(c)}
               className={
                 c === activeCategory
-                  ? "h-[34px] rounded-full bg-[#FF7A00] px-6 text-[11px] font-semibold text-white shadow-[0_14px_26px_rgba(255,122,0,0.22)] transition"
-                  : "h-[34px] rounded-full bg-[#F3F4F6] px-6 text-[11px] font-semibold text-[#8a8a8a] transition hover:bg-[#ECEEF1)]"
+                  ? "h-[34px] rounded-full bg-[#FF7A00] px-6 text-[11px] font-semibold text-white transition"
+                  : "h-[34px] rounded-full bg-[#F3F4F6] px-6 text-[11px] font-semibold text-[#8a8a8a] transition hover:bg-[#ECEEF1]"
               }
             >
               {c}
@@ -393,6 +324,22 @@ export default function WhatWeHaveBuilt() {
           )}
         </div>
       </div>
+
+  
+      <style jsx global>{`
+        .swiper-pagination-bullet {
+          width: 7px;
+          height: 7px;
+          background: #dddddd;
+          opacity: 1;
+          transition: all 0.3s;
+        }
+        .swiper-pagination-bullet-active {
+          width: 34px;
+          border-radius: 4px;
+          background: #ff7a00;
+        }
+      `}</style>
     </section>
   );
 }

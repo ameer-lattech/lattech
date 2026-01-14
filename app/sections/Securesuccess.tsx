@@ -105,7 +105,7 @@ export default function SecureSuccessSection() {
       {/* original wrapper kept EXACT (only responsive padding/spacing added) */}
       <div className="mx-auto max-w-[1280px] px-5 sm:px-8 py-[54px] sm:py-[70px]">
         {/* ✅ keep your "fullwidth feel" but responsive padding */}
-        <div className="mx-auto w-full max-w-[1120px]">
+        <div className="mx-auto w-full max-w-[1280px]">
           {/* ✅ responsive gaps: tight on mobile, original on lg */}
           <div className="grid grid-cols-12 gap-y-10 lg:gap-y-0 gap-x-0 lg:gap-x-[90px]">
             {/* LEFT BLOCK */}

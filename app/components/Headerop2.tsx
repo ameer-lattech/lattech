@@ -29,11 +29,8 @@ function SvgIconImg({
       src={src}
       alt={alt}
       draggable={false}
-      className={[
-        "block object-contain",
-        `h-[${size}px] w-[${size}px]`,
-        className,
-      ].join(" ")}
+      className={["block object-contain", className].join(" ")}
+      style={{ width: size, height: size }}
     />
   );
 }
@@ -80,7 +77,7 @@ export default function LattechHeaderTailwind({
         ].join(" ")}
       >
         {/* TOP BAR (HIDDEN ON MOBILE) */}
-        <div className="hidden md:block h-[44px] bg-[#ffffff] border-b border-black/5">
+        <div className="hidden md:block h-[44px] bg-white md:border-b md:border-black/5">
           <div className="mx-auto flex h-[44px] max-w-[1280px] items-center justify-between px-[22px]">
             {/* SOCIALS */}
             <div className="flex items-center gap-[18px] md:gap-[26px]">
@@ -89,7 +86,7 @@ export default function LattechHeaderTailwind({
                   key={item.label}
                   href={item.href ?? "#"}
                   aria-label={item.label}
-                  className="grid h-[18px] w-[18px] place-items-center opacity-75 hover:opacity-100 transition-opacity"
+                  className="grid h-[18px] w-[18px] place-items-center opacity-75 transition-opacity hover:opacity-100"
                 >
                   <SvgIconImg
                     src={item.icon}
@@ -117,14 +114,33 @@ export default function LattechHeaderTailwind({
         </div>
 
         {/* MAIN HEADER */}
-        <div className="bg-white overflow-hidden rounded-bl-[40px] rounded-br-[40px] shadow-[0_10px_30px_rgba(0,0,0,0.08)]">
-          <div className="mx-auto flex h-[104px] max-w-[1280px] items-center justify-between gap-[26px] px-[26px]">
+        <div
+          className={[
+            "bg-white overflow-hidden",
+            // ✅ MOBILE: no rounded/shadow, clean edge
+            "rounded-none shadow-none",
+            // ✅ DESKTOP: keep style
+            "md:rounded-bl-[40px] md:rounded-br-[40px] md:shadow-[0_10px_30px_rgba(0,0,0,0.08)]",
+            // ✅ MOBILE: remove bottom border (if any appears)
+            "border-b-0",
+          ].join(" ")}
+        >
+          <div
+            className={[
+              "mx-auto flex items-center justify-between gap-[14px]",
+              "max-w-[1280px]",
+              // ✅ HEIGHT: mobile smaller, desktop same
+              "h-[72px] sm:h-[84px] md:h-[104px]",
+              // ✅ PADDING: mobile tight, desktop original
+              "px-[14px] sm:px-[18px] md:px-[26px]",
+            ].join(" ")}
+          >
             {/* LOGO */}
-            <a href="/" className="inline-flex min-w-[300px] items-center">
+            <a href="/" className="inline-flex items-center">
               <img
                 src={logoSrc}
                 alt="LATTECH"
-                className="h-[30px] sm:h-[40px] md:h-[58px] w-auto"
+                className="h-[28px] sm:h-[34px] md:h-[58px] w-auto"
               />
             </a>
 
@@ -155,18 +171,17 @@ export default function LattechHeaderTailwind({
             </div>
 
             {/* MOBILE BUTTON */}
-            <button className="hidden h-[48px] w-[48px] flex-col items-center justify-center gap-[7px] max-[992px]:flex">
-              <span className="h-[3px] w-[32px] bg-black/65 rounded" />
-              <span className="h-[3px] w-[32px] bg-black/65 rounded" />
-              <span className="h-[3px] w-[32px] bg-black/65 rounded" />
+            <button className="flex h-[44px] w-[44px] flex-col items-center justify-center gap-[6px] max-[992px]:flex md:hidden">
+              <span className="h-[3px] w-[28px] rounded bg-black/65" />
+              <span className="h-[3px] w-[28px] rounded bg-black/65" />
+              <span className="h-[3px] w-[28px] rounded bg-black/65" />
             </button>
           </div>
         </div>
       </header>
 
-      {/* SPACER */}
+   {/* SPACER */}
      <div className="h-[96px] md:h-[148px] -mb-[28px]" />
-
     </>
   );
 }

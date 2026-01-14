@@ -8,11 +8,11 @@ type Fact = {
   label: string;
 };
 
-// ✅ Only 3 stats for BOTH desktop + mobile
 const FACTS: Fact[] = [
   { value: 36, label: "years of expertise" },
   { value: 750, suffix: "+", label: "IT professionals" },
   { value: 4200, suffix: "+", label: "success stories" },
+  { value: 30, suffix: "+", label: "industries covered" },
 ];
 
 function formatNumber(n: number) {
@@ -20,112 +20,113 @@ function formatNumber(n: number) {
 }
 
 export default function KeyFactsCounter() {
-  const wrapRef = useRef<HTMLDivElement | null>(null);
+  const sectionRef = useRef<HTMLElement | null>(null);
   const [started, setStarted] = useState(false);
 
   const targets = useMemo(() => FACTS.map((f) => f.value), []);
   const [counts, setCounts] = useState<number[]>(() => targets.map(() => 0));
 
-  // start when visible
+  // ✅ Start when section enters viewport (reliable on all devices)
   useEffect(() => {
-    if (!wrapRef.current) return;
+    const el = sectionRef.current;
+    if (!el) return;
 
-    const el = wrapRef.current;
+    let hasStarted = false;
+
     const io = new IntersectionObserver(
       (entries) => {
-        if (entries[0]?.isIntersecting) {
+        const entry = entries[0];
+        if (!hasStarted && entry.isIntersecting) {
+          hasStarted = true;
           setStarted(true);
           io.disconnect();
         }
       },
-      { threshold: 0.35 }
+      {
+        // Starts a bit before it's fully visible (feels natural on mobile)
+        root: null,
+        threshold: 0.15,
+        rootMargin: "0px 0px -15% 0px",
+      }
     );
 
     io.observe(el);
     return () => io.disconnect();
   }, []);
 
-  // animate numbers once
+  // ✅ Counter animation
   useEffect(() => {
     if (!started) return;
 
     const duration = 1100;
-    const startTime = performance.now();
+    const start = performance.now();
 
     const tick = (now: number) => {
-      const t = Math.min(1, (now - startTime) / duration);
+      const t = Math.min(1, (now - start) / duration);
       const eased = 1 - Math.pow(1 - t, 3);
 
-      setCounts(targets.map((target) => Math.round(target * eased)));
+      setCounts(targets.map((v) => Math.round(v * eased)));
 
       if (t < 1) requestAnimationFrame(tick);
       else setCounts(targets);
     };
 
-    const raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
+    requestAnimationFrame(tick);
   }, [started, targets]);
 
   return (
-    <section className="w-full bg-white">
-      <style jsx global>{`
-        @media (max-width: 640px) {
-          .facts-pill {
-            border-radius: 44px !important;
-            padding-left: 22px !important;
-            padding-right: 22px !important;
-          }
-          .facts-title {
-            font-size: 36px !important;
-            line-height: 1.06 !important;
-          }
-          .facts-desc {
-            font-size: 14px !important;
-            line-height: 1.9 !important;
-          }
-          .fact-value {
-            font-size: 54px !important;
-          }
-        }
-      `}</style>
-
-      <div className="mx-auto w-full max-w-[1200px] px-6 py-14 md:py-16">
-        {/* ✅ Desktop heading (kept) */}
-        <div className="hidden md:block text-center">
-          <h2 className="text-[44px] font-medium leading-tight tracking-[-0.02em] text-[#5C5C5C]">
-            Key <span className="text-[#43B02A] font-semibold">Facts</span> about Lattech
+    <section ref={sectionRef} className="w-full bg-white">
+      <div className="mx-auto max-w-[1200px] px-6 pt-[70px] pb-[80px]">
+        {/* Desktop/Tablet heading stays outside (mobile hides it) */}
+        <div className="hidden text-center md:block">
+          <h2 className="text-[44px] md:text-[52px] font-medium tracking-[-0.02em] text-[#6A6A6A]">
+            Key <span className="font-semibold text-[#43B02A]">Facts</span> about Lattech
           </h2>
 
-          <p className="mx-auto mt-4 max-w-[880px] text-[14px] leading-[1.9] text-[#777777]">
+          <p className="mx-auto mt-4 max-w-[900px] text-[14px] leading-[1.9] text-[#7A7A7A]">
             We are a dynamic software development firm, blending innovative strategies with technical precision to deliver
             intuitive, user-focused solutions that address complex challenges and boost business performance.
           </p>
         </div>
 
-        {/* Pill */}
-        <div ref={wrapRef} className="mt-0 md:mt-12 flex justify-center">
-          <div className="facts-pill w-full max-w-[1280px] rounded-[70px] bg-[#FFF3EE] px-7 py-10 md:px-14 md:py-14">
-            {/* ✅ Mobile heading inside pill (like screenshot) */}
-            <div className="md:hidden text-center">
-              <h2 className="facts-title text-[38px] font-medium leading-tight tracking-[-0.02em] text-[#5C5C5C]">
+        {/* Card */}
+        <div className="mt-[56px] flex justify-center">
+          <div
+            className="
+              w-full
+              max-w-[360px] md:max-w-[1280px]
+              rounded-[46px] md:rounded-[80px]
+              bg-[#F7F7F7]
+              px-6 py-10 md:px-16 md:py-14
+              text-center
+            "
+          >
+            {/* Mobile heading INSIDE card (matches your screenshot structure) */}
+            <div className="md:hidden">
+              <h3 className="text-[28px] font-medium leading-[1.15] text-[#6A6A6A]">
                 Our Industry <br /> Expertise
-              </h2>
+              </h3>
 
-              <p className="facts-desc mx-auto mt-4 max-w-[320px] text-[14px] leading-[1.95] text-[#777777]">
+              <p className="mx-auto mt-4 max-w-[280px] text-[13px] leading-[1.9] text-[#7A7A7A]">
                 We are a dynamic software development firm, blending innovative strategies with technical precision to deliver
                 intuitive, user-focused solutions that address complex challenges and boost business performance.
               </p>
+
+              <div className="mt-8 h-px w-full bg-black/5" />
             </div>
 
-            {/* ✅ Same 3 stats on BOTH desktop & mobile */}
-            <div className="mt-10 grid grid-cols-1 gap-y-12 text-center md:mt-0 md:grid-cols-3 md:gap-y-0">
+            {/* ✅ Mobile = 1 column (stacked), md+ = 4 columns */}
+            <div className="mt-8 md:mt-0 grid grid-cols-1 gap-y-10 md:grid-cols-4 md:gap-y-0 text-center">
               {FACTS.map((f, i) => (
                 <div key={f.label}>
-                  <div className="fact-value text-[56px] font-semibold leading-none text-[#FF6A00]">
-                    {formatNumber(counts[i] ?? 0)}
+                  <div className="text-[52px] md:text-[64px] font-semibold leading-none text-[#56BC2F]">
+                    {formatNumber(counts[i])}
                     {f.suffix ?? ""}
                   </div>
-                  <div className="mt-3 text-[14px] font-medium text-[#6E6E6E]">{f.label}</div>
+
+                  <div className="mt-2 text-[13px] font-semibold text-[#6F6F6F]">
+                    {f.label}
+                  </div>
                 </div>
               ))}
             </div>

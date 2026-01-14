@@ -66,7 +66,7 @@ function ArrowIcon({ className = "" }: { className?: string }) {
 export default function StartProjectSection() {
   return (
     <section className="w-full bg-white">
-      <div className="mx-auto max-w-[1180px] px-6 py-16 md:py-20">
+      <div className="mx-auto max-w-[1280px] px-6 py-16 md:py-20">
         {/* Heading */}
         <div className="text-center">
           <h2 className="text-[44px] font-medium leading-[1.1] tracking-[-0.02em] text-[#3B3B3B] md:text-[52px]">
@@ -97,7 +97,7 @@ export default function StartProjectSection() {
                 ].join(" ")}
               >
                 <div className="flex items-center gap-4">
-                  <span className="text-[#FF7A00]">
+                  <span className="text-[#56BC2F]">
                     <BoltIcon className="h-[22px] w-[22px]" />
                   </span>
 
@@ -106,7 +106,7 @@ export default function StartProjectSection() {
                   </span>
                 </div>
 
-                <span className="text-[#FF7A00] transition-transform duration-200 group-hover:translate-x-[2px]">
+                <span className="text-[#56BC2F] transition-transform duration-200 group-hover:translate-x-[2px]">
                   <ArrowIcon className="h-[18px] w-[18px]" />
                 </span>
               </Tag>
