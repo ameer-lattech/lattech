@@ -6,7 +6,7 @@ export default function FooterExactPixelTailwind() {
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
 
   return (
-    <footer className="relative w-full bg-[#121212] z-10 overflow-visible">
+    <footer className="relative w-full bg-[#171717] z-10 overflow-visible">
       {/* Back to top */}
       <button
         type="button"
@@ -42,7 +42,7 @@ export default function FooterExactPixelTailwind() {
         "
       >
         {/* ✅ This is what fixes the “fullwidth feel” */}
-        <div className="mx-auto w-full max-w-[1120px]">
+        <div className="mx-auto w-full max-w-[1220px]">
           <div
             className="
               grid gap-y-[22px]
@@ -60,13 +60,13 @@ export default function FooterExactPixelTailwind() {
               </div>
 
               <div className="space-y-[14px]">
-                <p className="text-[12px] leading-[1.7] text-white/55 max-w-[360px]">
+                <p className="text-[14px] leading-[1.7] text-white/55 max-w-[360px]">
                   A108 Adam Street New York, NY 535022&nbsp; United States
                 </p>
-                <p className="text-[12px] leading-[1.7] text-white/55 max-w-[360px]">
+                <p className="text-[14px] leading-[1.7] text-white/55 max-w-[360px]">
                   Phone: <span className="text-white/70">+1 5589 55488 55</span>
                 </p>
-                <p className="text-[12px] leading-[1.7] text-white/55 max-w-[360px]">
+                <p className="text-[14px] leading-[1.7] text-white/55 max-w-[360px]">
                   Email: <span className="text-white/70">info@example.com</span>
                 </p>
               </div>
@@ -169,13 +169,13 @@ export default function FooterExactPixelTailwind() {
 function FooterCol({ title, links }: { title: string; links: string[] }) {
   return (
     <div>
-      <div className="text-white/90 text-[14px] font-bold mb-[26px]">{title}</div>
+      <div className="text-white/90 text-[18px] font-bold mb-[26px]">{title}</div>
       <ul className="list-none p-0 m-0">
         {links.map((t) => (
           <li key={t} className="mb-[16px]">
             <a
               href="#"
-              className="text-white/50 text-[12px] no-underline transition-colors hover:text-white/80"
+              className="text-white/50 text-[14px] no-underline transition-colors hover:text-white/80"
             >
               {t}
             </a>

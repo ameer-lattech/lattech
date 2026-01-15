@@ -82,13 +82,13 @@ export default function ContactUsSection() {
           {/* RIGHT FORM */}
           <div className="col-span-12 lg:col-span-6">
             <div className="lg:pt-3">
-              <h2 className="text-[#5D5D5D] font-semibold tracking-[-0.02em] text-[30px] leading-[1.18] sm:text-[34px] md:text-[36px]">
+              <h2 className="text-[#595A5A] font-semibold tracking-[-0.02em] text-[30px] leading-[1.18] sm:text-[34px] md:text-[36px]">
                 Get in touch with us. We&apos;re
                 <br />
                 here to assist you.
               </h2>
 
-              <p className="mt-3 sm:mt-4 text-[14px] sm:text-[16px] text-[#8A8A8A]">
+              <p className="mt-3 sm:mt-4 text-[14px] sm:text-[20px] text-[#525252]">
                 Our friendly team would love to hear from you.
               </p>
 

@@ -59,7 +59,7 @@ function LearnMore({ href = "#" }: { href?: string }) {
   return (
     <Link
       href={href}
-      className="mt-4 sm:mt-5 inline-flex items-center gap-2 text-[13px] font-semibold text-[#FF7A00] transition hover:opacity-80"
+      className="mt-4 sm:mt-5 inline-flex items-center gap-2 text-[16px] font-semibold text-[#FF7A00] transition hover:opacity-80"
     >
       Learn more
       <span className="inline-flex translate-y-[1px]">
@@ -86,11 +86,11 @@ function LearnMore({ href = "#" }: { href?: string }) {
 function Card({ item }: { item: Item }) {
   return (
     <div>
-      <h4 className="text-[15px] sm:text-[16px] font-semibold text-[#545454]">
+      <h4 className="text-[15px] sm:text-[20px] font-semibold text-[#595A5A]">
         {item.title}
       </h4>
 
-      <p className="mt-2 max-w-none sm:max-w-[360px] text-[13px] leading-[1.8] text-[#8C8C8C]">
+      <p className="mt-2 max-w-none sm:max-w-[360px] text-[16px] leading-[1.8] text-[#595A5A]">
         {item.desc}
       </p>
 
@@ -124,7 +124,7 @@ export default function SecureSuccessSection() {
               </div>
 
               {/* ✅ scale heading for mobile, keep desktop exact */}
-              <h2 className="mt-5 text-[32px] sm:text-[38px] lg:text-[44px] font-semibold leading-[1.08] tracking-[-0.03em] text-[#4B4B4B]">
+              <h2 className="mt-5 text-[32px] sm:text-[36px] lg:text-[36px] font-semibold leading-[1.08] tracking-[-0.03em] text-[#4B4B4B]">
                 Secure the <span className="text-[#52C227]">Success</span> of
                 <br className="hidden sm:block" />
                 <span className="sm:hidden"> </span>
@@ -132,7 +132,7 @@ export default function SecureSuccessSection() {
               </h2>
 
               {/* ✅ allow full width on mobile; keep max width on larger */}
-              <p className="mt-4 sm:mt-5 max-w-none lg:max-w-[340px] text-[14px] leading-[1.95] text-[#7F7F7F]">
+              <p className="mt-4 sm:mt-5 max-w-none lg:max-w-[340px] text-[20px] leading-[1.95] text-[#595A5A]">
                 Check the tried-and-true project management practices we rely on
                 to drive the project to its goals despite budget constraints and
                 changing requirements. Beyond practices, our strength lies in

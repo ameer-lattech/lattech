@@ -79,11 +79,11 @@ export default function KeyFactsCounter() {
       <div className="mx-auto max-w-[1200px] px-6 pt-[70px] pb-[80px]">
         {/* Desktop/Tablet heading stays outside (mobile hides it) */}
         <div className="hidden text-center md:block">
-          <h2 className="text-[44px] md:text-[52px] font-medium tracking-[-0.02em] text-[#6A6A6A]">
+          <h2 className="text-[44px] md:text-[48px] font-medium tracking-[-0.02em] text-[#6A6A6A]">
             Key <span className="font-semibold text-[#43B02A]">Facts</span> about Lattech
           </h2>
 
-          <p className="mx-auto mt-4 max-w-[900px] text-[14px] leading-[1.9] text-[#7A7A7A]">
+          <p className="mx-auto mt-4 max-w-[900px] text-[20px] leading-[1.9] text-[#525252]">
             We are a dynamic software development firm, blending innovative strategies with technical precision to deliver
             intuitive, user-focused solutions that address complex challenges and boost business performance.
           </p>
@@ -107,7 +107,7 @@ export default function KeyFactsCounter() {
                 Our Industry <br /> Expertise
               </h3>
 
-              <p className="mx-auto mt-4 max-w-[280px] text-[13px] leading-[1.9] text-[#7A7A7A]">
+              <p className="mx-auto mt-4 max-w-[280px] text-[13px] leading-[1.9] text-[#525252]">
                 We are a dynamic software development firm, blending innovative strategies with technical precision to deliver
                 intuitive, user-focused solutions that address complex challenges and boost business performance.
               </p>

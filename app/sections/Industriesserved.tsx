@@ -6,7 +6,7 @@ import Link from "next/link";
 
 type Industry = {
   title: string;
-  img?: string; // leave empty for placeholders
+  img?: string; 
   href: string;
 };
 
@@ -98,14 +98,14 @@ function ArrowIcon({ className = "" }: { className?: string }) {
 export default function IndustriesWeServed() {
   return (
     <section className="w-full bg-white">
-      <div className="mx-auto max-w-[1180px] px-6 py-16 md:py-20">
+      <div className="mx-auto max-w-[1280px] px-6 py-16 md:py-20">
         {/* Heading */}
         <div className="text-center">
-          <h2 className="text-[44px] font-medium leading-[1.1] tracking-[-0.02em] text-[#3B3B3B] md:text-[52px]">
-            Industries we have <span className="font-semibold text-[#39B54A]">Served</span>
+          <h2 className="text-[44px] font-Regular leading-[1.1] tracking-[-0.02em] text-[#595A5A] md:text-[48px]">
+            Industries we have <span className="font-semibold text-[#56BC2F]">Served</span>
           </h2>
 
-          <p className="mx-auto mt-4 max-w-[980px] text-[13px] leading-[1.95] text-[#7A7A7A]">
+          <p className="mx-auto mt-4 max-w-[980px] text-[20px] leading-[1.95] text-[#525252]">
             With a wealth of experience across diverse sectors, we deliver tailored insights and solutions that drive
             tangible results for our valued partners.
           </p>
@@ -134,10 +134,10 @@ export default function IndustriesWeServed() {
               </div>
 
               {/* title */}
-              <div className="mt-4 text-[16px] font-semibold text-[#5A5A5A]">{it.title}</div>
+              <div className="mt-4 text-[20px] font-semibold text-[#595A5A]">{it.title}</div>
 
               {/* link */}
-              <div className="mt-2 inline-flex items-center gap-2 text-[13px] font-medium text-[#FF7A00]">
+              <div className="mt-2 inline-flex items-center gap-2 text-[16px] font-medium text-[#FF6600]">
                 View details
                 <span className="transition-transform duration-200 group-hover:translate-x-[2px]">
                   <ArrowIcon />

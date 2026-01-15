@@ -54,7 +54,7 @@ function TestimonialCard({ t }: { t: Testimonial }) {
       </div>
 
       {/* ✅ clamp to keep card heights consistent without min-height */}
-      <p className="mt-4 text-[12.5px] leading-[1.9] text-[#7A7A7A] [display:-webkit-box] [-webkit-line-clamp:6] [-webkit-box-orient:vertical] overflow-hidden">
+      <p className="mt-4 text-[18px] leading-[1.9] text-[#525252] [display:-webkit-box] [-webkit-line-clamp:6] [-webkit-box-orient:vertical] overflow-hidden">
         “{t.quote}”
       </p>
 
@@ -64,13 +64,13 @@ function TestimonialCard({ t }: { t: Testimonial }) {
           <Avatar initials={t.initials} />
         ) : (
           <div className="grid h-[42px] w-[42px] place-items-center rounded-full bg-white">
-            <span className="text-[16px] font-semibold text-[#1E1E1E]">{t.logoText ?? "L"}</span>
+            <span className="text-[18px] font-semibold text-[#1E1E1E]">{t.logoText ?? "L"}</span>
           </div>
         )}
 
         <div>
-          <div className="text-[12.5px] font-semibold text-[#2E2E2E]">{t.name}</div>
-          <div className="text-[11.5px] text-[#9A9A9A]">{t.company}</div>
+          <div className="text-[16px] font-semibold text-[#2E2E2E]">{t.name}</div>
+          <div className="text-[16px] text-[#9A9A9A]">{t.company}</div>
         </div>
       </div>
     </article>
@@ -175,12 +175,12 @@ export default function JourneyTestimonials() {
         }
       `}</style>
 
-      <div className="mx-auto w-full max-w-[1200px] px-6 pb-16 pt-12 md:pb-20 md:pt-16">
+      <div className="mx-auto w-full max-w-[1280px] px-6 pb-16 pt-12 md:pb-20 md:pt-16">
         <div className="text-center">
-          <h2 className="text-[44px] font-medium leading-tight tracking-[-0.02em] text-[#666666]">
+          <h2 className="text-[48px] font-medium leading-tight tracking-[-0.02em] text-[#595A5A]">
             Our <span className="font-semibold text-[#43B02A]">Journey</span> of Building Success
           </h2>
-          <p className="mx-auto mt-4 max-w-[900px] text-[14px] leading-[1.95] text-[#7A7A7A]">
+          <p className="mx-auto mt-4 max-w-[900px] text-[20px] leading-[1.95] text-[#525252]">
             We are a dynamic software development firm, blending innovative strategies with technical precision.
           </p>
         </div>

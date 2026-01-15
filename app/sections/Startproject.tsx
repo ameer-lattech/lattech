@@ -69,12 +69,12 @@ export default function StartProjectSection() {
       <div className="mx-auto max-w-[1280px] px-6 py-16 md:py-20">
         {/* Heading */}
         <div className="text-center">
-          <h2 className="text-[44px] font-medium leading-[1.1] tracking-[-0.02em] text-[#3B3B3B] md:text-[52px]">
+          <h2 className="text-[44px] font-Regular leading-[1.1] tracking-[-0.02em] text-[#595A5A] md:text-[48px]">
             Start your{" "}
             <span className="font-semibold text-[#39B54A]">Project</span>
           </h2>
 
-          <p className="mx-auto mt-4 max-w-[820px] text-[13px] leading-[1.85] text-[#7A7A7A] md:text-[13px]">
+          <p className="mx-auto mt-4 max-w-[820px] text-[13px] leading-[1.85] text-[#525252] md:text-[20px]">
             We help your business grow from inception to success. Our digital
             solutions enhance your online presence, drive sales, and optimize
             operations for efficiency and profitability.
@@ -98,10 +98,10 @@ export default function StartProjectSection() {
               >
                 <div className="flex items-center gap-4">
                   <span className="text-[#56BC2F]">
-                    <BoltIcon className="h-[22px] w-[22px]" />
+                    <BoltIcon className="h-[25px] w-[25px]" />
                   </span>
 
-                  <span className="text-[14px] font-medium text-[#4A4A4A]">
+                  <span className="text-[20px] font-medium text-[#4A4A4A]">
                     {it.label}
                   </span>
                 </div>

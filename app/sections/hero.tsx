@@ -55,7 +55,7 @@ export default function Hero() {
             </div>
 
             <h1 className="mt-[18px] md:mt-[22px] text-center md:text-left leading-[1.08] md:leading-[1.03] tracking-[-0.02em]">
-              <span className="text-[40px] sm:text-[46px] md:text-[64px] font-extrabold text-[#43B02A]">
+              <span className="text-[40px] sm:text-[46px] md:text-[64px] font-extrabold text-[#56BC2F]">
                 Full-Stack Tech Enablement
               </span>{" "}
               <span className="text-[40px] sm:text-[46px] md:text-[64px] font-extrabold text-[#5B5B5B]">
@@ -71,7 +71,7 @@ export default function Hero() {
             <div className="mt-[22px] md:mt-[28px] flex flex-col md:flex-row items-center md:items-start gap-[12px] md:gap-[16px]">
               <button
                 onClick={onSchedule}
-                className="h-[50px] md:h-[42px] w-full max-w-[360px] md:w-auto rounded-full bg-[#43B02A] px-[22px] text-[14px] md:text-[13px] font-semibold text-white shadow-[0_8px_22px_rgba(67,176,42,0.18)] transition hover:brightness-95 active:brightness-90"
+                className="h-[50px] md:h-[42px] w-full max-w-[360px] md:w-auto rounded-full bg-[#56BC2F] px-[22px] text-[14px] md:text-[13px] font-semibold text-white shadow-[0_8px_22px_rgba(67,176,42,0.18)] transition hover:brightness-95 active:brightness-90"
               >
                 Schedule a demo
               </button>
@@ -100,8 +100,8 @@ export default function Hero() {
       <style jsx global>{`
         /* ✅ HERO HEIGHT FIX (ONLY) */
         .heroFixed {
-          min-height: calc(700px - var(--header-h));
-          height: min(calc(88vh - var(--header-h)), 740px);
+          min-height: calc(730px - var(--header-h));
+          height: min(calc(88vh - var(--header-h)), 730px);
         }
 
         @supports (height: 100svh) {

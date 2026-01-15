@@ -6,7 +6,7 @@ import Link from "next/link";
 export default function ProjectSuccessSection() {
   return (
     <section className="w-full bg-white">
-      <div className="mx-auto max-w-[1200px] px-6 py-14 md:py-[80px]">
+      <div className="mx-auto max-w-[1280px] px-6 py-14 md:py-[80px]">
         <div className="grid grid-cols-12 items-center gap-y-10 lg:gap-x-[60px] lg:gap-y-0">
           {/* LEFT: layered UI cards */}
           <div className="relative col-span-12 lg:col-span-6">
@@ -157,7 +157,7 @@ export default function ProjectSuccessSection() {
               What makes Lattech Solution different
             </div>
 
-            <h2 className="mt-5 text-[36px] md:text-[44px] font-semibold leading-[1.12] tracking-[-0.03em] text-[#5a5a5a]">
+            <h2 className="mt-5 text-[36px] md:text-[48px] font-semibold leading-[1.12] tracking-[-0.03em] text-[#595A5A]">
               We Achieve Project
               <br />
               Success <span className="text-[#52C227]">No Matter</span>
@@ -165,7 +165,7 @@ export default function ProjectSuccessSection() {
               <span className="text-[#52C227]">What</span>
             </h2>
 
-            <p className="mt-5 max-w-[520px] text-[14px] leading-[1.8] text-[#8A8A8A]">
+            <p className="mt-5 max-w-[520px] text-[20px] leading-[1.8] text-[#595A5A]">
               Project success is our standard, not a slogan. We drive projects to their goals by
               overcoming constraints, designing architectures that prioritize business value, and
               bringing in experts trained for client&apos;s specific industries, workflows, and

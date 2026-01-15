@@ -59,6 +59,10 @@ export default function OurProcessPinnedScroll() {
   const imagesRef = useRef<HTMLDivElement[]>([]);
   const contentRef = useRef<HTMLDivElement[]>([]);
 
+  // ✅ NEW: header + intro refs (desktop only animation)
+  const headerRef = useRef<HTMLDivElement | null>(null);
+  const introDesktopRef = useRef<HTMLParagraphElement | null>(null);
+
   useLayoutEffect(() => {
     if (!rootRef.current || !pinWrapRef.current) return;
 
@@ -88,6 +92,16 @@ export default function OurProcessPinnedScroll() {
             gsap.set(maskRef.current, { borderRadius: STEP_RADII[0] || "0px" });
           }
 
+          // ✅ init header + intro (only for step 01)
+          if (headerRef.current) {
+            headerRef.current.style.visibility = "visible";
+            gsap.set(headerRef.current, { autoAlpha: 1, y: 0, filter: "blur(0px)" });
+          }
+          if (introDesktopRef.current) {
+            introDesktopRef.current.style.visibility = "visible";
+            gsap.set(introDesktopRef.current, { autoAlpha: 1, y: 0, filter: "blur(0px)" });
+          }
+
           imagesRef.current.forEach((el, i) => {
             setLayer(el, i === 0);
             gsap.set(el, { autoAlpha: i === 0 ? 1 : 0, y: 0, scale: 1 });
@@ -113,12 +127,56 @@ export default function OurProcessPinnedScroll() {
             if (!prevImg || !nextImg || !prevContent || !nextContent || !mask) return;
 
             gsap.killTweensOf([prevImg, nextImg, prevContent, nextContent, mask]);
+            if (headerRef.current) gsap.killTweensOf(headerRef.current);
+            if (introDesktopRef.current) gsap.killTweensOf(introDesktopRef.current);
 
             setLayer(nextImg, true);
             setLayer(nextContent, true);
 
             const outY = direction >= 0 ? -18 : 18;
             const inY = direction >= 0 ? 18 : -18;
+
+            // ✅ HEADER: only step 01 visible, smooth hide on others
+            if (headerRef.current) {
+              const shouldShow = nextIndex === 0;
+              if (shouldShow) headerRef.current.style.visibility = "visible";
+
+              gsap.to(headerRef.current, {
+                autoAlpha: shouldShow ? 1 : 0,
+                y: shouldShow ? 0 : outY,
+                filter: shouldShow ? "blur(0px)" : "blur(6px)",
+                duration: 0.3,
+                ease: "power2.out",
+                overwrite: "auto",
+                onComplete: () => {
+                  if (!shouldShow && headerRef.current) {
+                    headerRef.current.style.visibility = "hidden";
+                    gsap.set(headerRef.current, { y: 0, filter: "blur(0px)" });
+                  }
+                },
+              });
+            }
+
+            // ✅ INTRO PARAGRAPH: only step 01 visible, smooth hide on others
+            if (introDesktopRef.current) {
+              const shouldShow = nextIndex === 0;
+              if (shouldShow) introDesktopRef.current.style.visibility = "visible";
+
+              gsap.to(introDesktopRef.current, {
+                autoAlpha: shouldShow ? 1 : 0,
+                y: shouldShow ? 0 : outY,
+                filter: shouldShow ? "blur(0px)" : "blur(6px)",
+                duration: 0.3,
+                ease: "power2.out",
+                overwrite: "auto",
+                onComplete: () => {
+                  if (!shouldShow && introDesktopRef.current) {
+                    introDesktopRef.current.style.visibility = "hidden";
+                    gsap.set(introDesktopRef.current, { y: 0, filter: "blur(0px)" });
+                  }
+                },
+              });
+            }
 
             // ✅ REAL morph: animate the SAME mask element
             gsap.to(mask, {
@@ -213,6 +271,16 @@ export default function OurProcessPinnedScroll() {
             el.style.pointerEvents = "auto";
             gsap.set(el, { clearProps: "all" });
           });
+
+          // ✅ mobile: header + intro normal (no pin hide)
+          if (headerRef.current) {
+            headerRef.current.style.visibility = "visible";
+            gsap.set(headerRef.current, { clearProps: "all" });
+          }
+          if (introDesktopRef.current) {
+            introDesktopRef.current.style.visibility = "visible";
+            gsap.set(introDesktopRef.current, { clearProps: "all" });
+          }
         });
       }, rootRef);
     };
@@ -234,7 +302,7 @@ export default function OurProcessPinnedScroll() {
       >
         <div className="w-full md:flex md:flex-col md:justify-center">
           {/* Header */}
-          <div>
+          <div ref={headerRef}>
             <div className="flex items-start justify-between">
               <h2 className="text-[40px] font-medium leading-none text-[#3E3E3E]">
                 Our <span className="font-semibold text-[#39B54A]">Process</span>
@@ -261,7 +329,6 @@ export default function OurProcessPinnedScroll() {
             <div className="grid w-full grid-cols-12 items-center">
               {/* LEFT IMAGE */}
               <div className="col-span-6">
-                {/* ✅ ONE MASK (this morphs radius) */}
                 <div
                   ref={maskRef}
                   className="relative w-[528px] h-[482px] overflow-hidden will-change-[border-radius,transform]"
@@ -276,9 +343,6 @@ export default function OurProcessPinnedScroll() {
                       className="absolute inset-0 will-change-transform"
                       style={{ visibility: i === 0 ? "visible" : "hidden" }}
                     >
-                      {/* ✅ Fix cutting:
-                          Option A (recommended): object-cover (fills nicely)
-                          If you MUST keep contain, switch to object-contain and add padding like p-6 */}
                       <Image
                         src={s.img}
                         alt={s.title}
@@ -294,7 +358,11 @@ export default function OurProcessPinnedScroll() {
 
               {/* RIGHT CONTENT */}
               <div className="col-span-6 pl-14">
-                <p className="max-w-[420px] text-[12.5px] leading-[1.95] text-[#7A7A7A]">
+                {/* ✅ intro paragraph (desktop) controlled by GSAP */}
+                <p
+                  ref={introDesktopRef}
+                  className="max-w-[520px] text-[20px] leading-[1.5] text-[#525252]"
+                >
                   Lattech is a global IT technology solutions and services company based in Pakistan. We collaborate with
                   our clients of all sizes, from individual to mid-market to large companies across multiple domains.
                 </p>
@@ -316,16 +384,16 @@ export default function OurProcessPinnedScroll() {
                         <div className="flex items-center gap-2 text-[12px]">
                           <span className="font-semibold text-[#FF7A00]">{num}</span>
                           <span className="text-[#C7CDD8]">/</span>
-                          <span className="text-[#9AA3B2]">{total}</span>
+                          <span className="text-[#525252]">{total}</span>
                         </div>
 
                         <div className="mt-7 h-px w-full bg-[#E9EEF5]" />
 
-                        <h3 className="mt-[88px] text-[22px] font-semibold tracking-wide text-[#4A4A4A]">
+                        <h3 className="mt-[88px] text-[30px] font-semibold tracking-wide text-[#595A5A]">
                           {s.title}
                         </h3>
 
-                        <p className="mt-4 max-w-[460px] text-[11.5px] leading-[1.95] text-[#9AA3B2]">
+                        <p className="mt-4 max-w-[520px] text-[16px] leading-[1.95] text-[#525252]">
                           {s.desc}
                         </p>
                       </div>
@@ -338,7 +406,7 @@ export default function OurProcessPinnedScroll() {
 
           {/* Mobile stacked (unchanged) */}
           <div className="pb-16 pt-10 md:hidden">
-            <p className="max-w-[520px] text-[12.5px] leading-[1.95] text-[#7A7A7A]">
+            <p className="max-w-[520px] text-[12.5px] leading-[1.95] text-[#525252]">
               Lattech is a global IT technology solutions and services company based in Pakistan. We collaborate with our
               clients of all sizes, from individual to mid-market to large companies across multiple domains.
             </p>
@@ -350,7 +418,10 @@ export default function OurProcessPinnedScroll() {
 
                 return (
                   <div key={s.title} className="grid gap-6">
-                    <div className="relative w-full overflow-hidden aspect-[16/10]" style={{ borderRadius: STEP_RADII[i] }}>
+                    <div
+                      className="relative w-full overflow-hidden aspect-[16/10]"
+                      style={{ borderRadius: STEP_RADII[i] }}
+                    >
                       <Image src={s.img} alt={s.title} fill className="object-cover" sizes="100vw" />
                     </div>
 
@@ -358,13 +429,13 @@ export default function OurProcessPinnedScroll() {
                       <div className="flex items-center gap-2 text-[12px]">
                         <span className="font-semibold text-[#FF7A00]">{num}</span>
                         <span className="text-[#C7CDD8]">/</span>
-                        <span className="text-[#9AA3B2]">{total}</span>
+                        <span className="text-[#525252]">{total}</span>
                       </div>
 
                       <div className="mt-5 h-px w-full bg-[#E9EEF5]" />
 
                       <h3 className="mt-7 text-[18px] font-semibold tracking-wide text-[#4A4A4A]">{s.title}</h3>
-                      <p className="mt-3 text-[12px] leading-[1.95] text-[#9AA3B2]">{s.desc}</p>
+                      <p className="mt-3 text-[12px] leading-[1.95] text-[#525252]">{s.desc}</p>
                     </div>
                   </div>
                 );

@@ -9,7 +9,7 @@ type Card = {
   desc: string;
   href: string;
   variant: "green" | "light" | "dark";
-  image: string; // ✅ add this
+  image: string;
   imageAlt?: string;
 };
 
@@ -19,7 +19,7 @@ const CARDS: Card[] = [
     desc: "Looking for the right tech partner to\nhelp you build",
     href: "/solutions/startups",
     variant: "green",
-    image: "/assets/images/solforevstartup.png", // ✅ replace with your real path
+    image: "/assets/images/solforevstartup.png",
     imageAlt: "Startups illustration",
   },
   {
@@ -27,7 +27,7 @@ const CARDS: Card[] = [
     desc: "Looking for the right partner to\nscale and grow your business.",
     href: "/solutions/sme",
     variant: "light",
-    image: "/assets/images/solforevmedenterprise.png", // ✅ replace
+    image: "/assets/images/solforevmedenterprise.png", 
     imageAlt: "SME illustration",
   },
   {
@@ -35,7 +35,7 @@ const CARDS: Card[] = [
     desc: "Looking for the right partner to\naugment your teams.",
     href: "/solutions/enterprise",
     variant: "dark",
-    image: "/assets/images/solforevorg.png", // ✅ replace
+    image: "/assets/images/solforevorg.png",
     imageAlt: "Enterprise illustration",
   },
 ];
@@ -68,11 +68,11 @@ export default function SolutionForEveryone() {
       <div className="mx-auto max-w-[1180px] px-6 py-16 md:py-20">
         {/* Heading */}
         <div className="text-center">
-          <h2 className="text-[44px] font-medium leading-[1.1] tracking-[-0.02em] text-[#3B3B3B] md:text-[52px]">
+          <h2 className="text-[44px] font-Regular leading-[1.1] tracking-[-0.02em] text-[#595A5A] md:text-[52px]">
             Solution for <span className="font-semibold text-[#39B54A]">Everyone</span>
           </h2>
 
-          <p className="mx-auto mt-4 max-w-[900px] text-[13px] leading-[1.9] text-[#7A7A7A]">
+          <p className="mx-auto mt-4 max-w-[900px] text-[20px] leading-[1.9] text-[#525252]">
             We help your business grow from inception to success. Our digital solutions enhance your
             online presence, drive sales, and optimize operations for efficiency and profitability.
           </p>
@@ -105,7 +105,7 @@ export default function SolutionForEveryone() {
                   <div
                     className={[
                       "inline-flex items-center justify-center gap-3",
-                      "text-[16px] font-semibold",
+                      "text-[18px] font-semibold",
                       isLight ? "text-[#5B5B5B]" : "text-white",
                       isDark ? "text-white" : "",
                       isGreen ? "text-white" : "",
@@ -125,7 +125,7 @@ export default function SolutionForEveryone() {
 
                   <p
                     className={[
-                      "mt-6 whitespace-pre-line text-[14px] leading-[1.9]",
+                      "mt-6 whitespace-pre-line text-[16px] leading-[1.9]",
                       isGreen ? "text-white/95" : isLight ? "text-[#7A7A7A]" : "text-white/65",
                     ].join(" ")}
                   >
@@ -133,13 +133,12 @@ export default function SolutionForEveryone() {
                   </p>
                 </div>
 
-                {/* ✅ Illustration area (matches screenshot position) */}
-               {/* ✅ Illustration area (FIX: no bottom cut) */}
+
 <div
   className={[
-    "pointer-events-none absolute inset-x-0 bottom-[22px]", // anchor inside card
-    "h-[230px] md:h-[250px]", // safe height (prevents clipping)
-    "px-[42px] md:px-[52px]", // side padding like screenshot
+    "pointer-events-none absolute inset-x-0 bottom-[22px]", 
+    "h-[230px] md:h-[250px]", 
+    "px-[42px] md:px-[52px]",
   ].join(" ")}
 >
   <Image
@@ -147,7 +146,7 @@ export default function SolutionForEveryone() {
     alt={c.imageAlt ?? c.title}
     fill
     className={[
-      "object-contain object-bottom", // keeps bottom aligned inside safe area
+      "object-contain object-bottom", 
       "transition-transform duration-300 group-hover:scale-[1.02]",
       isLight ? "opacity-[0.9]" : "opacity-[0.55]",
       isDark ? "opacity-[0.35]" : "",
@@ -157,7 +156,6 @@ export default function SolutionForEveryone() {
 </div>
 
 
-                {/* subtle bottom fade like screenshot */}
                 <div
                   className={[
                     "pointer-events-none absolute inset-x-0 bottom-0 h-[120px]",

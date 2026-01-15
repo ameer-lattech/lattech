@@ -121,13 +121,13 @@ export default function TrustTransparencySection({
         <div className="grid grid-cols-12 items-center gap-y-10 md:gap-x-[90px] md:gap-y-0">
           {/* LEFT TEXT */}
           <div className="col-span-12 md:col-span-5">
-            <h2 className="text-[38px] font-normal leading-[1.08] text-[#1F1F1F] md:text-[54px] md:leading-[1.05]">
+            <h2 className="text-[38px] font-normal leading-[1.08] text-[#595A5A] md:text-[48px] md:leading-[1.05]">
               Building{" "}
               <span className="font-semibold text-[#43B02A]">Trust</span> with
               <span className="block">Transparency</span>
             </h2>
 
-            <p className="mt-5 max-w-[520px] text-[14px] leading-[1.9] text-[#6F6F6F] md:mt-[22px] md:text-[16px] md:leading-[1.95]">
+            <p className="mt-5 max-w-[520px] text-[14px] leading-[1.9] text-[#525252] md:mt-[22px] md:text-[20px] md:leading-[1.95]">
               Outsourcing to another company, however reputable it is, always
               comes with a risk. The best we can do as a vendor to lower that
               risk is to be completely transparent about who we are, what we do,

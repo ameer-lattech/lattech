@@ -60,17 +60,17 @@ function ArrowOut() {
 export default function LatestTechUpdatesSection() {
   return (
     <section className="w-full bg-white">
-      <div className="mx-auto w-full max-w-[1220px] px-8 pb-[90px] pt-[72px]">
+      <div className="mx-auto w-full max-w-[1280px] px-8 pb-[90px] pt-[72px]">
         {/* top row */}
         <div className="flex items-start justify-between gap-6">
           <div>
             <div className="text-[12px] font-semibold text-[#35B24A]">Our blog</div>
 
-            <h2 className="mt-2 text-[44px] font-medium leading-[1.1] tracking-[-0.02em] text-[#5A5A5A]">
+            <h2 className="mt-2 text-[48px] font-medium leading-[1.1] tracking-[-0.02em] text-[#595A5A]">
               Lastest <span className="text-[#35B24A]">Tech</span> updates
             </h2>
 
-            <p className="mt-3 max-w-[560px] text-[14px] leading-[1.8] text-[#7C7C7C]">
+            <p className="mt-3 max-w-[620px] text-[20px] leading-[1.8] text-[#7C7C7C]">
               Tool and strategies modern teams need to help their companies grow.
             </p>
           </div>

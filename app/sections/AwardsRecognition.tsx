@@ -19,9 +19,9 @@ export default function AwardsRecognition() {
     <section className="w-full bg-white py-14 sm:py-16 md:py-20">
       <div className="mx-auto max-w-7xl px-6">
         {/* Title */}
-        <h2 className="text-center text-[32px] sm:text-[38px] md:text-[42px] font-light tracking-tight">
-          <span className="text-[#4CAF50]">Awards</span>
-          <span className="text-gray-500"> &amp; Recognition</span>
+        <h2 className="text-center text-[32px] sm:text-[38px] md:text-[48px] font-Regular">
+          <span className="text-[#56BC2F]">Awards</span>
+          <span className="text-[#595A5A]"> &amp; Recognition</span>
         </h2>
 
         {/* Slider */}
@@ -54,7 +54,7 @@ export default function AwardsRecognition() {
                 key={i}
                 className="flex justify-center !w-auto lg:!w-[260px]"
               >
-                {/* 🔥 NO opacity logic, ALL SAME */}
+ 
                 <div className="flex h-[88px] w-full items-center justify-center bg-white sm:h-[100px] md:h-[110px] lg:h-[120px] lg:w-[260px]">
                   <img
                     src={item.src}
@@ -69,7 +69,7 @@ export default function AwardsRecognition() {
         </div>
       </div>
 
-      {/* 🔥 pure linear motion */}
+
       <style jsx global>{`
         .awards-swiper .swiper-wrapper {
           transition-timing-function: linear !important;

@@ -165,11 +165,11 @@ export default function WhatWeHaveBuilt() {
       <div className="mx-auto max-w-[1280px] px-6">
         {/* Header */}
         <div className="text-center">
-          <h2 className="text-[44px] font-light tracking-tight text-[#6b6b6b] md:text-[54px]">
+          <h2 className="text-[44px] font-light tracking-tight text-[#595A5A] md:text-[48px]">
             What we have <span className="font-semibold text-[#55B948]">Built</span>
           </h2>
 
-          <p className="mx-auto mt-3 max-w-[760px] text-[13px] leading-relaxed text-[#8a8a8a]">
+          <p className="mx-auto mt-3 max-w-[760px] text-[20px] leading-relaxed text-[#525252]">
             With a wealth of experience across diverse sectors, we deliver tailored insights and solutions that drive tangible
             results for our valued partners.
           </p>
@@ -306,18 +306,18 @@ export default function WhatWeHaveBuilt() {
           {active ? (
             <>
               <div className="inline-flex items-center gap-3">
-                <h3 className="text-[32px] sm:text-[42px] font-light tracking-[-0.01em] text-[#6b6b6b]">{active.title}</h3>
+                <h3 className="text-[32px] sm:text-[48px] font-Regular tracking-[-0.01em] text-[#595A5A]">{active.title}</h3>
                 <ExternalBadge />
               </div>
-              <p className="mx-auto mt-4 max-w-[760px] text-[13px] leading-[2.0] text-[#9a9a9a]">{active.description}</p>
+              <p className="mx-auto mt-4 max-w-[760px] text-[20px] leading-[2.0] text-[#595A5A]">{active.description}</p>
             </>
           ) : (
             <>
               <div className="inline-flex items-center gap-3">
-                <h3 className="text-[32px] sm:text-[42px] font-light tracking-[-0.01em] text-[#6b6b6b]">—</h3>
+                <h3 className="text-[32px] sm:text-[42px] font-light tracking-[-0.01em] text-[#595A5A]">—</h3>
                 <ExternalBadge />
               </div>
-              <p className="mx-auto mt-4 max-w-[760px] text-[13px] leading-[2.0] text-[#9a9a9a]">
+              <p className="mx-auto mt-4 max-w-[760px] text-[20px] leading-[2.0] text-[#595A5A]">
                 Select a category that has stories, or add stories for this category.
               </p>
             </>

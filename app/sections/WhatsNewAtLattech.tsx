@@ -279,18 +279,18 @@ export default function WhatsNewAtLattech() {
         }
       `}</style>
 
-      <div className="mx-auto max-w-[1180px] px-6 pb-16 pt-14 md:pb-20 md:pt-16">
+      <div className="mx-auto max-w-[1280px] px-6 pb-16 pt-14 md:pb-20 md:pt-16">
         {/* Title */}
         <div className="text-center">
-          <h2 className="text-[40px] font-light leading-none tracking-[-0.01em] text-[#6b6b6b] md:text-[52px]">
-            What’s <span className="font-semibold text-[#55B948]">New</span>{" "}
-            <span className="font-light text-[#6b6b6b]">at Lattech</span>
+          <h2 className="text-[40px] font-Regular leading-none tracking-[-0.01em] text-[#595A5A] md:text-[48px]">
+            What’s <span className="font-semibold text-[#56BC2F]">New</span>{" "}
+            <span className="font-Regular text-[#6b6b6b]">at Lattech</span>
           </h2>
 
           {/* Tabs (mobile = horizontal scroll like screenshot) */}
           <div className="mt-8">
             <div className="no-scrollbar -mx-6 overflow-x-auto px-6">
-              <div className="flex w-max items-center justify-start gap-6 whitespace-nowrap text-[13px] font-medium text-[#8a8a8a] md:w-full md:justify-center md:gap-8">
+              <div className="flex w-max items-center justify-start gap-6 whitespace-nowrap text-[18px] font-medium text-[#737373] md:w-full md:justify-center md:gap-8">
                 {TABS.map((t) => {
                   const active = t === activeTab;
                   return (
@@ -298,13 +298,13 @@ export default function WhatsNewAtLattech() {
                       key={t}
                       onClick={() => onTab(t)}
                       className={`relative pb-[10px] transition ${
-                        active ? "text-[#55B948]" : "hover:text-[#6f6f6f]"
+                        active ? "text-[#56BC2F]" : "hover:text-[#6f6f6f]"
                       }`}
                     >
                       {t}
                       <span
                         className={`absolute left-0 right-0 -bottom-[1px] h-[2px] rounded-full transition ${
-                          active ? "bg-[#55B948]" : "bg-transparent"
+                          active ? "bg-[#56BC2F]" : "bg-transparent"
                         }`}
                       />
                     </button>
@@ -380,13 +380,13 @@ export default function WhatsNewAtLattech() {
                         exit="exit"
                         transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1] }}
                       >
-                        <h3 className="max-w-[520px] text-[34px] font-light leading-[1.12] text-[#6b6b6b] md:text-[34px]">
+                        <h3 className="max-w-[520px] text-[34px] font-Regular leading-[1.12] text-[#6b6b6b] md:text-[34px]">
                           {current.title.pre}
                           <span className="font-semibold text-[#5a5a5a]">{current.title.strong}</span>
                           <span className="text-[#6b6b6b]">{current.title.post}</span>
                         </h3>
 
-                        <p className="mt-5 max-w-[540px] text-[14px] leading-6 text-[#8a8a8a] md:text-[15px]">
+                        <p className="mt-5 max-w-[540px] text-[14px] leading-6 text-[#8a8a8a] md:text-[18px]">
                           {current.body}
                         </p>
 

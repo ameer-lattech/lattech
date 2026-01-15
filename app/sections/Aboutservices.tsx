@@ -222,10 +222,10 @@ export default function ServicesPinnedScroll() {
         <div className="w-full md:flex md:flex-col md:justify-center">
           {/* header */}
           <div className="pt-10 md:pt-0 text-center">
-            <h2 className="text-[34px] md:text-[40px] font-semibold leading-tight text-[#2E2E2E]">
-              About our <span className="text-[#39B54A]">Services</span>
+            <h2 className="text-[34px] md:text-[48px] font-Regular leading-tight text-[#595A5A]">
+              About our <span className="text-[#39B54A] font-semibold">Services</span>
             </h2>
-            <p className="mx-auto mt-3 max-w-[780px] text-[13px] leading-[1.7] text-[#7A7A7A]">
+            <p className="mx-auto mt-3 max-w-[780px] text-[20px] leading-[1.7] text-[#525252]">
               We help your business grow from inception to success. Our digital solutions enhance your online presence,
               drive sales, and optimize operations for efficiency and profitability.
             </p>
@@ -268,17 +268,17 @@ export default function ServicesPinnedScroll() {
                       className="absolute inset-0 will-change-transform"
                       style={{ visibility: i === 0 ? "visible" : "hidden" }}
                     >
-                      <h3 className="text-[18px] font-semibold tracking-wide text-[#2B2B2B]">
+                      <h3 className="text-[30px] font-semibold tracking-wide text-[#595A5A]">
                         {s.title.toUpperCase()}
                       </h3>
 
-                      <p className="mt-2 max-w-[320px] text-[12px] leading-[1.8] text-[#A0A0A0]">{s.desc}</p>
+                      <p className="mt-2 max-w-[520px] text-[20px] leading-[1.8] text-[#595A5A]">{s.desc}</p>
 
                       <Link
                         href={s.link}
-                        className="mt-4 inline-flex items-center gap-2 text-[12px] font-medium text-[#1A8F3E] hover:opacity-80 transition"
+                        className="mt-4 inline-flex items-center gap-2 text-[16px] font-medium text-[#1A8F3E] hover:opacity-80 transition"
                       >
-                        {s.cta} <span aria-hidden className="text-[14px]">→</span>
+                        {s.cta} <span aria-hidden className="text-[16px]">→</span>
                       </Link>
                     </div>
                   ))}

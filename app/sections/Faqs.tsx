@@ -103,7 +103,7 @@ export default function FaqSplitSection() {
               <span className="h-px w-[46px] bg-[#D9D9D9]" />
             </div>
 
-            <h2 className="mt-4 text-[34px] md:text-[44px] font-medium leading-[1.12] tracking-[-0.02em] text-[#5E5E5E]">
+            <h2 className="mt-4 text-[34px] md:text-[48px] font-medium leading-[1.12] tracking-[-0.02em] text-[#595A5A]">
               You will find our <span className="text-[#35B24A]">Client&apos;s</span>
               <br />
               frequent questions
@@ -161,7 +161,7 @@ export default function FaqSplitSection() {
                       onClick={() => setOpenIndex(open ? null : idx)}
                       className="flex w-full items-center justify-between gap-6 text-left"
                     >
-                      <span className="text-[13px] font-semibold text-[#6E6E6E]">{item.q}</span>
+                      <span className="text-[16px] font-semibold text-[#595A5A]">{item.q}</span>
                       <PlusIcon open={open} />
                     </button>
 
@@ -196,7 +196,7 @@ export default function FaqSplitSection() {
                         onClick={() => setOpenIndex(open ? null : globalIndex)}
                         className="flex w-full items-center justify-between gap-6 text-left"
                       >
-                        <span className="text-[13px] font-semibold text-[#6E6E6E]">{item.q}</span>
+                        <span className="text-[16px] font-semibold text-[#595A5A]">{item.q}</span>
                         <PlusIcon open={open} />
                       </button>
 
@@ -207,7 +207,7 @@ export default function FaqSplitSection() {
                         ].join(" ")}
                       >
                         <div className="overflow-hidden">
-                          <p className="max-w-[520px] text-[12px] leading-[1.8] text-[#8B8B8B]">{item.a}</p>
+                          <p className="max-w-[520px] text-[14px] leading-[1.8] text-[#8B8B8B]">{item.a}</p>
                         </div>
                       </div>
                     </div>
@@ -234,7 +234,7 @@ export default function FaqSplitSection() {
                         onClick={() => setOpenIndex(open ? null : globalIndex)}
                         className="flex w-full items-center justify-between gap-6 text-left"
                       >
-                        <span className="text-[13px] font-semibold text-[#6E6E6E]">{item.q}</span>
+                        <span className="text-[16px] font-semibold text-[#595A5A]">{item.q}</span>
                         <PlusIcon open={open} />
                       </button>
 
@@ -245,7 +245,7 @@ export default function FaqSplitSection() {
                         ].join(" ")}
                       >
                         <div className="overflow-hidden">
-                          <p className="max-w-[520px] text-[12px] leading-[1.8] text-[#8B8B8B]">{item.a}</p>
+                          <p className="max-w-[520px] text-[14px] leading-[1.8] text-[#8B8B8B]">{item.a}</p>
                         </div>
                       </div>
                     </div>

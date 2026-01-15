@@ -5,15 +5,15 @@
     export default function NewsletterStrip() {
     return (
         <section className="w-full bg-[#5CBF30]">
-        <div className="mx-auto w-full max-w-[1240px] px-10">
+        <div className="mx-auto w-full max-w-[1280px] px-10">
             <div className="grid min-h-[240px] grid-cols-12 items-center">
             {/* left */}
             <div className="col-span-7 pr-10">
-                <h3 className="text-[26px] font-medium tracking-[-0.01em] text-white">
+                <h3 className="text-[36px] font-medium tracking-[-0.01em] text-white">
                 Subcribe to our Newsletter
                 </h3>
 
-                <p className="mt-2 max-w-[560px] text-[12px] leading-[1.6] text-white/80">
+                <p className="mt-2 max-w-[620px] text-[20px] leading-[1.6] text-white/80">
                 Subscribe for Updates: Stay informed about the latest investor updates, financial results, and
                 announcements by subscribing to our newsletter.
                 </p>
