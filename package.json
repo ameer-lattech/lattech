@@ -9,16 +9,23 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "country-flag-icons": "^1.6.4",
     "framer-motion": "^12.24.0",
     "gsap": "^3.14.2",
+    "isomorphic-dompurify": "^2.35.0",
+    "jsdom": "^27.4.0",
+    "libphonenumber-js": "^1.12.34",
     "next": "16.1.1",
+    "nodemailer": "^7.0.12",
     "react": "19.2.3",
     "react-dom": "19.2.3",
-    "swiper": "^12.0.3"
+    "swiper": "^12.0.3",
+    "zod": "^4.3.5"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
+    "@types/nodemailer": "^7.0.5",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",

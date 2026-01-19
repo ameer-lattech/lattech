@@ -35,7 +35,7 @@ function SvgIconImg({
   );
 }
 
-export default function LattechHeaderTailwind({
+export default function LattechHeader({
   logoSrc = "/assets//images/Logo.png",
 }: Props) {
   const [hide, setHide] = useState(false);

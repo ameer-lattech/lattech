@@ -2,7 +2,7 @@
 
 import React from "react";
 
-export default function FooterExactPixelTailwind() {
+export default function Footer() {
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
 
   return (
