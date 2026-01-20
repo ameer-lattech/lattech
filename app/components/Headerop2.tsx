@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
+import Menu from "./Menu"; 
 
 type Props = {
   logoSrc?: string;
@@ -65,6 +66,15 @@ export default function LattechHeader({
     { label: "Twitter", icon: "/assets/svgs/twitter.svg", tweakClass: "scale-[2.06]" },
     { label: "Instagram", icon: "/assets/svgs/insta.svg", tweakClass: "scale-[2.08]" },
     { label: "YouTube", icon: "/assets/svgs/yt.svg", tweakClass: "scale-[2.06]" },
+  ];
+
+  const NAV_ITEMS = [
+    { label: "Services", href: "#" },
+    { label: "Industries", href: "#" },
+    { label: "Solutions", href: "#" },
+    { label: "Technologies", href: "#" },
+    { label: "Company", href: "#" },
+    { label: "Contact", href: "#" },
   ];
 
   return (
@@ -145,18 +155,16 @@ export default function LattechHeader({
             </a>
 
             {/* NAV */}
-            <nav className="flex flex-1 items-center justify-center gap-[34px] max-[992px]:hidden">
-              {["Services", "Industries", "Solutions", "Technologies", "Company", "Contact"].map(
-                (item) => (
-                  <a
-                    key={item}
-                    href="#"
-                    className="px-[2px] py-[10px] text-[13px] font-medium text-black/60 hover:text-black/85"
-                  >
-                    {item}
-                  </a>
-                )
-              )}
+            <nav className="flex flex-1 items-center justify-end gap-[34px] max-[992px]:hidden">
+              {NAV_ITEMS.map((item) => (
+                <a
+                  key={item.label}
+                  href={item.href ?? "#"}
+                  className="px-[2px] py-[10px] text-[14px] font-medium text-black/60 hover:text-black/85"
+                >
+                  {item.label}
+                </a>
+              ))}
             </nav>
 
             {/* ACTIONS */}
@@ -170,18 +178,13 @@ export default function LattechHeader({
               </a>
             </div>
 
-            {/* MOBILE BUTTON */}
-            <button className="flex h-[44px] w-[44px] flex-col items-center justify-center gap-[6px] max-[992px]:flex md:hidden">
-              <span className="h-[3px] w-[28px] rounded bg-black/65" />
-              <span className="h-[3px] w-[28px] rounded bg-black/65" />
-              <span className="h-[3px] w-[28px] rounded bg-black/65" />
-            </button>
+            <Menu items={NAV_ITEMS} />
           </div>
         </div>
       </header>
 
-   {/* SPACER */}
-     <div className="h-[96px] md:h-[148px] -mb-[28px]" />
+      {/* SPACER */}
+      <div className="h-[96px] md:h-[148px] -mb-[28px]" />
     </>
   );
 }

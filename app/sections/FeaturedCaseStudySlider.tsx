@@ -238,7 +238,7 @@ export default function FeaturedCaseStudy() {
                 </p>
 
                 <button
-                  className="mt-[22px] inline-flex items-center gap-[12px] border-0 outline-none cursor-pointer bg-white text-[#ff7a3d] text-[12px] font-semibold px-[18px] py-[12px] rounded-full shadow-[0_10px_24px_rgba(0,0,0,0.18)]"
+                  className="mt-[22px] inline-flex items-center gap-[12px] border-0 outline-none cursor-pointer bg-white text-[#ff7a3d] text-[16px] font-semibold px-[18px] py-[12px] rounded-full shadow-[0_10px_24px_rgba(0,0,0,0.18)]"
                   type="button"
                 >
                   <span>View Full Story</span>

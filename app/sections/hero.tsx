@@ -55,7 +55,7 @@ export default function Hero() {
             </div>
 
             <h1 className="mt-[18px] md:mt-[22px] text-center md:text-left leading-[1.08] md:leading-[1.03] tracking-[-0.02em]">
-              <span className="text-[40px] sm:text-[46px] md:text-[64px] font-extrabold text-[#56BC2F]">
+              <span className="text-[40px] sm:text-[46px] md:text-[72px] font-extrabold text-[#56BC2F]">
                 Full-Stack Tech Enablement
               </span>{" "}
               <span className="text-[40px] sm:text-[46px] md:text-[64px] font-extrabold text-[#5B5B5B]">
@@ -63,7 +63,7 @@ export default function Hero() {
               </span>
             </h1>
 
-            <p className="mt-[14px] md:mt-[20px] mx-auto md:mx-0 max-w-[350px] sm:max-w-[460px] md:max-w-[760px] text-[15px] sm:text-[16px] md:text-[17px] leading-[1.7] text-[#7B7B7B] text-center md:text-left">
+            <p className="mt-[14px] md:mt-[20px] mx-auto md:mx-0 max-w-[350px] sm:max-w-[460px] md:max-w-[760px] text-[15px] sm:text-[16px] md:text-[24px] leading-[1.7] text-[#7B7B7B] text-center md:text-left">
               We are your trusted development partner with just one goal in focus
               to build products that generate a lasting, profitable impact.
             </p>
@@ -71,14 +71,14 @@ export default function Hero() {
             <div className="mt-[22px] md:mt-[28px] flex flex-col md:flex-row items-center md:items-start gap-[12px] md:gap-[16px]">
               <button
                 onClick={onSchedule}
-                className="h-[50px] md:h-[42px] w-full max-w-[360px] md:w-auto rounded-full bg-[#56BC2F] px-[22px] text-[14px] md:text-[13px] font-semibold text-white shadow-[0_8px_22px_rgba(67,176,42,0.18)] transition hover:brightness-95 active:brightness-90"
+                className="h-[50px] md:h-[42px] w-full max-w-[360px] md:w-auto rounded-full bg-[#56BC2F] px-[22px] text-[16px] md:text-[16px] font-semibold text-white shadow-[0_8px_22px_rgba(67,176,42,0.18)] transition hover:brightness-95 active:brightness-90"
               >
                 Schedule a demo
               </button>
 
               <button
                 onClick={onContact}
-                className="h-[50px] md:h-[42px] w-full max-w-[360px] md:w-auto rounded-full border border-[#FF7A1A] bg-white px-[22px] text-[14px] md:text-[13px] font-semibold text-[#FF7A1A] shadow-[0_1px_0_rgba(0,0,0,0.03)] transition hover:bg-[#FF7A1A]/10 active:bg-[#FF7A1A]/15"
+                className="h-[50px] md:h-[42px] w-full max-w-[360px] md:w-auto rounded-full border border-[#FF7A1A] bg-white px-[22px] text-[16px] md:text-[16px] font-semibold text-[#FF7A1A] shadow-[0_1px_0_rgba(0,0,0,0.03)] transition hover:bg-[#FF7A1A]/10 active:bg-[#FF7A1A]/15"
               >
                 Contact sales
               </button>

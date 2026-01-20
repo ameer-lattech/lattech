@@ -175,7 +175,7 @@ export default function WhatWeHaveBuilt() {
           </p>
 
           <div className="mt-6 flex justify-center">
-            <button className="group inline-flex h-[36px] items-center gap-2 rounded-full border border-[#55B948] bg-white px-5 text-[11px] font-semibold text-[#55B948] transition hover:bg-[#55B948]/5">
+            <button className="group inline-flex h-[36px] items-center gap-2 rounded-full border border-[#55B948] bg-white px-5 text-[16px] font-semibold text-[#55B948] transition hover:bg-[#55B948]/5">
               View all success stories
               <span className="transition-transform group-hover:translate-x-0.5">
                 <ArrowRight />
@@ -292,8 +292,8 @@ export default function WhatWeHaveBuilt() {
               onClick={() => setActiveCategory(c)}
               className={
                 c === activeCategory
-                  ? "h-[34px] rounded-full bg-[#FF7A00] px-6 text-[11px] font-semibold text-white transition"
-                  : "h-[34px] rounded-full bg-[#F3F4F6] px-6 text-[11px] font-semibold text-[#8a8a8a] transition hover:bg-[#ECEEF1]"
+                  ? "h-[34px] rounded-full bg-[#FF7A00] px-6 text-[18px] font-semibold text-white transition"
+                  : "h-[34px] rounded-full bg-[#F3F4F6] px-6 text-[18px] font-semibold text-[#8a8a8a] transition hover:bg-[#ECEEF1]"
               }
             >
               {c}

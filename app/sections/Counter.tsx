@@ -119,12 +119,12 @@ export default function KeyFactsCounter() {
             <div className="mt-8 md:mt-0 grid grid-cols-1 gap-y-10 md:grid-cols-4 md:gap-y-0 text-center">
               {FACTS.map((f, i) => (
                 <div key={f.label}>
-                  <div className="text-[52px] md:text-[64px] font-semibold leading-none text-[#56BC2F]">
+                  <div className="text-[52px] md:text-[60px] font-semibold leading-none text-[#56BC2F]">
                     {formatNumber(counts[i])}
                     {f.suffix ?? ""}
                   </div>
 
-                  <div className="mt-2 text-[13px] font-semibold text-[#6F6F6F]">
+                  <div className="mt-2 text-[18px] font-semibold text-[#6F6F6F]">
                     {f.label}
                   </div>
                 </div>

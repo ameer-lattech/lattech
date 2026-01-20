@@ -386,7 +386,7 @@ export default function WhatsNewAtLattech() {
                           <span className="text-[#6b6b6b]">{current.title.post}</span>
                         </h3>
 
-                        <p className="mt-5 max-w-[540px] text-[14px] leading-6 text-[#8a8a8a] md:text-[18px]">
+                        <p className="mt-5 max-w-[540px] text-[14px] leading-6 text-[#8a8a8a] md:text-[16px]">
                           {current.body}
                         </p>
 
@@ -394,14 +394,14 @@ export default function WhatsNewAtLattech() {
                         <div className="mt-10 flex flex-col items-center gap-4 md:mt-8 md:flex-row md:items-center md:gap-4">
                           <button
                             onClick={() => pauseBriefly()}
-                            className="w-full max-w-[320px] rounded-full bg-[#ff7a1a] px-6 py-[12px] text-[14px] font-semibold text-white shadow-[0_8px_20px_rgba(255,122,26,0.18)] transition hover:bg-[#f26f10] active:brightness-95 md:w-auto md:max-w-none md:text-[13px]"
+                            className="w-full max-w-[320px] rounded-full bg-[#ff7a1a] px-6 py-[12px] text-[14px] font-semibold text-white shadow-[0_8px_20px_rgba(255,122,26,0.18)] transition hover:bg-[#f26f10] active:brightness-95 md:w-auto md:max-w-none md:text-[16px]"
                           >
                             {current.cta1}
                           </button>
 
                           <button
                             onClick={() => pauseBriefly()}
-                            className="w-full max-w-[320px] rounded-full bg-[#55B948] px-6 py-[12px] text-[14px] font-semibold text-white shadow-[0_8px_20px_rgba(85,185,72,0.18)] transition hover:brightness-95 active:brightness-90 md:w-auto md:max-w-none md:border md:border-[#55B948] md:bg-transparent md:text-[#55B948] md:shadow-none md:hover:bg-[#55B948]/10 md:text-[13px]"
+                            className="w-full max-w-[320px] rounded-full bg-[#55B948] px-6 py-[12px] text-[14px] font-semibold text-white shadow-[0_8px_20px_rgba(85,185,72,0.18)] transition hover:brightness-95 active:brightness-90 md:w-auto md:max-w-none md:border md:border-[#55B948] md:bg-transparent md:text-[#55B948] md:shadow-none md:hover:bg-[#55B948]/10 md:text-[16px]"
                           >
                             {current.cta2}
                           </button>

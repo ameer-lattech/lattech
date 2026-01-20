@@ -77,7 +77,7 @@ export default function LatestTechUpdatesSection() {
 
           <Link
             href="/blog"
-            className="mt-1 inline-flex h-[44px] items-center rounded-full bg-[#FF7A00] px-[18px] text-[12px] font-semibold text-white shadow-[0_10px_22px_rgba(255,122,0,0.25)] hover:opacity-90 transition"
+            className="mt-1 inline-flex h-[44px] items-center rounded-full bg-[#FF7A00] px-[18px] text-[16px] font-semibold text-white shadow-[0_10px_22px_rgba(255,122,0,0.25)] hover:opacity-90 transition"
           >
             View all posts
           </Link>

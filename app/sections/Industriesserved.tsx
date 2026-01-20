@@ -154,7 +154,7 @@ export default function IndustriesWeServed() {
             className={[
               "inline-flex h-[44px] w-[150px] items-center justify-center rounded-full",
               "border border-[#39B54A] text-[#39B54A]",
-              "text-[13px] font-medium",
+              "text-[16px] font-medium",
               "transition-all duration-200 hover:bg-[#39B54A] hover:text-white",
             ].join(" ")}
           >

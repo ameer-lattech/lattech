@@ -126,7 +126,7 @@ export default function FaqSplitSection() {
                         setOpenIndex(null);
                       }}
                       className={[
-                        "relative whitespace-nowrap text-[12px] font-semibold",
+                        "relative whitespace-nowrap text-[16px] font-semibold",
                         isActive ? "text-[#FF7A00]" : "text-[#A7A7A7] hover:text-[#7F7F7F]",
                       ].join(" ")}
                     >
@@ -260,7 +260,7 @@ export default function FaqSplitSection() {
         <div className="mt-9 md:mt-[44px] flex justify-center">
           <button
             type="button"
-            className="h-[44px] rounded-full border-2 border-[#FF7A00] px-[22px] text-[12px] font-semibold text-[#FF7A00] hover:bg-[#FF7A00] hover:text-white transition"
+            className="h-[44px] rounded-full border-2 border-[#FF7A00] px-[22px] text-[16px] font-semibold text-[#FF7A00] hover:bg-[#FF7A00] hover:text-white transition"
           >
             Show all questions
           </button>

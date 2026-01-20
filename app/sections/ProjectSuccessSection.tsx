@@ -174,7 +174,7 @@ export default function ProjectSuccessSection() {
 
             <Link
               href="#"
-              className="mt-7 inline-flex items-center gap-3 rounded-full border-2 border-[#FF7A00] px-6 py-[12px] text-[13px] font-semibold text-[#FF7A00] transition hover:bg-[#FF7A00]/10"
+              className="mt-7 inline-flex items-center gap-3 rounded-full border-2 border-[#FF7A00] px-6 py-[12px] text-[16px] font-semibold text-[#FF7A00] transition hover:bg-[#FF7A00]/10"
             >
               See how we deliver results
               <span className="inline-flex h-7 w-7 items-center justify-center rounded-full border border-[#FF7A00]/35">

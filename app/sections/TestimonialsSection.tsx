@@ -216,7 +216,7 @@ export default function JourneyTestimonials() {
           <button
             type="button"
             onClick={() => setShowAll((s) => !s)}
-            className="rounded-full border border-[#43B02A] px-6 py-[10px] text-[12px] font-medium text-[#43B02A] transition hover:bg-[#43B02A] hover:text-white"
+            className="rounded-full border border-[#43B02A] px-6 py-[10px] text-[16px] font-medium text-[#43B02A] transition hover:bg-[#43B02A] hover:text-white"
           >
             {showAll ? "Show less testimonials" : "Show more testimonials"}
           </button>
